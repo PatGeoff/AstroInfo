@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Responsive Widgets with Sine Wave</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <title>Responsive Widgets with Graphs</title>
 </head>
 <body>
     <div class="widget-container">
-        <div class="widget">
+        <div class="widget" id="widget1">
             <div class="grid-container">
                 <div class="cell planet">
                     <img src="planet-icon.png" alt="Planet" class="icon">
@@ -25,11 +26,11 @@
                     <p>More text about celestial bodies.</p>
                 </div>
                 <div class="cell graph" style="grid-column: span 4; grid-row: span 2;">
-                    <svg class="sineWave" viewBox="0 0 400 150"></svg>
+                    <svg class="elevationGraph" id="elevationGraph1" viewBox="0 0 400 150"></svg>
                 </div>
             </div>
         </div>
-        <div class="widget">
+        <div class="widget" id="widget2">
             <div class="grid-container">
                 <div class="cell planet">
                     <img src="planet-icon.png" alt="Planet" class="icon">
@@ -46,11 +47,11 @@
                     <p>More text about celestial bodies.</p>
                 </div>
                 <div class="cell graph" style="grid-column: span 4; grid-row: span 2;">
-                    <svg class="sineWave" viewBox="0 0 400 150"></svg>
+                    <svg class="elevationGraph" id="elevationGraph2" viewBox="0 0 400 150"></svg>
                 </div>
             </div>
         </div>
-        <div class="widget">
+        <div class="widget" id="widget3">
             <div class="grid-container">
                 <div class="cell planet">
                     <img src="planet-icon.png" alt="Planet" class="icon">
@@ -67,11 +68,12 @@
                     <p>More text about celestial bodies.</p>
                 </div>
                 <div class="cell graph" style="grid-column: span 4; grid-row: span 2;">
-                    <svg class="sineWave" viewBox="0 0 400 150"></svg>
+                    <svg class="elevationGraph" id="elevationGraph3" viewBox="0 0 400 150"></svg>
                 </div>
             </div>
         </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>

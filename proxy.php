@@ -25,30 +25,43 @@ $response = curl_exec($ch);
 
 // Check for cURL errors
 if (curl_errno($ch)) {
-    echo 'Error: ' . curl_error($ch);
-} else {
-    // Set the content type to plain text
-    header('Content-Type: text/plain'); 
+    echo json_encode(['error' => 'Error: ' . curl_error($ch)]);
+    exit;
+}
 
-    // Find the start and end markers
-    $startMarker = '$$SOE';
-    $endMarker = '$$EOE';
+// Find the start and end markers
+$startMarker = '$$SOE';
+$endMarker = '$$EOE';
 
-    $startPos = strpos($response, $startMarker);
-    $endPos = strpos($response, $endMarker);
+$startPos = strpos($response, $startMarker);
+$endPos = strpos($response, $endMarker);
 
-    if ($startPos !== false && $endPos !== false) {
-        // Extract the data between the markers
-        $startPos += strlen($startMarker); // Move to the end of the start marker
-        $length = $endPos - $startPos; // Calculate the length of the data
-        $dataBetween = substr($response, $startPos, $length);
-        
-        // Trim and output the extracted data
-        $trimmedData = trim($dataBetween);
-        echo nl2br($trimmedData); // nl2br to convert new lines to <br> for HTML output
-    } else {
-        echo "Markers not found in the response.";
+if ($startPos !== false && $endPos !== false) {
+    // Extract the data between the markers
+    $startPos += strlen($startMarker); // Move to the end of the start marker
+    $length = $endPos - $startPos; // Calculate the length of the data
+    $dataBetween = substr($response, $startPos, $length);
+    
+    // Trim and split the data into lines
+    $lines = explode("\n", trim($dataBetween));
+    $data = []; // Array to hold time and elevation pairs
+
+    foreach ($lines as $line) {
+        $line = trim($line); // Trim each line
+        $parts = preg_split('/\s+/', $line); // Split by whitespace
+        if (count($parts) > 1) {
+            $time = $parts[1]; // Get the time (second part)
+            $elevation = isset($parts[4]) ? (float)$parts[4] : null; // Get the elevation (fifth part)
+            if ($elevation !== null) {
+                $data[] = [$time, $elevation]; // Add time and elevation as a pair
+            }
+        }
     }
+
+    // Output the data as a JSON array
+    echo json_encode($data);
+} else {
+    echo json_encode(['error' => 'Markers not found in the response.']);
 }
 
 // Close cURL
