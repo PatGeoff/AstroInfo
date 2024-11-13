@@ -1,5 +1,7 @@
 // Function to get user input for dates and times
 
+let data;
+
 const bodies = {
     sun: 10,
     moon: 301,
@@ -45,9 +47,25 @@ function constructApiUrl(startTime, stopTime, body) {
     return apiUrl;
 }
 
-function getIcon(body) {
+async function getIcon(body) {
+    const imagePath = "";
+    if (body == "venus"){
+        if (data.angle == 0){
+            
+        }
+        imagePath = `./images/${body}/${body}_01.png`; // Adjusted path for the image
+    }
+    else if (body == "mercury"){
+        imagePath = `./images/${body}/${body}_01.png`; // Adjusted path for the image
+    }
+    else if (body == "moon"){
+        imagePath = `./images/${body}/${body}_01.png`; // Adjusted path for the image
+    }
+    else{
+
+    }
     // Construct the image path based on the body
-    const imagePath = `./images/${body}/venus_01.png`; // Adjusted path for the image
+     
 
     // Select the image element by ID
     const imgElement = document.getElementById(`${body}_icon`);
@@ -71,7 +89,7 @@ function getIcon(body) {
 
 
 // Function to fetch data from the API
-async function fetchData(body) {    
+async function fetchData(body) {
     const { startTime, stopTime } = getTimeFrame();
     const apiUrl = constructApiUrl(startTime, stopTime, body);
 
@@ -82,7 +100,7 @@ async function fetchData(body) {
         }
 
         const textData = await response.text();
-        const data = JSON.parse(textData); // Parse the JSON data
+        data = JSON.parse(textData); // Parse the JSON data
         console.log(data);
         const times = data.map(entry => entry[0]); // Extract times
         const elevations = data.map(entry => entry[1]); // Extract elevations
