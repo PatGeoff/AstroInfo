@@ -44,16 +44,28 @@ if ($startPos !== false && $endPos !== false) {
     
     // Trim and split the data into lines
     $lines = explode("\n", trim($dataBetween));
-    $data = []; // Array to hold time and elevation pairs
+    $data = []; // Array to hold the extracted data
 
     foreach ($lines as $line) {
         $line = trim($line); // Trim each line
         $parts = preg_split('/\s+/', $line); // Split by whitespace
         if (count($parts) > 1) {
             $time = $parts[1]; // Get the time (second part)
-            $elevation = isset($parts[4]) ? (float)$parts[4] : null; // Get the elevation (fifth part)
-            if ($elevation !== null) {
-                $data[] = [$time, $elevation]; // Add time and elevation as a pair
+            $elevation = isset($parts[3]) ? (float)$parts[3] : null; // Get the elevation (fourth part)
+            $mag = isset($parts[4]) ? (float)$parts[4] : null; // Get the magnitude (fifth part)
+            $angDiam = isset($parts[5]) ? (float)$parts[5] : null; // Get the angular diameter (sixth part)
+            $const = isset($parts[6]) ? $parts[6] : null; // Get the constellation (seventh part)
+            $angle = isset($parts[7]) ? (float)$parts[7] : null; // Get the angle (eighth part)
+    
+            if ($elevation !== null && $mag !== null && $angDiam !== null && $const !== null && $angle !== null) {
+                $data[] = [
+                    'time' => $time,
+                    'elevation' => $elevation,
+                    'magnitude' => $mag,
+                    'angular_diameter' => $angDiam,
+                    'constellation' => $const,
+                    'angle' => $angle
+                ]; // Add all values 
             }
         }
     }
