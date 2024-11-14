@@ -1,0 +1,47 @@
+Crescent Phases and Azimuth Scenarios:
+
+    Crescent on the Right:
+        Position: Venus is between the Earth and the Sun.
+        Azimuth: Less than 180° (eastern sky).
+        Appearance: The crescent is illuminated on the right side.
+    Crescent on the Left:
+        Position: Venus is on the opposite side of the Sun from the Earth.
+        Azimuth: Greater than 180° (western sky).
+        Appearance: The crescent is illuminated on the left side.
+
+Other Possibilities:
+
+    Gibbous Phase:
+        Position: Venus is farther from the Earth than the Sun.
+        Azimuth: Can be either less than or greater than 180°.
+        Appearance: Most of Venus is illuminated, with a small crescent on the opposite side of the Sun.
+        If azimuth < 180°, the crescent is on the left.
+        If azimuth > 180°, the crescent is on the right.
+    Full Phase:
+        Position: Venus is on the opposite side of the Earth from the Sun.
+        Azimuth: Typically around 180°.
+        Appearance: Venus appears fully illuminated.
+    New Phase:
+        Position: Venus is very close to the Sun in the sky.
+        Azimuth: Close to the Sun’s azimuth (either side).
+        Appearance: Venus is not visible, as it is lost in the Sun’s glare.
+
+Summary:
+The orientation of the crescent (left or right) depends on both the phase of Venus and its azimuth relative to the observer.
+In gibbous phases, the crescent can appear on either side depending on the azimuth.
+
+Understanding Phase Angle (Phi):
+Phase Angle (Phi): This angle is formed between the Sun, Venus, and the observer. It helps indicate how much of Venus is illuminated.
+Determining Position:
+Crescent Phase: If the phase angle is small (typically less than about 90°), Venus is likely positioned between the Earth and the Sun.
+Gibbous Phase: If the phase angle is larger (greater than about 90°), Venus is on the opposite side of the Sun from the Earth.
+Summary:
+By analyzing the phase angle, you can determine whether Venus is in a crescent phase (between the Earth and the Sun) or a gibbous phase (on the opposite side). This information, combined with the azimuth, helps you understand how Venus will appear in the sky.
+
+https://en.wikipedia.org/wiki/Phases_of_Venus#/media/File:Phases-of-Venus2.svg
+Phases of Venus:
+New Phase: Venus is between the Earth and the Sun, appearing mostly dark.
+Crescent Phase: A small portion is illuminated, visible as a crescent.
+First Quarter: Half of Venus is illuminated.
+Gibbous Phase: More than half is illuminated, but not fully.
+Full Phase: Venus is fully illuminated, positioned opposite the Sun.
