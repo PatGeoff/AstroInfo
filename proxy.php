@@ -41,7 +41,7 @@ if ($startPos !== false && $endPos !== false) {
     $startPos += strlen($startMarker); // Move to the end of the start marker
     $length = $endPos - $startPos; // Calculate the length of the data
     $dataBetween = substr($response, $startPos, $length);
-    
+
     // Trim and split the data into lines
     $lines = explode("\n", trim($dataBetween));
     $data = []; // Array to hold the extracted data
@@ -49,23 +49,33 @@ if ($startPos !== false && $endPos !== false) {
     foreach ($lines as $line) {
         $line = trim($line); // Trim each line
         $parts = preg_split('/\s+/', $line); // Split by whitespace
+        $parts = array_map('trim', $parts); // Trim each part
         if (count($parts) > 1) {
             $time = $parts[1]; // Get the time (second part)
-            $elevation = isset($parts[3]) ? (float)$parts[3] : null; // Get the elevation (fourth part)
-            $mag = isset($parts[4]) ? (float)$parts[4] : null; // Get the magnitude (fifth part)
-            $angDiam = isset($parts[5]) ? (float)$parts[5] : null; // Get the angular diameter (sixth part)
-            $const = isset($parts[6]) ? $parts[6] : null; // Get the constellation (seventh part)
-            $angle = isset($parts[7]) ? (float)$parts[7] : null; // Get the angle (eighth part)
-    
-            if ($elevation !== null && $mag !== null && $angDiam !== null && $const !== null && $angle !== null) {
+            $azimuth =  (float) $parts[3]; // Get the azimuth
+            $elevation = isset($parts[4]) ? (float) $parts[4] : null; // Get the elevation 
+            $magnitude = isset($parts[5]) ? (float) $parts[5] : null; // Get the magnitude 
+            $illumination = isset($parts[6]) ? (float) $parts[6] : null; // Get the angular diameter 
+            $constellation = isset($parts[7]) ? $parts[7] : null; // Get the constellation 
+            $phi = isset($parts[8]) ? (float) $parts[8] : null; // Get the angle 
+            $pabLon = isset($parts[9]) ? (float) $parts[9] : null; // Get the angle 
+            $pabLat = isset($parts[10]) ? (float) $parts[10] : null; // Get the angle 
+
+            try {
                 $data[] = [
                     'time' => $time,
+                    'azimuth' => $azimuth,
                     'elevation' => $elevation,
-                    'magnitude' => $mag,
-                    'angular_diameter' => $angDiam,
-                    'constellation' => $const,
-                    'angle' => $angle
-                ]; // Add all values 
+                    'magnitude' => $magnitude,
+                    'illumination' => $illumination,
+                    'constellation' => $constellation,
+                    'phi' => $phi,
+                    'pabLon' => $pabLon,
+                    'pabLat' => $pabLat
+                ]; // Add all values }            
+            } catch (Exception $e) {
+                // Handle the exception
+                echo 'Caught exception: ', $e->getMessage(), "\n";
             }
         }
     }

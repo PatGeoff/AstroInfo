@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle Animation with Angle Control</title>
+    <style>
+        canvas { border: 1px solid black; }
+        #slider, #earthSlider { width: 100%; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas" width="600" height="400"></canvas>
+    <input type="range" id="slider" min="0" max="720" value="0"> <!-- Updated max to 720 -->
+    <input type="range" id="earthSlider" min="-100" max="100" value="0">
+    <script>
+        const canvas = document.getElementById('myCanvas');
+        const ctx = canvas.getContext('2d');
+        const slider = document.getElementById('slider');
+        const earthSlider = document.getElementById('earthSlider');
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const radius = 100;
+            const offsetX = 100; // Offset to move everything to the left
+            const centerX = canvas.width / 2 - offsetX; // Center adjusted to the left
+            const centerY = canvas.height / 2;
+
+            // Draw the circle outline
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.strokeStyle = 'black'; // Circle outline color
+            ctx.stroke();
+
+            // Draw the sun (yellow circle at the center)
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 20, 0, Math.PI * 2); // Sun radius
+            ctx.fillStyle = 'yellow';
+            ctx.fill();
+            ctx.stroke();
+
+            // Get the angle from the slider (Venus's angle relative to the Sun)
+     const angle = (slider.value % 360) * (Math.PI / 180); // Adjust angle to loop every 360 degrees
+
+
+            // Calculate sphere position (on the circumference)
+            const sphereX = centerX + radius * Math.cos(angle);
+            const sphereY = centerY + radius * Math.sin(angle);
+
+            // Get the angle between Venus and the Sun
+            const sunAngle = Math.atan2(centerY - sphereY, centerX - sphereX); // Angle of Venus relative to the Sun
+
+            // Draw Venus with split colors (beige for light side, black for shadow side)
+            ctx.beginPath();
+            ctx.arc(sphereX, sphereY, 10, 0, Math.PI * 2); // Sphere radius
+
+            // Light side (beige) based on Sun's angle
+            const lightSideStartAngle = sunAngle - Math.PI / 2;
+            const lightSideEndAngle = sunAngle + Math.PI / 2;
+
+            // Light side (beige)
+            ctx.fillStyle = 'black';
+            ctx.moveTo(sphereX, sphereY);
+            ctx.arc(sphereX, sphereY, 10, lightSideStartAngle, lightSideEndAngle, false); // Counterclockwise
+            ctx.fill();
+            ctx.strokeStyle = 'black';
+            ctx.stroke();
+
+            // Shadow side (black)
+            ctx.beginPath();
+            ctx.fillStyle = 'beige';
+            ctx.moveTo(sphereX, sphereY);
+            ctx.arc(sphereX, sphereY, 10, lightSideEndAngle, lightSideStartAngle, true); // Clockwise
+            ctx.fill();
+            ctx.strokeStyle = 'black';
+            ctx.stroke();
+
+            // Draw line from center to sphere
+            ctx.beginPath();
+            ctx.moveTo(sphereX, sphereY);
+            ctx.lineTo(centerX, centerY );
+            ctx.stroke();
+
+            // Get the Earth position based on the second slider
+            const earthY = parseInt(earthSlider.value); // Earth Y position controlled by the second slider
+            const externalX = centerX + 250; // Adjusted position for Earth
+            const externalY = centerY + earthY; // Update the Y position of the Earth
+
+            // Draw external point (Earth) at adjusted Y position
+            ctx.beginPath();
+            ctx.arc(externalX, externalY, 10, 0, Math.PI * 2); // Earth radius
+            ctx.fillStyle = 'blue';
+            ctx.fill();
+            ctx.stroke();
+
+            // Draw line from sphere to external point (Earth)
+            ctx.beginPath();
+            ctx.moveTo(sphereX, sphereY); // Line from sphere to external point
+            ctx.lineTo(externalX, externalY);
+            ctx.stroke();
+
+            // Calculate the vectors from Venus to Sun and Venus to Earth
+            const vecSunToVenus = { x: centerX - sphereX, y: centerY - sphereY };
+            const vecVenusToEarth = { x: externalX - sphereX, y: externalY - sphereY };
+
+            // Calculate the angle between the two vectors using the dot product
+            const dotProduct = vecSunToVenus.x * vecVenusToEarth.x + vecSunToVenus.y * vecVenusToEarth.y;
+            const magnitudeSunToVenus = Math.sqrt(vecSunToVenus.x * vecSunToVenus.x + vecSunToVenus.y * vecSunToVenus.y);
+            const magnitudeVenusToEarth = Math.sqrt(vecVenusToEarth.x * vecVenusToEarth.x + vecVenusToEarth.y * vecVenusToEarth.y);
+            let angleBetween = Math.acos(dotProduct / (magnitudeSunToVenus * magnitudeVenusToEarth));
+
+            // Ensure angle is between 0° and 180° (this handles the alignment case)
+            if (angleBetween < 0) angleBetween += Math.PI;  // Make the angle always positive
+            if (angleBetween > Math.PI) angleBetween = 2 * Math.PI - angleBetween; // Keep the angle within 180 degrees
+
+            // Adjust the angle to degrees for display
+            const angleDeg = Math.abs(angleBetween * (180 / Math.PI));
+
+            // Get the angle between Venus and Earth
+            const earthAngle = Math.atan2(externalY - sphereY, externalX - sphereX);
+
+            // Calculate the bisector angle (average of the two angles)
+            let bisectorAngle = (sunAngle + earthAngle) / 2;
+
+            // If the difference between angles is larger than 180° (π radians), adjust bisector
+            if (Math.abs(sunAngle - earthAngle) > Math.PI) {
+                bisectorAngle += Math.PI;
+                bisectorAngle %= 2 * Math.PI; // Normalize between 0 and 2π
+            }
+
+            // Calculate bisector line end point
+            const bisectorX = sphereX + 50 * Math.cos(bisectorAngle); // Arbitrary length for bisector
+            const bisectorY = sphereY + 50 * Math.sin(bisectorAngle);
+
+            // Draw the bisector
+            ctx.beginPath();
+            ctx.moveTo(sphereX, sphereY);
+            ctx.lineTo(bisectorX, bisectorY);
+            ctx.strokeStyle = 'red'; // Color for the bisector
+            ctx.stroke();
+
+            // Display the angle
+            ctx.fillStyle = 'black';
+            ctx.fillText(`Angle between Venus and Earth: ${angleDeg.toFixed(2)}°`, 10, 20);
+        }
+
+        // Update the drawing when the sliders change
+        slider.addEventListener('input', draw);
+        earthSlider.addEventListener('input', draw);
+
+        // Initial draw
+        draw();
+    </script>
+</body>
+</html>
