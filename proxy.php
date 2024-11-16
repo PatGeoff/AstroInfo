@@ -55,11 +55,11 @@ if ($startPos !== false && $endPos !== false) {
             $azimuth =  (float) $parts[3]; // Get the azimuth
             $elevation = isset($parts[4]) ? (float) $parts[4] : null; // Get the elevation 
             $magnitude = isset($parts[5]) ? (float) $parts[5] : null; // Get the magnitude 
-            $illumination = isset($parts[6]) ? (float) $parts[6] : null; // Get the angular diameter 
-            $constellation = isset($parts[7]) ? $parts[7] : null; // Get the constellation 
-            $phi = isset($parts[8]) ? (float) $parts[8] : null; // Get the angle 
-            $pabLon = isset($parts[9]) ? (float) $parts[9] : null; // Get the angle 
-            $pabLat = isset($parts[10]) ? (float) $parts[10] : null; // Get the angle 
+            $illumination = isset($parts[7]) ? (float) $parts[7] : null; // Get the angular diameter 
+            $constellation = isset($parts[8]) ? $parts[8] : null; // Get the constellation 
+            $phi = isset($parts[9]) ? (float) $parts[9] : null; // Get the angle 
+            $pabLon = isset($parts[10]) ? (float) $parts[10] : null; // Get the angle 
+            $pabLat = isset($parts[11]) ? (float) $parts[11] : null; // Get the angle 
 
             try {
                 $data[] = [
