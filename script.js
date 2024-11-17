@@ -37,16 +37,33 @@ function getTimeFrame() {
 //     return `${baseUrl}&START_TIME='${encodeURIComponent(startTime)}'&STOP_TIME='${encodeURIComponent(stopTime)}'&STEP_SIZE='10m'&QUANTITIES='4,9,13,14,20,43'&TIME_ZONE=-5`;
 // }
 
-
-
-function constructApiUrl(startTime, stopTime, body) {
+function constructApiUrlJpl(startTime, stopTime, body) {
     const id = bodies[body];
-    console.log(id);
-    const baseUrl = `https://astroinfo:8890/proxy.php?format=text&COMMAND='${id}'&OBJ_DATA=YES&MAKE_EPHEM=YES&EPHEM_TYPE=OBSERVER&CENTER=coord@399&SITE_COORD='45.5017,-73.5673,0'`;
-    const apiUrl = `${baseUrl}&START_TIME='${encodeURIComponent(startTime)}'&STOP_TIME='${encodeURIComponent(stopTime)}'&STEP_SIZE='1h'&QUANTITIES='4,9,10,29,43,48'&TIME_ZONE=-5`;
-    console.log('Constructed API URL:', apiUrl); // Log the URL before returning it    
-    return apiUrl;
+    const params = `format=text&COMMAND='${id}'&OBJ_DATA=YES&MAKE_EPHEM=YES&EPHEM_TYPE=OBSERVER&CENTER=coord@399&SITE_COORD='45.5017,-73.5673,0'&START_TIME='${encodeURIComponent(startTime)}'&STOP_TIME='${encodeURIComponent(stopTime)}'&STEP_SIZE='1h'&QUANTITIES='4,9,10,29,43,48'&TIME_ZONE=-5`;
+    return params;
 }
+
+function constructApiUrlIST(startTime, stopTime, body) {
+    // Get today's date
+    const today = new Date();
+
+    // Extract day, month, and year
+    const day = today.getDate(); // Day of the month (1-31)
+    const month = today.getMonth() + 1; // Month (0-11, so add 1)
+    const year = today.getFullYear(); // Full year (e.g., 2024)
+
+    const params = `start$=${day}&startmonth=${month}&startyear=${year}&ird=1&irs=1&ima=1&ipm=0&iph=0&ias=0&iss=0&iob=1&ide=0&ids=0&interval=4&tz=0&format=csv&rows=1&objtype=1&objpl=${body}&objtxt=${body}&town=6077243`;
+    return params;
+}
+
+// function constructApiUrl(startTime, stopTime, body) {
+//     const id = bodies[body];
+//     console.log(id);
+//     const baseUrl = `https://astroinfo:8890/proxy.php?format=text&COMMAND='${id}'&OBJ_DATA=YES&MAKE_EPHEM=YES&EPHEM_TYPE=OBSERVER&CENTER=coord@399&SITE_COORD='45.5017,-73.5673,0'`;
+//     const apiUrl = `${baseUrl}&START_TIME='${encodeURIComponent(startTime)}'&STOP_TIME='${encodeURIComponent(stopTime)}'&STEP_SIZE='1h'&QUANTITIES='4,9,10,29,43,48'&TIME_ZONE=-5`;
+//     console.log('Constructed API URL:', apiUrl); // Log the URL before returning it    
+//     return apiUrl;
+// }
 
 async function getIcon(body) {
     const bodye = body.trim();
@@ -82,36 +99,83 @@ async function getIcon(body) {
 
 
 
-// Function to fetch data from the API
-async function fetchData(body) {
+// // Function to fetch data from the API
+// async function fetchData(body) {
+//     const { startTime, stopTime } = getTimeFrame();
+//     const apiUrl = constructApiUrl(startTime, stopTime, body);
+
+//     try {
+//         const response = await fetch(apiUrl);
+//         if (!response.ok) {
+//             throw new Error(`HTTP error! Status: ${response.status}`);
+//         }
+
+//         const textData = await response.text();
+//         data = JSON.parse(textData); // Parse the JSON data
+//         console.log(data);
+//         const times = data.map(entry => entry.time); // Extract times
+//         const azimuth = data.map(entry => entry.azimuth); // Azimuth
+//         const elevation = data.map(entry => entry.elevation); // Elevation
+//         const magnitude = data.map(entry => entry.magnitude); // Magnitude
+//         const illumination = data.map(entry => entry.illumination); // Illumination
+//         const constellation = data.map(entry => entry.constellation); // Constellation
+//         const phi = data.map(entry => entry.phi); // Phi
+//         const pabLon = data.map(entry => entry.pabLon); // PAB-LON
+//         const pabLat = data.map(entry => entry.pabLat); // PAB-LAT
+//         const graphName = body + "_graph";
+
+//         getIcon(body);
+
+
+//         // Call drawElevationGraph for a specific SVG element
+//         drawElevationGraph(times, elevation, graphName); // Change ID as needed
+
+//     } catch (error) {
+//         console.error('Error fetching data:', error);
+//     }
+// }
+
+async function fetchData(server, body) {
     const { startTime, stopTime } = getTimeFrame();
-    const apiUrl = constructApiUrl(startTime, stopTime, body);
+    let baseUrl, params = "";
+
+    // Prepare the first fetch
+    baseUrl = 'https://ssd.jpl.nasa.gov/api/horizons.api';
+    params = constructApiUrlJpl(startTime, stopTime, body);
+    const jplFetch = fetch(`https://astroinfo:8890/proxy.php?baseUrl=${encodeURIComponent(baseUrl)}&params=${encodeURIComponent(params)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok for https://ssd.jpl.nasa.gov/api/horizons.api');
+            }
+            return response.text(); // Use .text() to handle plain text
+        })
+        .then(data => {
+            data = extractTextBetweenMarkersJPL(data);
+            return getValuesJpl(data);
+        });
+
+    // Prepare the second fetch
+    baseUrl = 'https://in-the-sky.org/ephemeris.php';
+    params = constructApiUrlIST(startTime, stopTime, body);
+    const itsFetch = fetch(`https://astroinfo:8890/proxy.php?baseUrl=${encodeURIComponent(baseUrl)}&params=${encodeURIComponent(params)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok for https://in-the-sky.org/ephemeris.php');
+            }
+            return response.text();
+        })
+        .then(data => {
+            return getValuesITS(data);
+        });
 
     try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+        // Wait for both fetches to complete
+        const [datajpl, dataits] = await Promise.all([jplFetch, itsFetch]);
 
-        const textData = await response.text();
-        data = JSON.parse(textData); // Parse the JSON data
-        console.log(data);
-        const times = data.map(entry => entry.time); // Extract times
-        const azimuth = data.map(entry => entry.azimuth); // Azimuth
-        const elevation = data.map(entry => entry.elevation); // Elevation
-        const magnitude = data.map(entry => entry.magnitude); // Magnitude
-        const illumination = data.map(entry => entry.illumination); // Illumination
-        const constellation = data.map(entry => entry.constellation); // Constellation
-        const phi = data.map(entry => entry.phi); // Phi
-        const pabLon = data.map(entry => entry.pabLon); // PAB-LON
-        const pabLat = data.map(entry => entry.pabLat); // PAB-LAT
-        const graphName = body + "_graph";
+        //console.log(dataits); // Log the data from the second fetch
 
-        getIcon(body);
-
-
-        // Call drawElevationGraph for a specific SVG element
-        drawElevationGraph(times, elevation, graphName); // Change ID as needed
+        const graphName = `${body}_graph`;
+        drawElevationGraph(datajpl.time, datajpl.azimuth, graphName);
 
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -119,12 +183,146 @@ async function fetchData(body) {
 }
 
 
+function getValuesJpl(data) {
+    let lines = data.split('\n'); // Split data into lines
+    let time = [];
+    let azimuth = [];
+    let elevation = [];
+    let magnitude = [];
+    let illumination = [];
+    let constellation = [];
+    let phi = [];
+    let pabLon = [];
+    let pabLat = [];
+
+    lines.forEach(line => {
+        let values = line.trim().split(/\s+/); // Split by whitespace and trim
+
+        if (values.length > 11) { // Ensure there are enough values
+            time.push(values[1]); // Assuming time is at index 1
+            azimuth.push(parseFloat(values[3])); // Convert to float
+            elevation.push(parseFloat(values[4]));
+            magnitude.push(parseFloat(values[5]));
+            illumination.push(parseFloat(values[7]));
+            constellation.push(parseFloat(values[8]));
+            phi.push(values[9]); // String value
+            pabLon.push(parseFloat(values[10]));
+            pabLat.push(parseFloat(values[11]));
+        }
+    });
+
+    return {
+        time,
+        azimuth,
+        elevation,
+        magnitude,
+        illumination,
+        constellation,
+        phi,
+        pabLon,
+        pabLat
+    };
+}
+
+function extractTextBetweenMarkersJPL(data) {
+    const startMarker = "$$SOE";
+    const endMarker = "$$EOE";
+
+    const startIndex = data.indexOf(startMarker);
+    const endIndex = data.indexOf(endMarker);
+
+    if (startIndex === -1 || endIndex === -1 || startIndex >= endIndex) {
+        return null; // Return null if markers are not found or in the wrong order
+    }
+
+    return data.substring(startIndex + startMarker.length, endIndex).trim();
+}
+
+function getValuesITS(data) {
+    // Split the data into lines
+    const lines = data.trim().split('\n');
+
+    // Initialize arrays for Rise, Culm, Set, and Observable
+    const rise = [];
+    const culm = [];
+    const set = [];
+    const observable = [];
+
+    // Loop through each line (skipping the header)
+    for (let i = 2; i < lines.length; i++) {
+        const values = lines[i].replace(/"/g, '').split(','); // Remove quotes and split by comma
+
+        // Extract the relevant values
+        rise.push(values[11]); // Rise time
+        culm.push(values[12]); // Culmination time
+        set.push(values[13]); // Set time
+        observable.push(values[15]); // Observable time
+    };
+    return {
+        rise,
+        culm,
+        set,
+        observable
+    };
+}
+
 // Function to draw the SVG graph
 // Function to draw the graph using D3.js
-function drawElevationGraph(times, elevation, graphName) {
-    const parseTime = d3.timeParse("%H:%M");
-    const timeData = times.map(time => parseTime(time));
+// function drawElevationGraph(times, elevation, graphName) {
+//     const parseTime = d3.timeParse("%H:%M");
+//     const timeData = times.map(time => parseTime(time));
+//     console.log('Parsed Time Data:', timeData);
+//     const margin = { top: 20, right: 30, bottom: 30, left: 40 };
 
+//     // Create an SVG container
+//     const svg = d3.select(`#${graphName}`);
+
+//     // Function to render the graph
+//     function render() {
+//         const width = parseInt(svg.style("width")) - margin.left - margin.right;
+//         const height = parseInt(svg.style("height")) - margin.top - margin.bottom;
+
+//         svg.selectAll("*").remove(); // Clear previous content
+
+//         const g = svg.append("g")
+//             .attr("transform", `translate(${margin.left},${margin.top})`);
+
+//         const xScale = d3.scaleTime()
+//             .domain(d3.extent(timeData))
+//             .range([0, width]);
+
+//         const yScale = d3.scaleLinear()
+//             .domain([d3.min(elevation), d3.max(elevation)])
+//             .range([height, 0]);
+
+//         const line = d3.line()
+//             .x((d, i) => xScale(timeData[i]))
+//             .y(d => yScale(d));
+
+//         g.append("path")
+//             .datum(elevation)
+//             .attr("class", "line")
+//             .attr("d", line)
+//             .style("fill", "none")
+//             .style("stroke", "blue")
+//             .style("stroke-width", 2);
+
+//         g.append("g")
+//             .attr("class", "x-axis")
+//             .attr("transform", `translate(0,${height})`)
+//             .call(d3.axisBottom(xScale).ticks(5));
+
+//         g.append("g")
+//             .attr("class", "y-axis")
+//             .call(d3.axisLeft(yScale));
+//     }
+
+//     render(); // Initial render
+
+//     // Listen for window resize
+//     window.addEventListener("resize", render);
+// }
+function drawElevationGraph(times, elevation, graphName) {
     const margin = { top: 20, right: 30, bottom: 30, left: 40 };
 
     // Create an SVG container
@@ -140,8 +338,9 @@ function drawElevationGraph(times, elevation, graphName) {
         const g = svg.append("g")
             .attr("transform", `translate(${margin.left},${margin.top})`);
 
-        const xScale = d3.scaleTime()
-            .domain(d3.extent(timeData))
+        // Use scalePoint for categorical x-axis
+        const xScale = d3.scalePoint()
+            .domain(times) // Use time strings directly
             .range([0, width]);
 
         const yScale = d3.scaleLinear()
@@ -149,7 +348,7 @@ function drawElevationGraph(times, elevation, graphName) {
             .range([height, 0]);
 
         const line = d3.line()
-            .x((d, i) => xScale(timeData[i]))
+            .x((d, i) => xScale(times[i])) // Use time strings for x position
             .y(d => yScale(d));
 
         g.append("path")
@@ -163,7 +362,7 @@ function drawElevationGraph(times, elevation, graphName) {
         g.append("g")
             .attr("class", "x-axis")
             .attr("transform", `translate(0,${height})`)
-            .call(d3.axisBottom(xScale).ticks(5));
+            .call(d3.axisBottom(xScale).ticks(times.length)); // Adjust ticks as needed
 
         g.append("g")
             .attr("class", "y-axis")
@@ -175,7 +374,6 @@ function drawElevationGraph(times, elevation, graphName) {
     // Listen for window resize
     window.addEventListener("resize", render);
 }
-
 
 
 function listAllIds() {
@@ -207,7 +405,7 @@ function isD3Loaded() {
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM fully loaded and parsed");
     setTimeout(() => {
-        fetchData("venus");
+        fetchData("jpl", "venus");
     }, 100); // Delay of 100 milliseconds
     // Usage
     if (isD3Loaded()) {
