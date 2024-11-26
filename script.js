@@ -94,7 +94,7 @@ function constructApiUrlJpl(rise, set, body) {
     const stopTimeUTC = new Date(stopTimeDate.getTime() - (offset * 60 * 60 * 1000));
     const stopTime = stopTimeUTC.toISOString();
 
-    const params = `format=text&COMMAND='${id}'&OBJ_DATA=YES&MAKE_EPHEM=YES&EPHEM_TYPE=OBSERVER&CENTER=coord@399&SITE_COORD='286.42,45.5017,0'&START_TIME='${encodeURIComponent(startUTC.toISOString())}'&STOP_TIME='${encodeURIComponent(stopTime)}'&STEP_SIZE='20m'&QUANTITIES='4,9,10,29,43,48'&TIME_ZONE=-5`;
+    const params = `format=text&COMMAND='${id}'&OBJ_DATA=YES&MAKE_EPHEM=YES&EPHEM_TYPE=OBSERVER&CENTER=coord@399&SITE_COORD='286.42,45.5017,0'&START_TIME='${encodeURIComponent(startUTC.toISOString())}'&STOP_TIME='${encodeURIComponent(stopTime)}'&STEP_SIZE='20m'&QUANTITIES='4,9,10,29,43'&TIME_ZONE=-5`;
 
     return params;
 }
@@ -152,12 +152,13 @@ async function fetchData(body) {
     // Prepare the first fetch
     baseUrl = 'https://in-the-sky.org/ephemeris.php';
     params = constructApiUrlIST(body);
+    console.log (`${baseUrl}?${params}`);
 
     try {
         let requestString = `https://astroinfo:8890/proxy.php?baseUrl=${encodeURIComponent(baseUrl)}&params=${encodeURIComponent(params)}`
-        console.log(requestString);
+        //console.log(requestString);
         const itsResponse = await fetch(requestString);
-        console.log()
+        //console.log()
         if (!itsResponse.ok) {
             throw new Error('Network response was not ok for https://in-the-sky.org/ephemeris.php');
         }
@@ -173,7 +174,7 @@ async function fetchData(body) {
         // Prepare the second fetch using data from the first fetch
         baseUrl = 'https://ssd.jpl.nasa.gov/api/horizons.api';
         params = constructApiUrlJpl(startTime, stopTime, body);
-
+        console.log (`${baseUrl}?${params}`);
         requestString = `https://astroinfo:8890/proxy.php?baseUrl=${encodeURIComponent(baseUrl)}&params=${encodeURIComponent(params)}`;
         //console.log(requestString);
         const jplResponse = await fetch(requestString);
@@ -181,12 +182,12 @@ async function fetchData(body) {
             throw new Error('Network response was not ok for https://ssd.jpl.nasa.gov/api/horizons.api');
         }
         const jplData = await jplResponse.text();
-        console.log(jplData);
+        //console.log(jplData);
 
 
         const datajpl = getValuesJpl(extractTextBetweenMarkersJPL(jplData));
-        //console.log(datajpl);        
-        console.log(datajpl.azimuth);
+        //console.log(datajpl.azimuth);        
+        //console.log(datajpl.elevation);
         const graphName = `${body}_graph`;
         drawElevationGraph(datajpl.elevation, datajpl.azimuth, graphName);
 
@@ -210,16 +211,31 @@ function getValuesJpl(data) {
     lines.forEach(line => {
         let values = line.trim().split(/\s+/); // Split by whitespace and trim
 
-        if (values.length > 11) { // Ensure there are enough values
-            time.push(values[1]); // Assuming time is at index 1
-            azimuth.push(parseFloat(values[3])); // Convert to float
+        // Log the values to see how they are being split
+        //console.log('Values:', values);
+
+        if (values.length === 12) { // Handle lines with 12 values
+            time.push(values[1]);
+            azimuth.push(parseFloat(values[3]));
             elevation.push(parseFloat(values[4]));
             magnitude.push(parseFloat(values[5]));
             illumination.push(parseFloat(values[7]));
-            constellation.push(parseFloat(values[8]));
-            phi.push(values[9]); // String value
+            constellation.push(values[8]);
+            phi.push(values[9]);
             pabLon.push(parseFloat(values[10]));
             pabLat.push(parseFloat(values[11]));
+        } else if (values.length === 11) { // Handle lines with 11 values
+            time.push(values[1]);
+            azimuth.push(parseFloat(values[2]));
+            elevation.push(parseFloat(values[3]));
+            magnitude.push(parseFloat(values[4]));
+            illumination.push(parseFloat(values[6]));
+            constellation.push(values[7]);
+            phi.push(values[8]);
+            pabLon.push(parseFloat(values[9]));
+            pabLat.push(parseFloat(values[10]));
+        } else {
+            console.warn('Line skipped due to unexpected number of values:', line);
         }
     });
 
@@ -321,9 +337,9 @@ function drawElevationGraph(elevation, azimuth, graphName) {
     svg += `<polyline points="${scaledAzimuth.map((az, index) => `${az},${scaledElevation[index]}`).join(' ')}" style="fill:none;stroke:black;stroke-width:2"/>`;
 
     // Add x-axis
-    svg += `<line x1="0" y1="${svgHeight}" x2="${svgWidth}" y2="${svgHeight}" stroke="black" stroke-width="2"/>`;
+   // svg += `<line x1="0" y1="${svgHeight}" x2="${svgWidth}" y2="${svgHeight}" stroke="black" stroke-width="0"/>`;
     // Add y-axis
-    svg += `<line x1="0" y1="0" x2="0" y2="${svgHeight}" stroke="black" stroke-width="2"/>`;
+    //svg += `<line x1="0" y1="0" x2="0" y2="${svgHeight}" stroke="black" stroke-width="0"/>`;
 
     // Add x-axis labels for first, middle, and last azimuth values
     const labels = [
