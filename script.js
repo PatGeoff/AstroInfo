@@ -15,6 +15,17 @@ const bodies = {
     neptune: 899
 };
 
+const azimuthLabels = [
+    { range: [0, 22.5], label: "Nord" },
+    { range: [22.5, 67.5], label: "Nord-Est" },
+    { range: [67.5, 112.5], label: "Est" },
+    { range: [112.5, 157.5], label: "Sud-Est" },
+    { range: [157.5, 202.5], label: "Sud" },
+    { range: [202.5, 247.5], label: "Sud-Ouest" },
+    { range: [247.5, 292.5], label: "Ouest" },
+    { range: [292.5, 337.5], label: "Nord-Ouest" },
+    { range: [337.5, 360], label: "Nord" } // Wrap around to North
+];
 
 function getTimeFrame() {
     const today = new Date();
@@ -22,28 +33,74 @@ function getTimeFrame() {
     // Set start time to today at midnight
     const startTime = new Date(today.setHours(0, 0, 0, 0)).toISOString(); // Today at 00:00:00
     // Set stop time to tomorrow at noon
-    const stopTime = new Date(today.setDate(today.getDate() + 1)).setHours(12, 0, 0, 0); // Tomorrow at 12:00:00
+    const stopTime = new Date(today.setDate(today.getDate() + 1)).setHours(6, 0, 0, 0); // Tomorrow at 18:00:00
 
     return {
         startTime: new Date(startTime).toISOString(),
         stopTime: new Date(stopTime).toISOString()
     };
 }
+function createDateWithTime(set) {
+    // Get today's date
+    const today = new Date();
 
+    // Split the "set" time into hours and minutes
+    const [hours, minutes] = set[0].split(':').map(Number);
 
-// //Function to construct the API URL with user input without planet
-// function constructApiUrl(startTime, stopTime) {
-//     const baseUrl = "https://astroinfo:8890/proxy.php?format=text&COMMAND='499'&OBJ_DATA=YES&MAKE_EPHEM=YES&EPHEM_TYPE=OBSERVER&CENTER=coord@399&SITE_COORD='45.5017,-73.5673,0'";  // Mars
-//     return `${baseUrl}&START_TIME='${encodeURIComponent(startTime)}'&STOP_TIME='${encodeURIComponent(stopTime)}'&STEP_SIZE='10m'&QUANTITIES='4,9,13,14,20,43'&TIME_ZONE=-5`;
-// }
+    // Create a new date object with today's date
+    const date = new Date(today.getFullYear(), today.getMonth(), today.getDate(), hours, minutes);
 
-function constructApiUrlJpl(startTime, stopTime, body) {
+    // Check if the time is before noon
+    if (hours < 12) {
+        // If before noon, set the date to tomorrow
+        date.setDate(date.getDate() + 1);
+    }
+    console.log(date);
+    return date;
+}
+
+function constructApiUrlJpl(rise, set, body) {
+    // Define the planet number
     const id = bodies[body];
-    const params = `format=text&COMMAND='${id}'&OBJ_DATA=YES&MAKE_EPHEM=YES&EPHEM_TYPE=OBSERVER&CENTER=coord@399&SITE_COORD='45.5017,-73.5673,0'&START_TIME='${encodeURIComponent(startTime)}'&STOP_TIME='${encodeURIComponent(stopTime)}'&STEP_SIZE='1h'&QUANTITIES='4,9,10,29,43,48'&TIME_ZONE=-5`;
+
+    const today = new Date();
+
+    // Split the rise time into hours and minutes
+    const [hours, minutes] = rise[0].split(':').map(Number);
+
+    // Set start time to today at the specified time
+    const start = new Date(today); // Clone today's date
+    start.setHours(hours, minutes, 0, 0); // Set hours and minutes
+
+    console.log('Start Time:', start);
+
+    // Determine if Daylight Saving Time is in effect
+    const isDST = (start.getTimezoneOffset() < today.getTimezoneOffset());
+
+    // Adjust for UTC
+    const offset = isDST ? 4 : 5; // Use 4 for EDT, 5 for EST
+
+    // Adjust start time for UTC
+    const startUTC = new Date(start.getTime() - (offset * 60 * 60 * 1000));
+
+    const stopTimeDate = createDateWithTime(set);
+    console.log('Stop Time Date:', stopTimeDate);
+
+    if (!(stopTimeDate instanceof Date) || isNaN(stopTimeDate.getTime())) {
+        throw new Error(`Invalid stop time generated from set: ${set}`);
+    }
+
+    // Adjust stop time for UTC
+    const stopTimeUTC = new Date(stopTimeDate.getTime() - (offset * 60 * 60 * 1000));
+    const stopTime = stopTimeUTC.toISOString();
+
+    const params = `format=text&COMMAND='${id}'&OBJ_DATA=YES&MAKE_EPHEM=YES&EPHEM_TYPE=OBSERVER&CENTER=coord@399&SITE_COORD='286.42,45.5017,0'&START_TIME='${encodeURIComponent(startUTC.toISOString())}'&STOP_TIME='${encodeURIComponent(stopTime)}'&STEP_SIZE='20m'&QUANTITIES='4,9,10,29,43,48'&TIME_ZONE=-5`;
+
     return params;
 }
 
-function constructApiUrlIST(startTime, stopTime, body) {
+
+function constructApiUrlIST(body) {
     // Get today's date
     const today = new Date();
 
@@ -55,15 +112,6 @@ function constructApiUrlIST(startTime, stopTime, body) {
     const params = `start$=${day}&startmonth=${month}&startyear=${year}&ird=1&irs=1&ima=1&ipm=0&iph=0&ias=0&iss=0&iob=1&ide=0&ids=0&interval=4&tz=0&format=csv&rows=1&objtype=1&objpl=${body}&objtxt=${body}&town=6077243`;
     return params;
 }
-
-// function constructApiUrl(startTime, stopTime, body) {
-//     const id = bodies[body];
-//     console.log(id);
-//     const baseUrl = `https://astroinfo:8890/proxy.php?format=text&COMMAND='${id}'&OBJ_DATA=YES&MAKE_EPHEM=YES&EPHEM_TYPE=OBSERVER&CENTER=coord@399&SITE_COORD='45.5017,-73.5673,0'`;
-//     const apiUrl = `${baseUrl}&START_TIME='${encodeURIComponent(startTime)}'&STOP_TIME='${encodeURIComponent(stopTime)}'&STEP_SIZE='1h'&QUANTITIES='4,9,10,29,43,48'&TIME_ZONE=-5`;
-//     console.log('Constructed API URL:', apiUrl); // Log the URL before returning it    
-//     return apiUrl;
-// }
 
 async function getIcon(body) {
     const bodye = body.trim();
@@ -97,91 +145,55 @@ async function getIcon(body) {
     };
 }
 
+async function fetchData(body) {
 
-
-// // Function to fetch data from the API
-// async function fetchData(body) {
-//     const { startTime, stopTime } = getTimeFrame();
-//     const apiUrl = constructApiUrl(startTime, stopTime, body);
-
-//     try {
-//         const response = await fetch(apiUrl);
-//         if (!response.ok) {
-//             throw new Error(`HTTP error! Status: ${response.status}`);
-//         }
-
-//         const textData = await response.text();
-//         data = JSON.parse(textData); // Parse the JSON data
-//         console.log(data);
-//         const times = data.map(entry => entry.time); // Extract times
-//         const azimuth = data.map(entry => entry.azimuth); // Azimuth
-//         const elevation = data.map(entry => entry.elevation); // Elevation
-//         const magnitude = data.map(entry => entry.magnitude); // Magnitude
-//         const illumination = data.map(entry => entry.illumination); // Illumination
-//         const constellation = data.map(entry => entry.constellation); // Constellation
-//         const phi = data.map(entry => entry.phi); // Phi
-//         const pabLon = data.map(entry => entry.pabLon); // PAB-LON
-//         const pabLat = data.map(entry => entry.pabLat); // PAB-LAT
-//         const graphName = body + "_graph";
-
-//         getIcon(body);
-
-
-//         // Call drawElevationGraph for a specific SVG element
-//         drawElevationGraph(times, elevation, graphName); // Change ID as needed
-
-//     } catch (error) {
-//         console.error('Error fetching data:', error);
-//     }
-// }
-
-async function fetchData(server, body) {
-    const { startTime, stopTime } = getTimeFrame();
     let baseUrl, params = "";
 
     // Prepare the first fetch
-    baseUrl = 'https://ssd.jpl.nasa.gov/api/horizons.api';
-    params = constructApiUrlJpl(startTime, stopTime, body);
-    const jplFetch = fetch(`https://astroinfo:8890/proxy.php?baseUrl=${encodeURIComponent(baseUrl)}&params=${encodeURIComponent(params)}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok for https://ssd.jpl.nasa.gov/api/horizons.api');
-            }
-            return response.text(); // Use .text() to handle plain text
-        })
-        .then(data => {
-            data = extractTextBetweenMarkersJPL(data);
-            return getValuesJpl(data);
-        });
-
-    // Prepare the second fetch
     baseUrl = 'https://in-the-sky.org/ephemeris.php';
-    params = constructApiUrlIST(startTime, stopTime, body);
-    const itsFetch = fetch(`https://astroinfo:8890/proxy.php?baseUrl=${encodeURIComponent(baseUrl)}&params=${encodeURIComponent(params)}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok for https://in-the-sky.org/ephemeris.php');
-            }
-            return response.text();
-        })
-        .then(data => {
-            return getValuesITS(data);
-        });
+    params = constructApiUrlIST(body);
 
     try {
-        // Wait for both fetches to complete
-        const [datajpl, dataits] = await Promise.all([jplFetch, itsFetch]);
+        let requestString = `https://astroinfo:8890/proxy.php?baseUrl=${encodeURIComponent(baseUrl)}&params=${encodeURIComponent(params)}`
+        console.log(requestString);
+        const itsResponse = await fetch(requestString);
+        console.log()
+        if (!itsResponse.ok) {
+            throw new Error('Network response was not ok for https://in-the-sky.org/ephemeris.php');
+        }
+        const itsData = await itsResponse.text();
+        //console.log(itsData);
 
-        //console.log(dataits); // Log the data from the second fetch
+        const dataits = getValuesITS(itsData);
 
+        startTime = dataits.rise;
+        stopTime = dataits.set;
+
+
+        // Prepare the second fetch using data from the first fetch
+        baseUrl = 'https://ssd.jpl.nasa.gov/api/horizons.api';
+        params = constructApiUrlJpl(startTime, stopTime, body);
+
+        requestString = `https://astroinfo:8890/proxy.php?baseUrl=${encodeURIComponent(baseUrl)}&params=${encodeURIComponent(params)}`;
+        //console.log(requestString);
+        const jplResponse = await fetch(requestString);
+        if (!jplResponse.ok) {
+            throw new Error('Network response was not ok for https://ssd.jpl.nasa.gov/api/horizons.api');
+        }
+        const jplData = await jplResponse.text();
+        console.log(jplData);
+
+
+        const datajpl = getValuesJpl(extractTextBetweenMarkersJPL(jplData));
+        //console.log(datajpl);        
+        console.log(datajpl.azimuth);
         const graphName = `${body}_graph`;
-        drawElevationGraph(datajpl.time, datajpl.azimuth, graphName);
+        drawElevationGraph(datajpl.elevation, datajpl.azimuth, graphName);
 
     } catch (error) {
         console.error('Error fetching data:', error);
     }
 }
-
 
 function getValuesJpl(data) {
     let lines = data.split('\n'); // Split data into lines
@@ -249,7 +261,7 @@ function getValuesITS(data) {
     const observable = [];
 
     // Loop through each line (skipping the header)
-    for (let i = 2; i < lines.length; i++) {
+    for (let i = 3; i < 4; i++) {
         const values = lines[i].replace(/"/g, '').split(','); // Remove quotes and split by comma
 
         // Extract the relevant values
@@ -266,115 +278,86 @@ function getValuesITS(data) {
     };
 }
 
-// Function to draw the SVG graph
-// Function to draw the graph using D3.js
-// function drawElevationGraph(times, elevation, graphName) {
-//     const parseTime = d3.timeParse("%H:%M");
-//     const timeData = times.map(time => parseTime(time));
-//     console.log('Parsed Time Data:', timeData);
-//     const margin = { top: 20, right: 30, bottom: 30, left: 40 };
-
-//     // Create an SVG container
-//     const svg = d3.select(`#${graphName}`);
-
-//     // Function to render the graph
-//     function render() {
-//         const width = parseInt(svg.style("width")) - margin.left - margin.right;
-//         const height = parseInt(svg.style("height")) - margin.top - margin.bottom;
-
-//         svg.selectAll("*").remove(); // Clear previous content
-
-//         const g = svg.append("g")
-//             .attr("transform", `translate(${margin.left},${margin.top})`);
-
-//         const xScale = d3.scaleTime()
-//             .domain(d3.extent(timeData))
-//             .range([0, width]);
-
-//         const yScale = d3.scaleLinear()
-//             .domain([d3.min(elevation), d3.max(elevation)])
-//             .range([height, 0]);
-
-//         const line = d3.line()
-//             .x((d, i) => xScale(timeData[i]))
-//             .y(d => yScale(d));
-
-//         g.append("path")
-//             .datum(elevation)
-//             .attr("class", "line")
-//             .attr("d", line)
-//             .style("fill", "none")
-//             .style("stroke", "blue")
-//             .style("stroke-width", 2);
-
-//         g.append("g")
-//             .attr("class", "x-axis")
-//             .attr("transform", `translate(0,${height})`)
-//             .call(d3.axisBottom(xScale).ticks(5));
-
-//         g.append("g")
-//             .attr("class", "y-axis")
-//             .call(d3.axisLeft(yScale));
-//     }
-
-//     render(); // Initial render
-
-//     // Listen for window resize
-//     window.addEventListener("resize", render);
-// }
-function drawElevationGraph(times, elevation, graphName) {
-    const margin = { top: 20, right: 30, bottom: 30, left: 40 };
-
-    // Create an SVG container
-    const svg = d3.select(`#${graphName}`);
-
-    // Function to render the graph
-    function render() {
-        const width = parseInt(svg.style("width")) - margin.left - margin.right;
-        const height = parseInt(svg.style("height")) - margin.top - margin.bottom;
-
-        svg.selectAll("*").remove(); // Clear previous content
-
-        const g = svg.append("g")
-            .attr("transform", `translate(${margin.left},${margin.top})`);
-
-        // Use scalePoint for categorical x-axis
-        const xScale = d3.scalePoint()
-            .domain(times) // Use time strings directly
-            .range([0, width]);
-
-        const yScale = d3.scaleLinear()
-            .domain([d3.min(elevation), d3.max(elevation)])
-            .range([height, 0]);
-
-        const line = d3.line()
-            .x((d, i) => xScale(times[i])) // Use time strings for x position
-            .y(d => yScale(d));
-
-        g.append("path")
-            .datum(elevation)
-            .attr("class", "line")
-            .attr("d", line)
-            .style("fill", "none")
-            .style("stroke", "blue")
-            .style("stroke-width", 2);
-
-        g.append("g")
-            .attr("class", "x-axis")
-            .attr("transform", `translate(0,${height})`)
-            .call(d3.axisBottom(xScale).ticks(times.length)); // Adjust ticks as needed
-
-        g.append("g")
-            .attr("class", "y-axis")
-            .call(d3.axisLeft(yScale));
+function getAzimuthLabel(azimuth) {
+    for (const { range, label } of azimuthLabels) {
+        if (azimuth >= range[0] && azimuth < range[1]) {
+            return label;
+        }
     }
-
-    render(); // Initial render
-
-    // Listen for window resize
-    window.addEventListener("resize", render);
+    return "Unknown"; // Fallback
 }
 
+function drawElevationGraph(elevation, azimuth, graphName) {
+    // Create data array with azimuth and elevation pairs
+    const data = azimuth.map((az, index) => {
+        return { azimuth: az, elevation: elevation[index] };
+    });
+
+    // Determine the SVG dimensions
+    const svgWidth = 1200;
+    const svgHeight = 600;
+
+    // Find the min and max elevation values
+    const maxElevation = Math.max(...elevation);
+    const minElevation = Math.min(...elevation);
+
+    // Scale the elevation values to fit the SVG height
+    const scaledElevation = elevation.map(elev => {
+        return svgHeight - ((elev - minElevation) / (maxElevation - minElevation)) * svgHeight;
+    });
+
+    // Number of values
+    const numValues = azimuth.length;
+
+    // Scale the azimuth values based on their index
+    const scaledAzimuth = azimuth.map((_, index) => {
+        return (index / (numValues - 1)) * svgWidth; // Scale to fit the SVG width
+    });
+
+    // Create SVG elements
+    let svg = `<svg width="${svgWidth}" height="${svgHeight}">`;
+
+    // Draw the polyline for the elevation graph
+    svg += `<polyline points="${scaledAzimuth.map((az, index) => `${az},${scaledElevation[index]}`).join(' ')}" style="fill:none;stroke:black;stroke-width:2"/>`;
+
+    // Add x-axis
+    svg += `<line x1="0" y1="${svgHeight}" x2="${svgWidth}" y2="${svgHeight}" stroke="black" stroke-width="2"/>`;
+    // Add y-axis
+    svg += `<line x1="0" y1="0" x2="0" y2="${svgHeight}" stroke="black" stroke-width="2"/>`;
+
+    // Add x-axis labels for first, middle, and last azimuth values
+    const labels = [
+        { index: 0, label: getAzimuthLabel(azimuth[0]) },
+        { index: Math.floor((numValues - 1) / 2), label: getAzimuthLabel(azimuth[Math.floor((numValues - 1) / 2)]) },
+        { index: numValues - 1, label: getAzimuthLabel(azimuth[numValues - 1]) }
+    ];
+
+    labels.forEach(({ index, label }) => {
+        let x = scaledAzimuth[index];
+
+        // Adjust for left and right labels
+        if (index === 0) {
+            x += 60; // Add padding for the left label
+        } else if (index === numValues - 1) {
+            x -= 60; // Subtract padding for the right label
+        }
+
+        svg += `<text x="${x}" y="${svgHeight - 20}" text-anchor="middle">${label}</text>`;
+    });
+
+    // Add y-axis labels
+    const yLabelInterval = (maxElevation - minElevation) / 5; // Adjust for more or fewer labels
+    for (let i = 0; i <= 5; i++) {
+        const yValue = minElevation + i * yLabelInterval;
+        const yPos = svgHeight - ((yValue - minElevation) / (maxElevation - minElevation)) * svgHeight;
+        svg += `<text x="-15" y="${yPos}" font-size="10" text-anchor="end">${yValue.toFixed(1)}</text>`;
+    }
+
+    svg += `</svg>`;
+
+    // Insert SVG into the DOM
+    document.getElementById(graphName).innerHTML = svg;
+}
 
 function listAllIds() {
     const allElements = document.querySelectorAll('*'); // Select all elements
@@ -394,23 +377,13 @@ document.addEventListener('DOMContentLoaded', () => {
     listAllIds();
 });
 
-function isD3Loaded() {
-    return typeof d3 !== 'undefined';
-}
-
-
-
 
 // Fetch data when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM fully loaded and parsed");
     setTimeout(() => {
-        fetchData("jpl", "venus");
+        fetchData("venus");
+        getIcon("venus");
     }, 100); // Delay of 100 milliseconds
-    // Usage
-    if (isD3Loaded()) {
-        console.log("D3.js is loaded!");
-    } else {
-        console.log("D3.js is not loaded.");
-    }
+    // Usage   
 });

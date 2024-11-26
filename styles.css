@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: #f4f4f4;
+    background-color: white;
 }
 
 .widget-container {
@@ -15,11 +15,7 @@ body {
     justify-content: space-between; /* Adjusts spacing between widgets */
 }
 
-.widget {
-    width: 30%; /* Adjust based on your layout */
-    height: calc(30% * 0.75); /* 4:3 aspect ratio */
-    background-color: lightblue; /* Just for visibility */
-}
+
 
 .grid-container {
     display: grid;
@@ -28,7 +24,7 @@ body {
 }
 
 .cell {
-    background: #e9ecef;
+    background: #ffffff;
     border-radius: 4px;
     padding: 10px;
     text-align: center;

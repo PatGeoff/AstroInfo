@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://d3js.org/d3.v7.min.js"></script>
     <title>Responsive Widgets with Graphs</title>
 </head>
+
 <body>
     <div class="widget-container">
         <div class="widget" id="widget1">
@@ -25,55 +26,18 @@
                 <div class="cell text">
                     <p>More text about celestial bodies.</p>
                 </div>
-                <div class="cell graph" style="grid-column: span 4; grid-row: span 2;">
-                    <svg class="elevationGraph" id="venus_graph" viewBox="0 0 500 300"></svg>
-                </div>
+                <!-- Move the canvas into the graph cell -->
+                
+            </div>
+            <div class="cell graph" width="1200" height="600">
+                <div id="venus_graph" width="1200" height="600">  </div>
             </div>
         </div>
-        <div class="widget" id="widget2">
-            <div class="grid-container">
-                <div class="cell planet">
-                    <img src="planet-icon.png" alt="Planet" class="icon">
-                    <p>Planet Name</p>
-                </div>
-                <div class="cell moon">
-                    <img src="moon-icon.png" alt="Moon" class="icon">
-                    <p>Moon Name</p>
-                </div>
-                <div class="cell text">
-                    <p>Some interesting text about space.</p>
-                </div>
-                <div class="cell text">
-                    <p>More text about celestial bodies.</p>
-                </div>
-                <div class="cell graph" style="grid-column: span 4; grid-row: span 2;">
-                    <svg class="elevationGraph" id="elevationGraph2" viewBox="0 0 500 300"></svg>
-                </div>
-            </div>
-        </div>
-        <div class="widget" id="widget3">
-            <div class="grid-container">
-                <div class="cell planet">
-                    <img src="planet-icon.png" alt="Planet" class="icon">
-                    <p>Planet Name</p>
-                </div>
-                <div class="cell moon">
-                    <img src="moon-icon.png" alt="Moon" class="icon">
-                    <p>Moon Name</p>
-                </div>
-                <div class="cell text">
-                    <p>Some interesting text about space.</p>
-                </div>
-                <div class="cell text">
-                    <p>More text about celestial bodies.</p>
-                </div>
-                <div class="cell graph" style="grid-column: span 4; grid-row: span 2;">
-                    <svg class="elevationGraph" id="elevationGraph3" viewBox="0 0 500 300"></svg>
-                </div>
-            </div>
-        </div>
-    </div>
 
+       
+
+    <!-- Load script.js after Chart.js is loaded -->
     <script src="script.js"></script>
 </body>
+
 </html>
