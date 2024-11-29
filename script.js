@@ -2,6 +2,10 @@
 
 let data;
 
+// Global date variable for testing
+const testDate = new Date(2024, 11, 28); // Example: December 25, 2024 (months are zero-indexed)
+
+
 const bodies = {
     sun: 10,
     moon: 301,
@@ -28,15 +32,13 @@ const azimuthLabels = [
 ];
 
 
+// Function to create a date with a specific time
 function createDateWithTime(set) {
-    // Get today's date
-    const today = new Date();
-
     // Split the "set" time into hours and minutes
     const [hours, minutes] = set[0].split(':').map(Number);
 
-    // Create a new date object with today's date
-    const date = new Date(today.getFullYear(), today.getMonth(), today.getDate(), hours, minutes);
+    // Create a new date object with the global test date
+    const date = new Date(testDate.getFullYear(), testDate.getMonth(), testDate.getDate(), hours, minutes);
 
     // Check if the time is before noon
     if (hours < 12) {
@@ -47,23 +49,20 @@ function createDateWithTime(set) {
     return date;
 }
 
+// Function to construct API URL for JPL
 function constructApiUrlJpl(rise, set, body) {
     // Define the planet number
     const id = bodies[body];
 
-    const today = new Date();
-
     // Split the rise time into hours and minutes
     const [hours, minutes] = rise[0].split(':').map(Number);
 
-    // Set start time to today at the specified time
-    const start = new Date(today); // Clone today's date
+    // Set start time to the global test date at the specified time
+    const start = new Date(testDate); // Clone the global test date
     start.setHours(hours, minutes, 0, 0); // Set hours and minutes
 
-    //console.log('Start Time:', start);
-
     // Determine if Daylight Saving Time is in effect
-    const isDST = (start.getTimezoneOffset() < today.getTimezoneOffset());
+    const isDST = (start.getTimezoneOffset() < testDate.getTimezoneOffset());
 
     // Adjust for UTC
     const offset = isDST ? 4 : 5; // Use 4 for EDT, 5 for EST
@@ -72,7 +71,7 @@ function constructApiUrlJpl(rise, set, body) {
     const startUTC = new Date(start.getTime() - (offset * 60 * 60 * 1000));
 
     const stopTimeDate = createDateWithTime(set);
-    //onsole.log('Stop Time Date:', stopTimeDate);
+    //console.log('Stop Time Date:', stopTimeDate);
 
     if (!(stopTimeDate instanceof Date) || isNaN(stopTimeDate.getTime())) {
         throw new Error(`Invalid stop time generated from set: ${set}`);
@@ -82,19 +81,17 @@ function constructApiUrlJpl(rise, set, body) {
     const stopTimeUTC = new Date(stopTimeDate.getTime() - (offset * 60 * 60 * 1000));
     const stopTime = stopTimeUTC.toISOString();
 
-    const params = `format=text&COMMAND='${id}'&OBJ_DATA=YES&MAKE_EPHEM=YES&EPHEM_TYPE=OBSERVER&CENTER=coord@399&SITE_COORD='286.42,45.5017,0'&START_TIME='${encodeURIComponent(startUTC.toISOString())}'&STOP_TIME='${encodeURIComponent(stopTime)}'&STEP_SIZE='20m'&QUANTITIES='4,9,10,29,43'&TIME_ZONE=-5`;
+    const params = `format=text&COMMAND='${id}'&OBJ_DATA=YES&MAKE_EPHEM=YES&EPHEM_TYPE=OBSERVER&CENTER=coord@399&SITE_COORD='286.42,45.5017,0'&START_TIME='${encodeURIComponent(startUTC.toISOString())}'&STOP_TIME='${encodeURIComponent(stopTime)}'&STEP_SIZE='10m'&QUANTITIES='4,9,10,29,43'&TIME_ZONE=-5`;
 
     return params;
 }
 
+// Function to construct API URL for IST
 function constructApiUrlIST(body) {
-    // Get today's date
-    const today = new Date();
-
-    // Extract day, month, and year
-    const day = today.getDate(); // Day of the month (1-31)
-    const month = today.getMonth() + 1; // Month (0-11, so add 1)
-    const year = today.getFullYear(); // Full year (e.g., 2024)
+    // Extract day, month, and year from the global test date
+    const day = testDate.getDate(); // Day of the month (1-31)
+    const month = testDate.getMonth() + 1; // Month (0-11, so add 1)
+    const year = testDate.getFullYear(); // Full year (e.g., 2024)
 
     const params = `start$=${day}&startmonth=${month}&startyear=${year}&ird=1&irs=1&ima=1&ipm=0&iph=0&ias=0&iss=0&iob=1&ide=0&ids=0&interval=4&tz=0&format=csv&rows=1&objtype=1&objpl=${body}&objtxt=${body}&town=6077243`;
     return params;
@@ -154,9 +151,11 @@ async function fetchData(body) {
 
         const dataits = getValuesITS(itsData);
 
+        // Rise and Set time of the planet, not to confuse with visibility. Doesn't mean it is visible because of daylight. 
         startTime = dataits.rise;
         stopTime = dataits.set;
-
+        console.log(startTime);
+        console.log(stopTime);
 
         // Prepare the second fetch using data from the first fetch
         baseUrl = 'https://ssd.jpl.nasa.gov/api/horizons.api';
@@ -169,21 +168,21 @@ async function fetchData(body) {
             throw new Error('Network response was not ok for https://ssd.jpl.nasa.gov/api/horizons.api');
         }
         const jplData = await jplResponse.text();
-        //console.log(jplData);
 
+        // Get the values between the Rise and Set times from IPS query.
+        const datajpl = getValuesJpl(extractTextBetweenMarkersJPL(jplData), startTime[0], stopTime[0], dataits.observable);
 
-        const datajpl = getValuesJpl(extractTextBetweenMarkersJPL(jplData), startTime[0], stopTime[0]);
-        console.log(datajpl.startVisAzimuth);
-        console.log(datajpl.endVisAzimuth);
         const graphName = `${body}_graph`;
-        drawElevationGraph(datajpl.elevation, datajpl.azimuth, datajpl.startVisAzimuth, datajpl.endVisAzimuth, graphName);
+        drawElevationGraph(datajpl.elevation, datajpl.azimuth, datajpl.visibilityStartIndex, datajpl.visibilityEndIndex, datajpl.visibility, graphName);
 
     } catch (error) {
         console.error('Error fetching data:', error);
     }
 }
 
-function getValuesJpl(data, startVisTime, endVisTime) {
+function getValuesJpl(data, startVisTime, endVisTime, observable) {
+
+    console.log(`startVisTime = ${startVisTime} and endVisTime = ${endVisTime}`);
 
     // Function to extract the hour part of the time string
     const getHour = time => parseInt(time.split(':')[0].trim(), 10);
@@ -202,8 +201,9 @@ function getValuesJpl(data, startVisTime, endVisTime) {
     let phi = [];
     let pabLon = [];
     let pabLat = [];
-    let startVisAzimuth = "";
-    let endVisAzimuth = "";
+    let visibilityStartIndex = null;
+    let visibilityEndIndex = null;
+    let visibility = true;
 
     lines.forEach(line => {
         let values = line.trim().split(/\s+/); // Split by whitespace and trim
@@ -221,8 +221,6 @@ function getValuesJpl(data, startVisTime, endVisTime) {
             phi.push(values[9]);
             pabLon.push(parseFloat(values[10]));
             pabLat.push(parseFloat(values[11]));
-            startVisAzimuth = getHour(values[1]) === startHour ? values[3] : startVisAzimuth;
-            endVisAzimuth = getHour(values[1]) === endHour ? values[3] : endVisAzimuth;
         } else if (values.length === 11) { // Handle lines with 11 values
             time.push(values[1]);
             azimuth.push(parseFloat(values[2]));
@@ -233,19 +231,50 @@ function getValuesJpl(data, startVisTime, endVisTime) {
             phi.push(values[8]);
             pabLon.push(parseFloat(values[9]));
             pabLat.push(parseFloat(values[10]));
-            startVisAzimuth = getHour(values[1]) === startHour ? values[2] : startVisAzimuth;
-            endVisAzimuth = getHour(values[1]) === endHour ? values[2] : endVisAzimuth;
         } else {
             console.warn('Line skipped due to unexpected number of values:', line);
         }
 
     });
 
-    // Remove the last digit if it is zero
-    const removeTrailingZero = value => value.endsWith('0') ? value.slice(0, -1) : value;
+    function timeToMinutes(time) {
+        const [hours, minutes] = time.split(':').map(Number);
+        return hours * 60 + minutes;
+    }
 
-    startVisAzimuth = removeTrailingZero(startVisAzimuth);
-    endVisAzimuth = removeTrailingZero(endVisAzimuth);
+    function findClosestIndex(array, target) {
+        const targetMinutes = timeToMinutes(target);
+        let closestIndex = 0;
+        let minDiff = Math.abs(targetMinutes - timeToMinutes(array[0]));
+
+        array.forEach((value, index) => {
+            const diff = Math.abs(targetMinutes - timeToMinutes(value));
+            if (diff < minDiff) {
+                closestIndex = index;
+                minDiff = diff;
+            }
+        });
+
+        return closestIndex;
+    }
+
+    if (data.visibility !== "Not observable") {
+        visibility = true;
+        //console.log(observable);
+        const [start, end] = observable[0].split("until").map(str => str.trim());
+        visibilityStartIndex = findClosestIndex(time, start);
+        visibilityEndIndex = findClosestIndex(time, end);
+        console.log(`the value from In-The-Sky is ${start} and the closest value from JPL is  ${time[visibilityStartIndex]}`);
+        console.log(`the value from In-The-Sky is ${end} and the closest value from JPL is  ${time[visibilityEndIndex]}`);
+    }
+    else {
+        visibility = false;
+    }
+
+
+    console.log(`is visible: ${visibility}`);
+    //console.log(time);
+    //console.log(elevation);
 
     return {
         time,
@@ -257,8 +286,9 @@ function getValuesJpl(data, startVisTime, endVisTime) {
         phi,
         pabLon,
         pabLat,
-        startVisAzimuth,
-        endVisAzimuth
+        visibilityStartIndex,
+        visibilityEndIndex,
+        visibility
     };
 }
 
@@ -314,7 +344,7 @@ function getAzimuthLabel(azimuth) {
     return "Unknown"; // Fallback
 }
 
-function drawElevationGraph(elevation, azimuth, startVisAz, endVisAz, graphName) {
+function drawElevationGraph(elevation, azimuth, visStartIndex, visEndIndex, visible, graphName) {
     // Create data array with azimuth and elevation pairs
     const data = azimuth.map((az, index) => {
         return { azimuth: az, elevation: elevation[index] };
@@ -324,7 +354,7 @@ function drawElevationGraph(elevation, azimuth, startVisAz, endVisAz, graphName)
     const svgWidth = 1200;
     const svgHeight = 600;
     const topMargin = 30; // Add a top margin to accommodate the text
-    const padding = 20; // Add padding to the top of the graph
+    const padding = 50; // Add padding to the left and right sides of the graph
 
     // Find the min and max elevation values
     const maxElevation = Math.max(...elevation);
@@ -340,7 +370,7 @@ function drawElevationGraph(elevation, azimuth, startVisAz, endVisAz, graphName)
 
     // Scale the azimuth values based on their index
     const scaledAzimuth = azimuth.map((_, index) => {
-        return (index / (numValues - 1)) * svgWidth; // Scale to fit the SVG width
+        return padding + (index / (numValues - 1)) * (svgWidth - 2 * padding); // Scale to fit the SVG width with padding
     });
 
     // Create SVG elements
@@ -384,46 +414,38 @@ function drawElevationGraph(elevation, azimuth, startVisAz, endVisAz, graphName)
         svg += `<text x="-15" y="${yPos}" font-size="10" text-anchor="end">${yValue.toFixed(1)}</text>`;
     }
 
-    console.log(azimuth);
-
     // Function to find the index with tolerance
     const findIndexWithTolerance = (array, value, tolerance = 0.0001) => {
         return array.findIndex(item => Math.abs(item - value) < tolerance);
     };
 
-    // Add the vertical line at the specified azimuth
-    let verticalAzimuthIndex = findIndexWithTolerance(azimuth, parseFloat(startVisAz));
+    if (visible) {
+        // Add the vertical line at the specified azimuth
+        if (visStartIndex !== 0) {
+            const verticalLineX = scaledAzimuth[visStartIndex];
+            svg += `<line x1="${verticalLineX}" y1="${svgHeight}" x2="${verticalLineX}" y2="0" style="stroke:grey;stroke-width:2"/>`;
+        }
 
-    //console.log(verticalAzimuthIndex);
-    if (verticalAzimuthIndex !== -1) {
-        const verticalLineX = scaledAzimuth[verticalAzimuthIndex];
-        const verticalLineY = scaledElevation[verticalAzimuthIndex];
-        svg += `<line x1="${verticalLineX}" y1="${svgHeight}" x2="${verticalLineX}" y2="${svgHeight - (0.75 * svgHeight)}" style="stroke:grey;stroke-width:2"/>`;
+        // Add the vertical line at the specified azimuth
+        if (visEndIndex !== 0) {
+            const verticalLineX = scaledAzimuth[visEndIndex];
+            svg += `<line x1="${verticalLineX}" y1="${svgHeight}" x2="${verticalLineX}" y2="0" style="stroke:grey;stroke-width:2"/>`;
+        }
+        svg += `<text x="${svgWidth / 2}" y="${svgHeight / 2}" text-anchor="middle" font-size="14px" fill="black">Visible en ce moment</text>`;
     }
-
-    // Add the text above the line
-
-    // Add the vertical line at the specified azimuth
-    verticalAzimuthIndex = findIndexWithTolerance(azimuth, parseFloat(endVisAz));
-
-    if (verticalAzimuthIndex !== -1) {
-        const verticalLineX = scaledAzimuth[verticalAzimuthIndex];
-        const verticalLineY = scaledElevation[verticalAzimuthIndex];
-        svg += `<line x1="${verticalLineX}" y1="${svgHeight}" x2="${verticalLineX}" y2="${svgHeight - (0.75 * svgHeight)}" style="stroke:grey;stroke-width:2"/>`;
+    else {
+        svg += `<text x="${svgWidth / 2}" y="${svgHeight / 2}" text-anchor="middle" font-size="14px" fill="black">NON visible en ce moment</text>`;
     }
-
-
     // Add text for max elevation
     const maxElevationIndex = elevation.indexOf(maxElevation);
     const maxElevationX = scaledAzimuth[maxElevationIndex];
     const maxElevationY = scaledElevation[maxElevationIndex] - 100; // Position it above the max elevation point
-    svg += `<text x="${500}" y="${maxElevationY}" text-anchor="middle" font-size="14px" fill="black">Élévation Max: ${maxElevation.toFixed(2)}</text>`;
+    svg += `<text x="${maxElevationX}" y="${maxElevationY}" text-anchor="middle" font-size="14px" fill="black">Élévation Max: ${maxElevation.toFixed(2)}</text>`;
     svg += `</svg>`;
 
     // Insert SVG into the DOM
     document.getElementById(graphName).innerHTML = svg;
 }
-
 
 
 function listAllIds() {
@@ -438,7 +460,6 @@ function listAllIds() {
 
     //console.log('List of IDs in the HTML:', ids);
 }
-
 // Call the function when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     listAllIds();
