@@ -3,7 +3,10 @@
 let data;
 
 // Global date variable for testing
-const testDate = new Date(2026, 11, 10); // Example: December 25, 2024 (months are zero-indexed)
+const annee = 2024;
+const mois = 12; // mois de 1 à 12 mais dans une Date c,est 0-11
+const jour = 1;
+const testDate = new Date(annee, mois-1, jour); // Example: December 25, 2024 (months are zero-indexed)
 
 
 const bodies = {
@@ -31,7 +34,61 @@ const azimuthLabels = [
     { range: [337.5, 360], label: "N" } // Wrap around to North
 ];
 
+const planets = {
+    sun: "Soleil",
+    moon: "Lune",
+    mercury: "Mercure",
+    venus: "Vénus",
+    earth: "Terre",
+    mars: "Mars",
+    jupiter: "Jupiter",
+    saturn: "Saturne",
+    uranus: "Uranus",
+    neptune: "Neptune"
+}
 
+// Function to construct API URL for IST
+function constructApiUrlIST(body) {
+    // Extract day, month, and year from the global test date
+    const day = testDate.getDate(); // Day of the month (1-31)
+    const month = testDate.getMonth()+1; // Month (0-11, so add 1)
+    const year = testDate.getFullYear(); // Full year (e.g., 2024)
+
+    const params = `startday=${day}&startmonth=${month}&startyear=${year}&ird=1&irs=1&ima=1&ipm=0&iph=0&ias=0&iss=0&iob=1&ide=0&ids=0&interval=4&tz=0&format=csv&rows=1&objtype=1&objpl=${body}&objtxt=${body}&town=6077243`;
+    return params;
+}
+
+async function getIcon(body) {
+    const bodye = body.trim();
+    let imagePath = "";
+    if (body == "venus") {
+        imagePath = `./images/${body}/${body}_01.png`;
+        console.log(imagePath);
+    }
+    else if (body == "mercury") {
+        imagePath = `./images/${body}/${body}_01.png`; // Adjusted path for the image
+    }
+    else if (body == "mars") {
+        imagePath = `./images/${body}/${body}_01.png`; // Adjusted path for the image
+    }
+    // Construct the image path based on the body
+    // Select the image element by ID
+    const imgElement = document.getElementById(`${body}_icon`);
+    // Set the src attribute to the new image path
+    imgElement.src = imagePath;
+
+    // Flag to prevent multiple error logs
+    let hasLoggedError = false;
+
+    // Error handling if the image doesn't load
+    imgElement.onerror = () => {
+        if (!hasLoggedError) {
+            console.error(`Image not found: ${imagePath}`);
+            hasLoggedError = true; // Set the flag to true after logging
+        }
+        imgElement.src = './images/default-icon.png'; // Fallback image
+    };
+}
 // Function to create a date with a specific time
 function createDateWithTime(set) {
     // Split the "set" time into hours and minutes
@@ -86,49 +143,6 @@ function constructApiUrlJpl(rise, set, body) {
     return params;
 }
 
-// Function to construct API URL for IST
-function constructApiUrlIST(body) {
-    // Extract day, month, and year from the global test date
-    const day = testDate.getDate(); // Day of the month (1-31)
-    const month = testDate.getMonth() + 1; // Month (0-11, so add 1)
-    const year = testDate.getFullYear(); // Full year (e.g., 2024)
-
-    const params = `start$=${day}&startmonth=${month}&startyear=${year}&ird=1&irs=1&ima=1&ipm=0&iph=0&ias=0&iss=0&iob=1&ide=0&ids=0&interval=4&tz=0&format=csv&rows=1&objtype=1&objpl=${body}&objtxt=${body}&town=6077243`;
-    return params;
-}
-
-async function getIcon(body) {
-    const bodye = body.trim();
-    let imagePath = "";
-    if (body == "venus") {
-        imagePath = `./images/${body}/${body}_01.png`;
-        console.log(imagePath);
-    }
-    else if (body == "mercury") {
-        imagePath = `./images/${body}/${body}_01.png`; // Adjusted path for the image
-    }
-    else if (body == "mars") {
-        imagePath = `./images/${body}/${body}_01.png`; // Adjusted path for the image
-    }
-    // Construct the image path based on the body
-    // Select the image element by ID
-    const imgElement = document.getElementById(`${body}_icon`);
-    // Set the src attribute to the new image path
-    imgElement.src = imagePath;
-
-    // Flag to prevent multiple error logs
-    let hasLoggedError = false;
-
-    // Error handling if the image doesn't load
-    imgElement.onerror = () => {
-        if (!hasLoggedError) {
-            console.error(`Image not found: ${imagePath}`);
-            hasLoggedError = true; // Set the flag to true after logging
-        }
-        imgElement.src = './images/default-icon.png'; // Fallback image
-    };
-}
-
 async function fetchData(body) {
 
     let baseUrl, params = "";
@@ -147,15 +161,27 @@ async function fetchData(body) {
             throw new Error('Network response was not ok for https://in-the-sky.org/ephemeris.php');
         }
         const itsData = await itsResponse.text();
-        //console.log(itsData);
+        console.log(itsData);
 
         const dataits = getValuesITS(itsData);
+
+        //console.log(dataits.ra);
+        //console.log(dataits.dec);
 
         // Rise and Set time of the planet, not to confuse with visibility. Doesn't mean it is visible because of daylight. 
         startTime = dataits.rise;
         stopTime = dataits.set;
-        console.log(startTime);
-        console.log(stopTime);
+        //console.log(startTime);
+        //console.log(stopTime);
+
+        // Set the RA and DEC of the planets in the widgets
+        const divId = `${body}_text1`;
+        document.getElementById(divId).innerHTML = `
+            <p>
+                <strong><u class="large-text">${planets[body]}</u></strong><br>
+                <span class="small-text">${dataits.ra}</span><br>
+                <span class="small-text">${dataits.dec}</span>
+            </p>`;
 
         // Prepare the second fetch using data from the first fetch
         baseUrl = 'https://ssd.jpl.nasa.gov/api/horizons.api';
@@ -173,7 +199,7 @@ async function fetchData(body) {
         const datajpl = getValuesJpl(extractTextBetweenMarkersJPL(jplData), startTime[0], stopTime[0], dataits.observable);
 
         const graphName = `${body}_graph`;
-        drawElevationGraph(datajpl.elevation, datajpl.azimuth, datajpl.visibilityStartIndex, datajpl.visibilityEndIndex, datajpl.visibility, graphName);
+        drawElevationGraph(datajpl.elevation, datajpl.azimuth, datajpl.visibilityStartIndex, datajpl.visibilityEndIndex, datajpl.visibility, datajpl.time, graphName);
 
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -182,7 +208,7 @@ async function fetchData(body) {
 
 function getValuesJpl(data, startVisTime, endVisTime, observable) {
 
-    console.log(`startVisTime = ${startVisTime} and endVisTime = ${endVisTime}`);
+    //console.log(`startVisTime = ${startVisTime} and endVisTime = ${endVisTime}`);
 
     // Function to extract the hour part of the time string
     const getHour = time => parseInt(time.split(':')[0].trim(), 10);
@@ -197,6 +223,7 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
     let elevation = [];
     let magnitude = [];
     let illumination = [];
+    let diameter = [];
     let constellation = [];
     let phi = [];
     let pabLon = [];
@@ -258,8 +285,8 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
 
         return closestIndex;
     }
-    
-    console.log(observable[0]);
+
+    //console.log(observable[0]);
 
     if (observable[0] !== "Not observable") {
         visibility = true;
@@ -267,17 +294,19 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
         const [start, end] = observable[0].split("until").map(str => str.trim());
         visibilityStartIndex = findClosestIndex(time, start);
         visibilityEndIndex = findClosestIndex(time, end);
-        console.log(`the value from In-The-Sky is ${start} and the closest value from JPL is  ${time[visibilityStartIndex]}`);
-        console.log(`the value from In-The-Sky is ${end} and the closest value from JPL is  ${time[visibilityEndIndex]}`);
+        //console.log(`the value from In-The-Sky is ${start} and the closest value from JPL is  ${time[visibilityStartIndex]}`);
+        //console.log(`the value from In-The-Sky is ${end} and the closest value from JPL is  ${time[visibilityEndIndex]}`);
     }
     else {
         visibility = false;
     }
-    console.log(`is visible: ${visibility}`);
-
-    
+    //console.log(`is visible: ${visibility}`);
     //console.log(time);
     //console.log(elevation);
+
+    // for (let i = 0; i < time.length; i++) {
+    //     console.log(`Index ${i}: time = ${time[i]}, elevation = ${elevation[i]}`);
+    // }
 
     return {
         time,
@@ -313,8 +342,10 @@ function extractTextBetweenMarkersJPL(data) {
 function getValuesITS(data) {
     // Split the data into lines
     const lines = data.trim().split('\n');
-
+    //console.log(data);
     // Initialize arrays for Rise, Culm, Set, and Observable
+    const ra = [];
+    const dec = [];
     const rise = [];
     const culm = [];
     const set = [];
@@ -325,12 +356,16 @@ function getValuesITS(data) {
         const values = lines[i].replace(/"/g, '').split(','); // Remove quotes and split by comma
 
         // Extract the relevant values
+        ra.push(`${values[5]}:${values[6]}:${values[7]}`);
+        dec.push(`${values[8]}:${values[9]}:${values[10]}`);
         rise.push(values[11]); // Rise time
         culm.push(values[12]); // Culmination time
         set.push(values[13]); // Set time
         observable.push(values[15]); // Observable time
     };
     return {
+        ra,
+        dec,
         rise,
         culm,
         set,
@@ -347,7 +382,7 @@ function getAzimuthLabel(azimuth) {
     return "Unknown"; // Fallback
 }
 
-function drawElevationGraph(elevation, azimuth, visStartIndex, visEndIndex, visible, graphName) {
+function drawElevationGraph(elevation, azimuth, visStartIndex, visEndIndex, visible, time, graphName,) {
     // Create data array with azimuth and elevation pairs
     const data = azimuth.map((az, index) => {
         return { azimuth: az, elevation: elevation[index] };
@@ -418,8 +453,8 @@ function drawElevationGraph(elevation, azimuth, visStartIndex, visEndIndex, visi
             // Find and add the intersection point
             const intersection = findIntersection(verticalLineX, scaledAzimuth, scaledElevation);
             if (intersection) {
-                svg += `<circle cx="${intersection.x}" cy="${intersection.y}" r="5" fill="red"/>`;
-                svg += `<text x="${intersection.x}" y="${intersection.y - 10}" text-anchor="middle" font-size="12px" fill="black">Start</text>`;
+                svg += `<circle cx="${intersection.x}" cy="${intersection.y}" r="5" fill="grey"/>`;
+                svg += `<text x="${intersection.x + 30}" y="${intersection.y + 5}" text-anchor="middle" font-size="12px" fill="black">${time[visStartIndex].replace(/'/g, '')}</text>`;
             }
         }
 
@@ -431,11 +466,11 @@ function drawElevationGraph(elevation, azimuth, visStartIndex, visEndIndex, visi
             // Find and add the intersection point
             const intersection = findIntersection(verticalLineX, scaledAzimuth, scaledElevation);
             if (intersection) {
-                svg += `<circle cx="${intersection.x}" cy="${intersection.y}" r="5" fill="red"/>`;
-                svg += `<text x="${intersection.x}" y="${intersection.y - 10}" text-anchor="middle" font-size="12px" fill="black">End</text>`;
+                svg += `<circle cx="${intersection.x}" cy="${intersection.y}" r="5" fill="grey"/>`;
+                svg += `<text x="${intersection.x + 30}" y="${intersection.y + 5}" text-anchor="middle" font-size="12px" fill="black">${time[visEndIndex].replace(/'/g, '')}</text>`;
             }
         }
-        svg += `<text x="${svgWidth / 2}" y="${svgHeight / 2}" text-anchor="middle" font-size="14px" fill="black">Visible en ce moment</text>`;
+        //svg += `<text x="${svgWidth / 2}" y="${svgHeight / 2}" text-anchor="middle" font-size="14px" fill="black">Visible en ce moment</text>`;
     } else {
         svg += `<text x="${svgWidth / 2}" y="${svgHeight / 2}" text-anchor="middle" font-size="14px" fill="black">NON visible en ce moment</text>`;
     }
@@ -444,7 +479,7 @@ function drawElevationGraph(elevation, azimuth, visStartIndex, visEndIndex, visi
     const zeroElevationY = svgHeight - topMargin - padding - ((0 - minElevation) / (maxElevation - minElevation)) * (svgHeight - topMargin - padding) + 50;
 
     // Draw the horizontal line at zero elevation
-    svg += `<line x1="0" y1="${zeroElevationY}" x2="${svgWidth}" y2="${zeroElevationY}" style="stroke:blue;stroke-width:1;stroke-dasharray:5,5"/>`;
+    svg += `<line x1="0" y1="${zeroElevationY}" x2="${svgWidth}" y2="${zeroElevationY}" style="stroke:darkgrey;stroke-width:1;stroke-dasharray:5,5"/>`;
 
     // Add text for max elevation
     const maxElevationIndex = elevation.indexOf(maxElevation);
@@ -490,12 +525,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        await fetchData("venus");
-        await getIcon("venus");
-        await fetchData("mercury");
         await getIcon("mercury");
-        await fetchData("mars");
+        await getIcon("venus");
         await getIcon("mars");
+        await fetchData("mercury");
+        await fetchData("venus");
+        await fetchData("mars");
+
     } catch (error) {
         console.error('Error fetching data:', error);
     }

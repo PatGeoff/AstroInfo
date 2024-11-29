@@ -18,11 +18,12 @@ body {
     border: 2px solid black; /* Outline around the widget container */
     padding: 10px; /* Optional: Add padding inside the border */
     overflow: hidden; /* Ensure content does not overflow */
+    border-radius: 10px; /* Add rounded corners */
 }
 
 .cell {
     background: #fdfdfd;
-    border-radius: 4px;
+    border-radius: 10px; /* Add rounded corners */
     padding: 10px;
     text-align: center;
 }
@@ -45,4 +46,18 @@ svg {
     height: auto; /* Maintain aspect ratio */
     max-width: 100px; /* Optional: Set a max width */
     max-height: 100px; /* Optional: Set a max height */
+}
+
+.cell.planet img {
+    width: 50px; /* Set a specific width */
+    height: auto; /* Maintain aspect ratio */
+    max-width: 100%; /* Ensure it doesn't exceed the container */
+    max-height: 100%; /* Ensure it doesn't exceed the container */
+}
+.large-text {
+    font-size: 24px;
+}
+
+.small-text {
+    font-size: 14px;
 }
