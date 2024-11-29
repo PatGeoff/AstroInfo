@@ -2,46 +2,47 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
 }
 
 .widget-container {
-    display: flex;
-    justify-content: space-between; /* Adjusts spacing between widgets */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 widgets per row */
+    gap: 20px;
 }
-
-.container {
-    display: flex;
-    justify-content: space-between; /* Adjusts spacing between widgets */
-}
-
-
 
 .grid-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
+    border: 2px solid black; /* Outline around the widget container */
+    padding: 10px; /* Optional: Add padding inside the border */
+    overflow: hidden; /* Ensure content does not overflow */
 }
 
 .cell {
-    background: #ffffff;
+    background: #fdfdfd;
     border-radius: 4px;
     padding: 10px;
     text-align: center;
 }
 
 .graph {
-    grid-column: span 4;
-    grid-row: span 2;
+    grid-column: span 3; /* Make the graph span all columns */
+    width: 100%;
+    height: auto;
 }
 
 svg {
     width: 100%;
     height: auto; /* Maintain aspect ratio */
+    max-width: 100%; /* Ensure it doesn't exceed the container */
+    max-height: 100%; /* Ensure it doesn't exceed the container */
 }
 
-.elevationGraph {
-    width: 100%; /* Make it responsive */
+.icon {
+    width: 100%;
     height: auto; /* Maintain aspect ratio */
-    max-width: 100%; /* Prevent it from exceeding the container */
+    max-width: 100px; /* Optional: Set a max width */
+    max-height: 100px; /* Optional: Set a max height */
 }

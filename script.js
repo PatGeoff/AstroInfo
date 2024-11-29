@@ -3,7 +3,7 @@
 let data;
 
 // Global date variable for testing
-const testDate = new Date(2024, 11, 28); // Example: December 25, 2024 (months are zero-indexed)
+const testDate = new Date(2026, 11, 10); // Example: December 25, 2024 (months are zero-indexed)
 
 
 const bodies = {
@@ -20,15 +20,15 @@ const bodies = {
 };
 
 const azimuthLabels = [
-    { range: [0, 22.5], label: "Nord" },
-    { range: [22.5, 67.5], label: "Nord-Est" },
-    { range: [67.5, 112.5], label: "Est" },
-    { range: [112.5, 157.5], label: "Sud-Est" },
-    { range: [157.5, 202.5], label: "Sud" },
-    { range: [202.5, 247.5], label: "Sud-Ouest" },
-    { range: [247.5, 292.5], label: "Ouest" },
-    { range: [292.5, 337.5], label: "Nord-Ouest" },
-    { range: [337.5, 360], label: "Nord" } // Wrap around to North
+    { range: [0, 22.5], label: "N" },
+    { range: [22.5, 67.5], label: "NE" },
+    { range: [67.5, 112.5], label: "E" },
+    { range: [112.5, 157.5], label: "SE" },
+    { range: [157.5, 202.5], label: "S" },
+    { range: [202.5, 247.5], label: "SO" },
+    { range: [247.5, 292.5], label: "O" },
+    { range: [292.5, 337.5], label: "NO" },
+    { range: [337.5, 360], label: "N" } // Wrap around to North
 ];
 
 
@@ -107,7 +107,7 @@ async function getIcon(body) {
     else if (body == "mercury") {
         imagePath = `./images/${body}/${body}_01.png`; // Adjusted path for the image
     }
-    else if (body == "moon") {
+    else if (body == "mars") {
         imagePath = `./images/${body}/${body}_01.png`; // Adjusted path for the image
     }
     // Construct the image path based on the body
@@ -203,7 +203,7 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
     let pabLat = [];
     let visibilityStartIndex = null;
     let visibilityEndIndex = null;
-    let visibility = true;
+    let visibility = null;
 
     lines.forEach(line => {
         let values = line.trim().split(/\s+/); // Split by whitespace and trim
@@ -237,6 +237,7 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
 
     });
 
+
     function timeToMinutes(time) {
         const [hours, minutes] = time.split(':').map(Number);
         return hours * 60 + minutes;
@@ -257,8 +258,10 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
 
         return closestIndex;
     }
+    
+    console.log(observable[0]);
 
-    if (data.visibility !== "Not observable") {
+    if (observable[0] !== "Not observable") {
         visibility = true;
         //console.log(observable);
         const [start, end] = observable[0].split("until").map(str => str.trim());
@@ -270,9 +273,9 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
     else {
         visibility = false;
     }
-
-
     console.log(`is visible: ${visibility}`);
+
+    
     //console.log(time);
     //console.log(elevation);
 
@@ -351,10 +354,11 @@ function drawElevationGraph(elevation, azimuth, visStartIndex, visEndIndex, visi
     });
 
     // Determine the SVG dimensions
-    const svgWidth = 1200;
-    const svgHeight = 600;
+    const svgWidth = 600;
+    const svgHeight = 300;
     const topMargin = 30; // Add a top margin to accommodate the text
     const padding = 50; // Add padding to the left and right sides of the graph
+    const yBottomOffset = 10; // offset for the text and line from the bottom
 
     // Find the min and max elevation values
     const maxElevation = Math.max(...elevation);
@@ -374,7 +378,7 @@ function drawElevationGraph(elevation, azimuth, visStartIndex, visEndIndex, visi
     });
 
     // Create SVG elements
-    let svg = `<svg width="${svgWidth}" height="${svgHeight}">`;
+    let svg = `<svg viewBox="0 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" width="100%" height="100%">`;
 
     // Draw the path for the elevation graph using cubic Bézier curves
     let pathData = `M ${scaledAzimuth[0]},${scaledElevation[0]}`;
@@ -386,26 +390,6 @@ function drawElevationGraph(elevation, azimuth, visStartIndex, visEndIndex, visi
     pathData += ` T ${scaledAzimuth[numValues - 1]},${scaledElevation[numValues - 1]}`;
     svg += `<path d="${pathData}" style="fill:none;stroke:black;stroke-width:2"/>`;
 
-    // Add x-axis labels for first, middle, and last azimuth values
-    const labels = [
-        { index: 0, label: getAzimuthLabel(azimuth[0]) },
-        { index: Math.floor((numValues - 1) / 2), label: getAzimuthLabel(azimuth[Math.floor((numValues - 1) / 2)]) },
-        { index: numValues - 1, label: getAzimuthLabel(azimuth[numValues - 1]) }
-    ];
-
-    labels.forEach(({ index, label }) => {
-        let x = scaledAzimuth[index];
-
-        // Adjust for left and right labels
-        if (index === 0) {
-            x += 60; // Add padding for the left label
-        } else if (index === numValues - 1) {
-            x -= 60; // Subtract padding for the right label
-        }
-
-        svg += `<text x="${x}" y="${svgHeight - 20}" text-anchor="middle">${label}</text>`;
-    });
-
     // Add y-axis labels
     const yLabelInterval = (maxElevation - minElevation) / 5; // Adjust for more or fewer labels
     for (let i = 0; i <= 5; i++) {
@@ -414,38 +398,76 @@ function drawElevationGraph(elevation, azimuth, visStartIndex, visEndIndex, visi
         svg += `<text x="-15" y="${yPos}" font-size="10" text-anchor="end">${yValue.toFixed(1)}</text>`;
     }
 
-    // Function to find the index with tolerance
-    const findIndexWithTolerance = (array, value, tolerance = 0.0001) => {
-        return array.findIndex(item => Math.abs(item - value) < tolerance);
+    // Function to find the intersection point
+    const findIntersection = (x, scaledAzimuth, scaledElevation) => {
+        for (let i = 0; i < scaledAzimuth.length - 1; i++) {
+            if (x >= scaledAzimuth[i] && x <= scaledAzimuth[i + 1]) {
+                const y = scaledElevation[i] + (scaledElevation[i + 1] - scaledElevation[i]) * (x - scaledAzimuth[i]) / (scaledAzimuth[i + 1] - scaledAzimuth[i]);
+                return { x, y };
+            }
+        }
+        return null;
     };
 
     if (visible) {
         // Add the vertical line at the specified azimuth
         if (visStartIndex !== 0) {
             const verticalLineX = scaledAzimuth[visStartIndex];
-            svg += `<line x1="${verticalLineX}" y1="${svgHeight}" x2="${verticalLineX}" y2="0" style="stroke:grey;stroke-width:2"/>`;
+            svg += `<line x1="${verticalLineX}" y1="${svgHeight - yBottomOffset}" x2="${verticalLineX}" y2="0" style="stroke:grey;stroke-width:2"/>`;
+
+            // Find and add the intersection point
+            const intersection = findIntersection(verticalLineX, scaledAzimuth, scaledElevation);
+            if (intersection) {
+                svg += `<circle cx="${intersection.x}" cy="${intersection.y}" r="5" fill="red"/>`;
+                svg += `<text x="${intersection.x}" y="${intersection.y - 10}" text-anchor="middle" font-size="12px" fill="black">Start</text>`;
+            }
         }
 
         // Add the vertical line at the specified azimuth
         if (visEndIndex !== 0) {
             const verticalLineX = scaledAzimuth[visEndIndex];
-            svg += `<line x1="${verticalLineX}" y1="${svgHeight}" x2="${verticalLineX}" y2="0" style="stroke:grey;stroke-width:2"/>`;
+            svg += `<line x1="${verticalLineX}" y1="${svgHeight - yBottomOffset}" x2="${verticalLineX}" y2="0" style="stroke:grey;stroke-width:2"/>`;
+
+            // Find and add the intersection point
+            const intersection = findIntersection(verticalLineX, scaledAzimuth, scaledElevation);
+            if (intersection) {
+                svg += `<circle cx="${intersection.x}" cy="${intersection.y}" r="5" fill="red"/>`;
+                svg += `<text x="${intersection.x}" y="${intersection.y - 10}" text-anchor="middle" font-size="12px" fill="black">End</text>`;
+            }
         }
         svg += `<text x="${svgWidth / 2}" y="${svgHeight / 2}" text-anchor="middle" font-size="14px" fill="black">Visible en ce moment</text>`;
-    }
-    else {
+    } else {
         svg += `<text x="${svgWidth / 2}" y="${svgHeight / 2}" text-anchor="middle" font-size="14px" fill="black">NON visible en ce moment</text>`;
     }
+
+    // Find the y-coordinate for zero elevation
+    const zeroElevationY = svgHeight - topMargin - padding - ((0 - minElevation) / (maxElevation - minElevation)) * (svgHeight - topMargin - padding) + 50;
+
+    // Draw the horizontal line at zero elevation
+    svg += `<line x1="0" y1="${zeroElevationY}" x2="${svgWidth}" y2="${zeroElevationY}" style="stroke:blue;stroke-width:1;stroke-dasharray:5,5"/>`;
+
     // Add text for max elevation
     const maxElevationIndex = elevation.indexOf(maxElevation);
     const maxElevationX = scaledAzimuth[maxElevationIndex];
     const maxElevationY = scaledElevation[maxElevationIndex] - 100; // Position it above the max elevation point
     svg += `<text x="${maxElevationX}" y="${maxElevationY}" text-anchor="middle" font-size="14px" fill="black">Élévation Max: ${maxElevation.toFixed(2)}</text>`;
+
+    // Add azimuth direction text below the first, middle, and last points
+    const firstAzimuthX = scaledAzimuth[0];
+    const middleAzimuthX = scaledAzimuth[Math.floor((numValues - 1) / 2)];
+    const lastAzimuthX = scaledAzimuth[numValues - 1];
+    const minElevationY = svgHeight - yBottomOffset; // Position it below the graph
+
+    svg += `<text x="${firstAzimuthX}" y="${minElevationY}" text-anchor="middle" font-size="14px" fill="black">${getAzimuthLabel(azimuth[0])}</text>`;
+    svg += `<text x="${middleAzimuthX}" y="${minElevationY}" text-anchor="middle" font-size="14px" fill="black">${getAzimuthLabel(azimuth[Math.floor((numValues - 1) / 2)])}</text>`;
+    svg += `<text x="${lastAzimuthX}" y="${minElevationY}" text-anchor="middle" font-size="14px" fill="black">${getAzimuthLabel(azimuth[numValues - 1])}</text>`;
+
     svg += `</svg>`;
 
     // Insert SVG into the DOM
     document.getElementById(graphName).innerHTML = svg;
 }
+
 
 
 function listAllIds() {
@@ -466,12 +488,15 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// Fetch data when the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
-    //console.log("DOM fully loaded and parsed");
-    setTimeout(() => {
-        fetchData("venus");
-        getIcon("venus");
-    }, 100); // Delay of 100 milliseconds
-    // Usage   
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        await fetchData("venus");
+        await getIcon("venus");
+        await fetchData("mercury");
+        await getIcon("mercury");
+        await fetchData("mars");
+        await getIcon("mars");
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
 });

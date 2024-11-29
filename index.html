@@ -1,40 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <title>Responsive Widgets with Graphs</title>
 </head>
-
 <body>
     <div class="widget-container">
+        
+        <!-- Repeat the widget structure for widgets 2 to 9 -->
+        <div class="widget" id="widget2">
+            <div class="grid-container">
+                <div class="cell planet">
+                    <img src="planet-icon.png" alt="Planet" class="icon" id="mercury_icon">
+                </div>
+                <div class="cell text">
+                    <p>Mercure</p>
+                </div>
+                <div class="cell text">
+                    <p>Blah</p>
+                </div>
+                <div class="cell graph">
+                    <div id="mercury_graph"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Add more widgets as needed -->
         <div class="widget" id="widget1">
             <div class="grid-container">
                 <div class="cell planet">
                     <img src="planet-icon.png" alt="Planet" class="icon" id="venus_icon">
-                    
                 </div>
-               
                 <div class="cell text">
                     <p>Vénus</p>
                 </div>
                 <div class="cell text">
-                    <p>More text about celestial bodies.</p>
+                    <p>Blah</p>
                 </div>
-                <!-- Move the canvas into the graph cell -->
-                
-            </div>
-            <div class="cell graph" width="600" height="300">
-                <div id="venus_graph" width="600" height="300">  </div>
+                <div class="cell graph">
+                    <div id="venus_graph"></div>
+                </div>
             </div>
         </div>
-
-       
-
-    <!-- Load script.js after Chart.js is loaded -->
+        <div class="widget" id="widget2">
+            <div class="grid-container">
+                <div class="cell planet">
+                    <img src="planet-icon.png" alt="Planet" class="icon" id="mars_icon">
+                </div>
+                <div class="cell text">
+                    <p>Mercure</p>
+                </div>
+                <div class="cell text">
+                    <p>Blah</p>
+                </div>
+                <div class="cell graph">
+                    <div id="mars_graph"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
-
 </html>
