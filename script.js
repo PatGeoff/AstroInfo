@@ -6,7 +6,7 @@ let data;
 const annee = 2024;
 const mois = 12; // mois de 1 à 12 mais dans une Date c,est 0-11
 const jour = 1;
-const testDate = new Date(annee, mois-1, jour); // Example: December 25, 2024 (months are zero-indexed)
+const testDate = new Date(annee, mois - 1, jour); // Example: December 25, 2024 (months are zero-indexed)
 
 
 const bodies = {
@@ -51,7 +51,7 @@ const planets = {
 function constructApiUrlIST(body) {
     // Extract day, month, and year from the global test date
     const day = testDate.getDate(); // Day of the month (1-31)
-    const month = testDate.getMonth()+1; // Month (0-11, so add 1)
+    const month = testDate.getMonth() + 1; // Month (0-11, so add 1)
     const year = testDate.getFullYear(); // Full year (e.g., 2024)
 
     const params = `startday=${day}&startmonth=${month}&startyear=${year}&ird=1&irs=1&ima=1&ipm=0&iph=0&ias=0&iss=0&iob=1&ide=0&ids=0&interval=4&tz=0&format=csv&rows=1&objtype=1&objpl=${body}&objtxt=${body}&town=6077243`;
@@ -161,7 +161,7 @@ async function fetchData(body) {
             throw new Error('Network response was not ok for https://in-the-sky.org/ephemeris.php');
         }
         const itsData = await itsResponse.text();
-        console.log(itsData);
+        //console.log(itsData);
 
         const dataits = getValuesITS(itsData);
 
@@ -175,12 +175,23 @@ async function fetchData(body) {
         //console.log(stopTime);
 
         // Set the RA and DEC of the planets in the widgets
-        const divId = `${body}_text1`;
+        let divId = `${body}_text1`;
         document.getElementById(divId).innerHTML = `
             <p>
                 <strong><u class="large-text">${planets[body]}</u></strong><br>
                 <span class="small-text">${dataits.ra}</span><br>
                 <span class="small-text">${dataits.dec}</span>
+            </p>`;
+
+        // Get the visibility status
+        let vis = (dataits.observable[0] === "Not observable") ? "Non Visible" : "Visible";
+        console.log(vis);
+        //  Set the visibility in the div
+        divId = `${body}_text2`;
+        document.getElementById(divId).innerHTML = `
+            <p>
+                <strong class="large-text">${vis}</strong><br>
+                <span class="small-text">Mag: ${dataits.magnitude}</span><br>
             </p>`;
 
         // Prepare the second fetch using data from the first fetch
@@ -349,7 +360,8 @@ function getValuesITS(data) {
     const rise = [];
     const culm = [];
     const set = [];
-    const observable = [];
+    const magnitude = [];
+    const observable = []
 
     // Loop through each line (skipping the header)
     for (let i = 3; i < 4; i++) {
@@ -361,6 +373,7 @@ function getValuesITS(data) {
         rise.push(values[11]); // Rise time
         culm.push(values[12]); // Culmination time
         set.push(values[13]); // Set time
+        magnitude.push(values[14]);
         observable.push(values[15]); // Observable time
     };
     return {
@@ -369,6 +382,7 @@ function getValuesITS(data) {
         rise,
         culm,
         set,
+        magnitude,
         observable
     };
 }
@@ -472,8 +486,9 @@ function drawElevationGraph(elevation, azimuth, visStartIndex, visEndIndex, visi
         }
         //svg += `<text x="${svgWidth / 2}" y="${svgHeight / 2}" text-anchor="middle" font-size="14px" fill="black">Visible en ce moment</text>`;
     } else {
-        svg += `<text x="${svgWidth / 2}" y="${svgHeight / 2}" text-anchor="middle" font-size="14px" fill="black">NON visible en ce moment</text>`;
+        //svg += `<text x="${svgWidth / 2}" y="${svgHeight / 2}" text-anchor="middle" font-size="14px" fill="black">NON visible en ce moment</text>`;
     }
+
 
     // Find the y-coordinate for zero elevation
     const zeroElevationY = svgHeight - topMargin - padding - ((0 - minElevation) / (maxElevation - minElevation)) * (svgHeight - topMargin - padding) + 50;
@@ -484,8 +499,16 @@ function drawElevationGraph(elevation, azimuth, visStartIndex, visEndIndex, visi
     // Add text for max elevation
     const maxElevationIndex = elevation.indexOf(maxElevation);
     const maxElevationX = scaledAzimuth[maxElevationIndex];
-    const maxElevationY = scaledElevation[maxElevationIndex] - 100; // Position it above the max elevation point
-    svg += `<text x="${maxElevationX}" y="${maxElevationY}" text-anchor="middle" font-size="14px" fill="black">Élévation Max: ${maxElevation.toFixed(2)}</text>`;
+    const maxElevationY = scaledElevation[maxElevationIndex]  // Position it above the max elevation point
+    // Altitude Heading text above the max
+    svg += `<text x="${maxElevationX}" y="${maxElevationY - 5}" text-anchor="middle" font-size="12px" fill="grey">A H: ${maxElevation.toFixed(2)}</text>`;
+    // Zero elevation
+    svg += `<text x="${maxElevationX +2}" y="${zeroElevationY - 2}" text-anchor="right" font-size="12px" fill="grey">0</text>`;
+    // Add the vertical line
+    svg += `<line x1="${maxElevationX}" y1="${zeroElevationY - 2}" x2="${maxElevationX}" y2="${maxElevationY}" style="stroke:grey;stroke-width:0,5;stroke-dasharray:5,5"/>`;
+
+
+
 
     // Add azimuth direction text below the first, middle, and last points
     const firstAzimuthX = scaledAzimuth[0];
@@ -496,6 +519,23 @@ function drawElevationGraph(elevation, azimuth, visStartIndex, visEndIndex, visi
     svg += `<text x="${firstAzimuthX}" y="${minElevationY}" text-anchor="middle" font-size="14px" fill="black">${getAzimuthLabel(azimuth[0])}</text>`;
     svg += `<text x="${middleAzimuthX}" y="${minElevationY}" text-anchor="middle" font-size="14px" fill="black">${getAzimuthLabel(azimuth[Math.floor((numValues - 1) / 2)])}</text>`;
     svg += `<text x="${lastAzimuthX}" y="${minElevationY}" text-anchor="middle" font-size="14px" fill="black">${getAzimuthLabel(azimuth[numValues - 1])}</text>`;
+
+    // Define the gradient
+    svg += `
+        <defs>
+            <linearGradient id="multiColorGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color: red; stop-opacity: 1" />
+                <stop offset="50%" style="stop-color: yellow; stop-opacity: 1" />
+                <stop offset="100%" style="stop-color: green; stop-opacity: 1" />
+            </linearGradient>
+        </defs>
+    `;
+
+    // Draw the gradient bar
+    svg += `<rect x="${padding}" y="${svgHeight - yBottomOffset + 5}" width="${svgWidth - 2 * padding}" height="5" fill="url(#multiColorGradient)" />`;
+
+
+
 
     svg += `</svg>`;
 
@@ -536,3 +576,4 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error fetching data:', error);
     }
 });
+//
