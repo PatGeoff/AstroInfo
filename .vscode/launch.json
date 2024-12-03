@@ -8,7 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch AstroInfo",
-            "url": "https://astroinfo:8890",
+            "url": "https://astroinfo:8890/graph.html",
             "webRoot": "${workspaceFolder}/AstroInfo"
         }
     ]
