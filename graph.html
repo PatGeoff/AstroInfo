@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Responsive Widgets with Graphs</title>
+</head>
+<body>
+    <div class="widget-container">
+        
+        <!-- Repeat the widget structure for widgets 2 to 9 -->
+        <div class="widget" id="widget2">
+            <div class="grid-container">
+                <div class="cell planet">
+                    <img src="planet-icon.png" alt="Planet" class="icon" id="mercury_icon">
+                </div>
+                <div class="cell text" id="mercury_text1">
+                    <p><b><u>Mercure</u></b></p>
+                </div>
+                <div class="cell text" id="mercury_text2">
+                    <p>Blah</p>
+                </div>
+                <div class="cell graph">
+                    <div id="mercury_graph"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Add more widgets as needed -->
+        <div class="widget" id="widget1">
+            <div class="grid-container">
+                <div class="cell planet">
+                    <img src="planet-icon.png" alt="Planet" class="icon" id="venus_icon">
+                </div>
+                <div class="cell text" id="venus_text1">
+                    <p><b><u>Vénus</u></b></p>
+                </div>
+                <div class="cell text" id="venus_text2">
+                    <p>Blah</p>
+                </div>
+                <div class="cell graph">
+                    <div id="venus_graph"></div>
+                </div>
+            </div>
+        </div>
+        <div class="widget" id="widget2">
+            <div class="grid-container">
+                <div class="cell planet">
+                    <img src="planet-icon.png" alt="Planet" class="icon" id="mars_icon">
+                </div>
+                <div class="cell text" id="mars_text1">
+                    <p><b><u>Mars</u></b></p>
+                </div>
+                <div class="cell text" id="mars_text2">
+                    <p>Blah</p>
+                </div>
+                <div class="cell graph">
+                    <div id="mars_graph"></div>
+                </div>
+            </div>
+        </div>
+    <script src="script.js"></script>
+</body>
+</html>
