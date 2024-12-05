@@ -26,7 +26,7 @@ const bodies = {
 };
 
 
-const planets = {
+export const planets = {
     sun: "Soleil",
     moon: "Lune",
     mercury: "Mercure",
@@ -40,7 +40,7 @@ const planets = {
 }
 
 // Function to construct API URL for IST
-function constructApiUrlIST(body) {
+export function constructApiUrlIST(body) {
     // Extract day, month, and year from the global test date
     const day = testDate.getDate(); // Day of the month (1-31)
     const month = testDate.getMonth() + 1; // Month (0-11, so add 1)
@@ -50,38 +50,42 @@ function constructApiUrlIST(body) {
     return params;
 }
 
-async function getIcon(body) {
-    const bodye = body.trim();
-    let imagePath = "";
-    if (body == "venus") {
-        imagePath = `./images/${body}/${body}_01.png`;
-        console.log(imagePath);
-    }
-    else if (body == "mercury") {
-        imagePath = `./images/${body}/${body}_01.png`; // Adjusted path for the image
-    }
-    else if (body == "mars") {
-        imagePath = `./images/${body}/${body}_01.png`; // Adjusted path for the image
-    }
-    // Construct the image path based on the body
-    // Select the image element by ID
-    const imgElement = document.getElementById(`${body}_icon`);
-    // Set the src attribute to the new image path
-    imgElement.src = imagePath;
+// async function getIcon(body) {
+//     const bodye = body.trim();
+//     let imagePath = "";
+//     if (body == "venus") {
+//         imagePath = `./images/${body}/${body}_01.png`;
+//         console.log(imagePath);
+//     }
+//     else if (body == "mercury") {
+//         imagePath = `./images/${body}/${body}_01.png`; // Adjusted path for the image
+//     }
+//     else if (body == "mars") {
+//         imagePath = `./images/${body}/${body}_01.png`; // Adjusted path for the image
+//     }
+//     // Construct the image path based on the body
+//     // Select the image element by ID
+//     const imgElement = document.getElementById(`${body}_icon`);
+//     // Set the src attribute to the new image path
+//     imgElement.src = imagePath;
 
-    // Flag to prevent multiple error logs
-    let hasLoggedError = false;
+//     // Flag to prevent multiple error logs
+//     let hasLoggedError = false;
 
-    // Error handling if the image doesn't load
-    imgElement.onerror = () => {
-        if (!hasLoggedError) {
-            console.error(`Image not found: ${imagePath}`);
-            hasLoggedError = true; // Set the flag to true after logging
-        }
-        imgElement.src = './images/default-icon.png'; // Fallback image
-    };
-}
+//     // Error handling if the image doesn't load
+//     imgElement.onerror = () => {
+//         if (!hasLoggedError) {
+//             console.error(`Image not found: ${imagePath}`);
+//             hasLoggedError = true; // Set the flag to true after logging
+//         }
+//         imgElement.src = './images/default-icon.png'; // Fallback image
+//     };
+// }
+
+
 // Function to create a date with a specific time
+
+
 function createDateWithTime(set) {
     // Split the "set" time into hours and minutes
     const [hours, minutes] = set[0].split(':').map(Number);
@@ -99,7 +103,7 @@ function createDateWithTime(set) {
 }
 
 // Function to construct API URL for JPL
-function constructApiUrlJpl(rise, set, body) {
+export function constructApiUrlJpl(rise, set, body) {
     // Define the planet number
     const id = bodies[body];
 
@@ -342,7 +346,7 @@ function extractTextBetweenMarkersJPL(data) {
     return data.substring(startIndex + startMarker.length, endIndex).trim();
 }
 
-function getValuesITS(data) {
+export function getValuesITS(data) {
     // Split the data into lines
     const lines = data.trim().split('\n');
     //console.log(data);
@@ -403,9 +407,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         //await getIcon("mercury");
         //await getIcon("venus");
         //await getIcon("mars");
-        await fetchData("mercury");
-        await fetchData("venus");
-        await fetchData("mars");
+        //await fetchData("mercury");
+        //await fetchData("venus");
+        //await fetchData("mars");
 
     } catch (error) {
         console.error('Error fetching data:', error);
