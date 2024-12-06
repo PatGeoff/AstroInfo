@@ -1,7 +1,11 @@
 // fetching.js
 
-import { drawElevationGraph } from "./graph.js";
+import fetch from 'node-fetch';
+import fs from 'fs';
+import path from 'path';
 
+// Enlever ça lors du déploiement
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 let data;
 
@@ -26,19 +30,6 @@ const bodies = {
 };
 
 
-export const planets = {
-    sun: "Soleil",
-    moon: "Lune",
-    mercury: "Mercure",
-    venus: "Vénus",
-    earth: "Terre",
-    mars: "Mars",
-    jupiter: "Jupiter",
-    saturn: "Saturne",
-    uranus: "Uranus",
-    neptune: "Neptune"
-}
-
 // Function to construct API URL for IST
 export function constructApiUrlIST(body) {
     // Extract day, month, and year from the global test date
@@ -49,42 +40,6 @@ export function constructApiUrlIST(body) {
     const params = `startday=${day}&startmonth=${month}&startyear=${year}&ird=1&irs=1&ima=1&ipm=0&iph=0&ias=0&iss=0&iob=1&ide=0&ids=0&interval=4&tz=0&format=csv&rows=1&objtype=1&objpl=${body}&objtxt=${body}&town=6077243`;
     return params;
 }
-
-// async function getIcon(body) {
-//     const bodye = body.trim();
-//     let imagePath = "";
-//     if (body == "venus") {
-//         imagePath = `./images/${body}/${body}_01.png`;
-//         console.log(imagePath);
-//     }
-//     else if (body == "mercury") {
-//         imagePath = `./images/${body}/${body}_01.png`; // Adjusted path for the image
-//     }
-//     else if (body == "mars") {
-//         imagePath = `./images/${body}/${body}_01.png`; // Adjusted path for the image
-//     }
-//     // Construct the image path based on the body
-//     // Select the image element by ID
-//     const imgElement = document.getElementById(`${body}_icon`);
-//     // Set the src attribute to the new image path
-//     imgElement.src = imagePath;
-
-//     // Flag to prevent multiple error logs
-//     let hasLoggedError = false;
-
-//     // Error handling if the image doesn't load
-//     imgElement.onerror = () => {
-//         if (!hasLoggedError) {
-//             console.error(`Image not found: ${imagePath}`);
-//             hasLoggedError = true; // Set the flag to true after logging
-//         }
-//         imgElement.src = './images/default-icon.png'; // Fallback image
-//     };
-// }
-
-
-// Function to create a date with a specific time
-
 
 function createDateWithTime(set) {
     // Split the "set" time into hours and minutes
@@ -146,7 +101,7 @@ async function fetchData(body) {
     // Prepare the first fetch
     baseUrl = 'https://in-the-sky.org/ephemeris.php';
     params = constructApiUrlIST(body);
-    console.log(`${baseUrl}?${params}`);
+    //console.log(`${baseUrl}?${params}`);
 
     try {
         let requestString = `https://astroinfo:8890/proxy.php?baseUrl=${encodeURIComponent(baseUrl)}&params=${encodeURIComponent(params)}`
@@ -170,30 +125,11 @@ async function fetchData(body) {
         //console.log(startTime);
         //console.log(stopTime);
 
-        // Set the RA and DEC of the planets in the widgets
-        let divId = `${body}_text1`;
-        document.getElementById(divId).innerHTML = `
-            <p>
-                <strong><u class="large-text">${planets[body]}</u></strong><br>
-                <span class="small-text">${dataits.ra}</span><br>
-                <span class="small-text">${dataits.dec}</span>
-            </p>`;
-
-        // Get the visibility status
-        let vis = (dataits.observable[0] === "Not observable") ? "Non Visible" : "Visible";
-        console.log(vis);
-        //  Set the visibility in the div
-        divId = `${body}_text2`;
-        document.getElementById(divId).innerHTML = `
-            <p>
-                <strong class="large-text">${vis}</strong><br>
-                <span class="small-text">Mag: ${dataits.magnitude}</span><br>
-            </p>`;
-
+       
         // Prepare the second fetch using data from the first fetch
         baseUrl = 'https://ssd.jpl.nasa.gov/api/horizons.api';
         params = constructApiUrlJpl(startTime, stopTime, body);
-        console.log(`${baseUrl}?${params}`);
+        //console.log(`${baseUrl}?${params}`);
         requestString = `https://astroinfo:8890/proxy.php?baseUrl=${encodeURIComponent(baseUrl)}&params=${encodeURIComponent(params)}`;
         //console.log(requestString);
         const jplResponse = await fetch(requestString);
@@ -205,12 +141,34 @@ async function fetchData(body) {
         // Get the values between the Rise and Set times from IPS query.
         const datajpl = getValuesJpl(extractTextBetweenMarkersJPL(jplData), startTime[0], stopTime[0], dataits.observable);
 
-        const graphName = `${body}_graph`;
-        drawElevationGraph(datajpl.elevation, datajpl.azimuth, datajpl.visibilityStartIndex, datajpl.visibilityEndIndex, datajpl.visibility, datajpl.time, graphName);
+        // Merge the two datasets
+        const mergedData = Object.assign({}, dataits, datajpl);
+        // Convert the merged object to a JSON string with proper formatting (optional)
+        const jsonString = JSON.stringify(mergedData, null, 2); // `null, 2` adds indentation
+
+        writeDataFile(body, jsonString);        
 
     } catch (error) {
         console.error('Error fetching data:', error);
     }
+}
+
+function writeDataFile(body, data) {
+    // Define the file path and name
+    const fileName = `${body}.json`;
+    const filePath = path.join('public/data', fileName); // Assuming 'data' is in the root folder
+
+    // Ensure the directory exists
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+
+    // Check if the data is an object and convert it to a string
+    const stringData = typeof data === 'object' ? JSON.stringify(data, null, 2) : data;
+
+
+    // Append to the existing file
+    fs.writeFileSync(filePath, stringData, 'utf8');
+    console.log('Data has been written to the file.');
+
 }
 
 function getValuesJpl(data, startVisTime, endVisTime, observable) {
@@ -249,7 +207,7 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
             time.push(values[1]);
             azimuth.push(parseFloat(values[3]));
             elevation.push(parseFloat(values[4]));
-            magnitude.push(parseFloat(values[5]));
+            //magnitude.push(parseFloat(values[5]));
             illumination.push(parseFloat(values[7]));
             constellation.push(values[8]);
             phi.push(values[9]);
@@ -259,7 +217,7 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
             time.push(values[1]);
             azimuth.push(parseFloat(values[2]));
             elevation.push(parseFloat(values[3]));
-            magnitude.push(parseFloat(values[4]));
+            //magnitude.push(parseFloat(values[4]));
             illumination.push(parseFloat(values[6]));
             constellation.push(values[7]);
             phi.push(values[8]);
@@ -319,7 +277,6 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
         time,
         azimuth,
         elevation,
-        magnitude,
         illumination,
         constellation,
         phi,
@@ -351,6 +308,7 @@ export function getValuesITS(data) {
     const lines = data.trim().split('\n');
     //console.log(data);
     // Initialize arrays for Rise, Culm, Set, and Observable
+    const date = [];
     const ra = [];
     const dec = [];
     const rise = [];
@@ -359,11 +317,12 @@ export function getValuesITS(data) {
     const magnitude = [];
     const observable = []
 
-    // Loop through each line (skipping the header)
-    for (let i = 3; i < 4; i++) {
+    // Loop through each line (skipping the header and the last 3 rows)
+    for (let i = 3; i < lines.length - 3; i++) {
         const values = lines[i].replace(/"/g, '').split(','); // Remove quotes and split by comma
 
         // Extract the relevant values
+        date.push(`${values[0]} ${values[1]} ${values[2]}`);
         ra.push(`${values[5]}:${values[6]}:${values[7]}`);
         dec.push(`${values[8]}:${values[9]}:${values[10]}`);
         rise.push(values[11]); // Rise time
@@ -373,6 +332,7 @@ export function getValuesITS(data) {
         observable.push(values[15]); // Observable time
     };
     return {
+        date,
         ra,
         dec,
         rise,
@@ -384,35 +344,10 @@ export function getValuesITS(data) {
 }
 
 
-function listAllIds() {
-    const allElements = document.querySelectorAll('*'); // Select all elements
-    const ids = [];
-
-    allElements.forEach(element => {
-        if (element.id) {
-            ids.push(element.id); // Add the ID to the array if it exists
-        }
-    });
-
-    //console.log('List of IDs in the HTML:', ids);
-}
-// Call the function when the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
-    listAllIds();
-});
-
-
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        //await getIcon("mercury");
-        //await getIcon("venus");
-        //await getIcon("mars");
-        //await fetchData("mercury");
-        //await fetchData("venus");
-        //await fetchData("mars");
-
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
-});
-//
+await fetchData("mercury");
+await fetchData("venus");
+await fetchData("mars");
+await fetchData("jupiter");
+await fetchData("saturn");
+await fetchData("uranus");
+await fetchData("neptune");
