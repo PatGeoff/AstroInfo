@@ -1,57 +1,96 @@
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     background-color: black;
     gap: 40px;
 }
+
 .grid-item {
-    display: grid;
-    grid-template-rows: auto auto 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
     background-color: black;
 }
+
 .planet-info {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     background-color: black;
     color: white;
     padding: 5px;
 }
+
 .planet-image {
-    margin-left: 40px;
+    margin-right: 10px;
     width: 50px;
     height: 50px;
 }
+
 .dynamic-text {
-    grid-column: span 2;
     color: white;
     margin-bottom: 15px;
 }
+
 .planet-name {
-    text-align: center;
+    text-align: left;
+    font-size: 1.5em; /* Default font size */
 }
+
+.until_class {
+    color: grey;
+    font-size: smaller;
+}
+
 @media (max-width: 1200px) {
     .planet-image {
         width: 30px;
         height: 30px;
     }
+    .planet-name {
+        font-size: 1.2em; /* Adjust font size */
+    }
+    .dynamic-text {
+        font-size: 0.9em; /* Adjust font size */
+    }
 }
+
 @media (max-width: 992px) {
     .planet-image {
         width: 20px;
         height: 20px;
     }
+    .planet-name {
+        font-size: 1em; /* Adjust font size */
+    }
+    .dynamic-text {
+        font-size: 0.8em; /* Adjust font size */
+    }
 }
+
 @media (max-width: 768px) {
     .planet-image {
         width: 10px;
         height: 10px;
     }
+    .planet-name {
+        font-size: 0.8em; /* Adjust font size */
+    }
+    .dynamic-text {
+        font-size: 0.7em; /* Adjust font size */
+    }
 }
+
 @media (max-width: 576px) {
     .planet-image {
         width: 5px;
         height: 5px;
+    }
+    .planet-name {
+        font-size: 0.6em; /* Adjust font size */
+    }
+    .dynamic-text {
+        font-size: 0.5em; /* Adjust font size */
     }
 }

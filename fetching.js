@@ -37,7 +37,8 @@ export function constructApiUrlIST(body) {
     const month = testDate.getMonth() + 1; // Month (0-11, so add 1)
     const year = testDate.getFullYear(); // Full year (e.g., 2024)
 
-    const params = `startday=${day}&startmonth=${month}&startyear=${year}&ird=1&irs=1&ima=1&ipm=0&iph=0&ias=0&iss=0&iob=1&ide=0&ids=0&interval=4&tz=0&format=csv&rows=1&objtype=1&objpl=${body}&objtxt=${body}&town=6077243`;
+    // Fetching 100 rows to be able to know when or until when the planet will be visible. After that, we only need one single line for the present day. 
+    const params = `startday=${day}&startmonth=${month}&startyear=${year}&ird=1&irs=1&ima=1&ipm=0&iph=0&ias=0&iss=0&iob=1&ide=0&ids=0&interval=4&tz=0&format=csv&rows=250&objtype=1&objpl=${body}&objtxt=${body}&town=6077243`;
     return params;
 }
 
@@ -125,7 +126,7 @@ async function fetchData(body) {
         //console.log(startTime);
         //console.log(stopTime);
 
-       
+
         // Prepare the second fetch using data from the first fetch
         baseUrl = 'https://ssd.jpl.nasa.gov/api/horizons.api';
         params = constructApiUrlJpl(startTime, stopTime, body);
@@ -146,7 +147,7 @@ async function fetchData(body) {
         // Convert the merged object to a JSON string with proper formatting (optional)
         const jsonString = JSON.stringify(mergedData, null, 2); // `null, 2` adds indentation
 
-        writeDataFile(body, jsonString);        
+        writeDataFile(body, jsonString);
 
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -308,29 +309,64 @@ export function getValuesITS(data) {
     const lines = data.trim().split('\n');
     //console.log(data);
     // Initialize arrays for Rise, Culm, Set, and Observable
-    const date = [];
+    let date = [];
     const ra = [];
     const dec = [];
     const rise = [];
     const culm = [];
     const set = [];
     const magnitude = [];
-    const observable = []
+    const observable = [];
+    const until = [];
+    let observability = null;
 
     // Loop through each line (skipping the header and the last 3 rows)
     for (let i = 3; i < lines.length - 3; i++) {
         const values = lines[i].replace(/"/g, '').split(','); // Remove quotes and split by comma
 
-        // Extract the relevant values
+        // keep all the dates for futur use
         date.push(`${values[0]} ${values[1]} ${values[2]}`);
-        ra.push(`${values[5]}:${values[6]}:${values[7]}`);
-        dec.push(`${values[8]}:${values[9]}:${values[10]}`);
-        rise.push(values[11]); // Rise time
-        culm.push(values[12]); // Culmination time
-        set.push(values[13]); // Set time
-        magnitude.push(values[14]);
-        observable.push(values[15]); // Observable time
+
+        // Extract the relevant values for today only
+        if (i == 3) {
+            ra.push(`${values[5]}:${values[6]}:${values[7]}`);
+            dec.push(`${values[8]}:${values[9]}:${values[10]}`);
+            rise.push(values[11]); // Rise time
+            culm.push(values[12]); // Culmination time
+            set.push(values[13]); // Set time
+            magnitude.push(values[14]);
+            observable.push(values[15]); // Observable time
+        }
+        let lastObservability = observability;
+        observability = values[15];
+        // Debugging statements
+        console.log(`Iteration ${i}:`);
+        console.log(`lastObservability: ${lastObservability}`);
+        console.log(`observability: ${observability}`);
+
+        if (observability != null && lastObservability != null) {
+            // When the planet will be visible again
+            if (lastObservability.includes("observable") && observability.includes("until")) {
+                console.log("//////////////////////////////////////////////////");
+                // Get the date for the index
+                until.push(date[i-3]); // -3 because we start at i = 3 and the first value is 0
+                // Keep only the first Date value for today and clear the 99 unused
+                date = date.slice(0, 1);
+                break;
+            }
+            // Until when the planet is visible
+            else if (lastObservability.includes("until") && observability.includes("observable")) {
+                console.log("//////////////////////////////////////////////////");
+                // Get the date for the index
+                until.push(date[i-3]);
+                // Keep only the first Date value for today and clear the 99 unused
+                date = date.slice(0, 1);
+                break;
+            }
+        }
+
     };
+
     return {
         date,
         ra,
@@ -339,7 +375,8 @@ export function getValuesITS(data) {
         culm,
         set,
         magnitude,
-        observable
+        observable,
+        until
     };
 }
 
