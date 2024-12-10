@@ -1,8 +1,23 @@
+/* General Styles */
+body {
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.title {
+    color: grey;
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Grid Container */
 .grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    background-color: black;
-    gap: 40px;
+    gap: 10px;
+    margin-top: 40px;
+    padding: 20px;
 }
 
 .grid-item {
@@ -20,22 +35,24 @@
     background-color: black;
     color: white;
     padding: 5px;
+    margin-bottom: 0px;
+}
+
+.planet-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 .planet-image {
     margin-right: 10px;
-    width: 50px;
-    height: 50px;
-}
-
-.dynamic-text {
-    color: white;
-    margin-bottom: 15px;
+    width: 5pc;
+    height: 5pc;
 }
 
 .planet-name {
-    text-align: left;
-    font-size: 1.5em; /* Default font size */
+    font-size: 1.5em;
+    margin-bottom: 10px;
 }
 
 .until_class {
@@ -43,29 +60,153 @@
     font-size: smaller;
 }
 
+/* Dynamic Text */
+.dynamic-text {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: white;
+}
+
+.widget-text {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+    color: white;
+}
+
+/* Flex Grid */
+.flex-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    background-color: black;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+.flex-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #080808;
+    color: white;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+}
+
+.flex-image {
+    width: 20%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.flex-text {
+    text-align: center;
+}
+
+/* Widget Styles */
+.widget {
+    display: flex;
+    flex-direction: column;
+    background-color: #080808;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.columns-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.planet-image-widget {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+}
+
+.constellation-image-widget {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 0px;
+}
+
+.action-button {
+    background-color: transparent; /* Ensure the background is transparent */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-image: url('images/resources/open_btn.png'); /* Add your image path here */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    text-indent: -9999px; /* Hide the text */
+    width: 800px; /* Adjust the width to fit your image */
+    height: 20px; /* Adjust the height to fit your image */
+}
+
+.action-button:hover {
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: Add a semi-transparent background on hover */
+}
+
+/* Responsive Styles */
 @media (max-width: 1200px) {
     .planet-image {
-        width: 30px;
-        height: 30px;
+        width: 40px;
+        height: 40px;
     }
     .planet-name {
-        font-size: 1.2em; /* Adjust font size */
+        font-size: 1.4em;
     }
     .dynamic-text {
-        font-size: 0.9em; /* Adjust font size */
+        font-size: 1em;
+    }
+    .action-button {
+        width: 100%; /* Make the button full width */
+        height: 30px; /* Adjust height for larger screens */
     }
 }
 
 @media (max-width: 992px) {
     .planet-image {
-        width: 20px;
-        height: 20px;
+        width: 30px;
+        height: 30px;
     }
     .planet-name {
-        font-size: 1em; /* Adjust font size */
+        font-size: 1.3em;
     }
     .dynamic-text {
-        font-size: 0.8em; /* Adjust font size */
+        font-size: 0.9em;
+    }
+    .flex-item {
+        width: calc(50% - 40px);
+    }
+    .action-button {
+        width: 100%; /* Make the button full width */
+        height: 25px; /* Adjust height for medium screens */
     }
 }
 
@@ -75,10 +216,24 @@
         height: 10px;
     }
     .planet-name {
-        font-size: 0.8em; /* Adjust font size */
+        font-size: 0.8em;
     }
     .dynamic-text {
-        font-size: 0.7em; /* Adjust font size */
+        font-size: 0.7em;
+    }
+    .planet-name, .constellation-name {
+        font-size: 1.2em;
+    }
+    .planet-image, .constellation-image {
+        width: 30px;
+        height: 30px;
+    }
+    .columns-container {
+        grid-template-columns: 1fr;
+    }
+    .action-button {
+        width: 100%; /* Make the button full width */
+        height: 20px; /* Adjust height for smaller screens */
     }
 }
 
@@ -88,9 +243,32 @@
         height: 5px;
     }
     .planet-name {
-        font-size: 0.6em; /* Adjust font size */
+        font-size: 0.6em;
     }
     .dynamic-text {
-        font-size: 0.5em; /* Adjust font size */
+        font-size: 0.5em;
+    }
+    .widget {
+        grid-template-columns: 1fr;
+    }
+    .planet-name, .constellation-name {
+        font-size: 1em;
+    }
+    .planet-image, .constellation-image {
+        width: 20px;
+        height: 20px;
+    }
+    .dynamic-text {
+        font-size: 0.8em;
+    }
+    .flex-item {
+        width: calc(100% - 40px);
+    }
+    .columns-container {
+        grid-template-columns: 1fr;
+    }
+    .action-button {
+        width: 100%; /* Make the button full width */
+        height: 20px; /* Adjust height for very small screens */
     }
 }

@@ -169,3 +169,8 @@ export function drawElevationGraph(elevation, azimuth, visStartIndex, visEndInde
     // Insert SVG into the DOM
     document.getElementById(graphName).innerHTML = svg;
 }
+
+function drawGraph(object){
+    const graphName = `${object}_graph`
+    drawElevationGraph(object.elevation, object.azimuth, object.visStartIndex, object.visEndIndex, object.visible, object.time, )
+}

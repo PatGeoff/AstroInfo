@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planet Grid</title>
     <link rel="stylesheet" href="main-styles.css">
+    <link rel="stylesheet" href="widgets.css">
 </head>
 
 <body>
+    <div id="title-date" class="title"></div>
     <div class="grid-container">
         <div class="grid-item">
             <div class="planet-info">
@@ -81,7 +83,89 @@
             </div>
         </div>
     </div>
-    <script src="main.js"></script>
+    <div class="flex-grid">
+        <div class="widget">
+            <div class="columns-container">
+                <div class="column">
+                    <div class="planet-name">Mercure</div>
+                    <img src="images/icons/mercury.png" alt="Mercury" class="planet-image-widget">
+                </div>
+                <div class="column">
+                    <div class="constellation-name">Verseau</div>
+                    <img src="" id="constellation_mercury" class="constellation-image-widget">
+                </div>
+                <div class="column">                    
+                    <div class="widget-text" id="rise_mercury">Lever: 13h56</div>
+                    <div class="widget-text" id="culm_mercury">Culm: 14h55</div>
+                    <div class="widget-text" id="set_mercury">Coucher: 16h25</div>
+                    <div class="widget-text" id="magnitude_mercury">Magnitude: -4.1</div>   
+                    <div class="widget-text" id="visibility_mercury">Non Visible</div>   
+                </div>
+            </div>
+            <div>
+                <div class="button-container">
+                    <button class="action-button" onclick="toggleGraph('mercury')"></button>
+                </div>        
+            </div>
+            <div class="cell graph">
+                <div id="mercury_graph"></div>
+            </div>
+        </div>
+
+        <div class="widget">
+            <div class="columns-container">
+                <div class="column">
+                    <div class="planet-name">Vénus</div>
+                    <img src="images/icons/venus.png" alt="Venus" class="planet-image-widget">
+                </div>
+                <div class="column">
+                    <div class="constellation-name">Verseau</div>
+                    <img src="" id="constellation_venus" class="constellation-image-widget">
+                </div>
+                <div class="column">
+                    <div class="widget-text">Non Visible</div>
+                    <div class="widget-text">Lever: 13h56</div>
+                    <div class="widget-text">Culm: 14h55</div>
+                    <div class="widget-text">Coucher: 16h25</div>
+                    <div class="widget-text">Magnitude: -4.1</div>      
+                </div>
+            </div>
+            <div>
+                <div class="button-container">
+                    <button class="action-button" onclick="toggleGraph('venus')"></button>
+                </div>        
+            </div>
+            <div class="cell graph">
+                <div id="venus_graph"></div>
+            </div>
+        </div>
+        <div class="flex-item">
+            <img src="images/icons/jupiter.png" alt="Image 5" class="flex-image">
+            <div class="flex-text">Jupiter</div>
+        </div>
+        <div class="flex-item">
+            <img src="images/icons/saturn.png" alt="Image 6" class="flex-image">
+            <div class="flex-text">Saturne</div>
+        </div>
+        <div class="flex-item">
+            <img src="images/icons/uranus.png" alt="Image 7" class="flex-image">
+            <div class="flex-text">Uranus</div>
+        </div>
+        <div class="flex-item">
+            <img src="images/icons/neptune.png" alt="Image 8" class="flex-image">
+            <div class="flex-text">Neptune</div>
+        </div>
+        <div class="flex-item">
+            <div></div>
+            <img src="images/icons/sun.png" alt="Image 1" class="flex-image">
+            <div class="flex-text">Soleil</div>
+        </div>
+        <div class="flex-item">
+            <img src="images/icons/moon.png" alt="Image 2" class="flex-image">
+            <div class="flex-text">Lune</div>
+        </div>
+    </div>
+    <script src="main.js"></script>   
 </body>
 
 </html>
