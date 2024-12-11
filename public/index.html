@@ -91,22 +91,24 @@
                     <img src="images/icons/mercury.png" alt="Mercury" class="planet-image-widget">
                 </div>
                 <div class="column">
-                    <div class="constellation-name">Verseau</div>
-                    <img src="" id="constellation_mercury" class="constellation-image-widget">
+                    <div class="constellation-name" id="constellation_mercury"></div>
+                    <img src="" id="constellation_mercury_img" class="constellation-image-widget">
                 </div>
-                <div class="column">                    
-                    <div class="widget-text" id="rise_mercury">Lever: 13h56</div>
-                    <div class="widget-text" id="culm_mercury">Culm: 14h55</div>
-                    <div class="widget-text" id="set_mercury">Coucher: 16h25</div>
-                    <div class="widget-text" id="magnitude_mercury">Magnitude: -4.1</div>   
-                    <div class="widget-text" id="visibility_mercury">Non Visible</div>   
+                <div class="column">
+                    <div class="widgetColumn">
+                        <div class="widget-text" id="rise_mercury"></div>
+                        <div class="widget-text" id="culm_mercury"></div>
+                        <div class="widget-text" id="set_mercury"></div>
+                        <div class="widget-text" id="magnitude_mercury"></div>
+                        <div class="widget-text" id="visibility_mercury_2"></div>
+                    </div>
                 </div>
             </div>
-            <div>
+            <!-- <div>
                 <div class="button-container">
                     <button class="action-button" onclick="toggleGraph('mercury')"></button>
-                </div>        
-            </div>
+                </div>
+            </div> -->
             <div class="cell graph">
                 <div id="mercury_graph"></div>
             </div>
@@ -119,22 +121,24 @@
                     <img src="images/icons/venus.png" alt="Venus" class="planet-image-widget">
                 </div>
                 <div class="column">
-                    <div class="constellation-name">Verseau</div>
-                    <img src="" id="constellation_venus" class="constellation-image-widget">
+                    <div class="constellation-name" id="constellation_venus"></div>
+                    <img src="" id="constellation_venus_img" class="constellation-image-widget">
                 </div>
                 <div class="column">
-                    <div class="widget-text">Non Visible</div>
-                    <div class="widget-text">Lever: 13h56</div>
-                    <div class="widget-text">Culm: 14h55</div>
-                    <div class="widget-text">Coucher: 16h25</div>
-                    <div class="widget-text">Magnitude: -4.1</div>      
+                    <div class="widgetColumn">
+                        <div class="widget-text" id="rise_venus"></div>
+                        <div class="widget-text" id="culm_venus"></div>
+                        <div class="widget-text" id="set_venus"></div>
+                        <div class="widget-text" id="magnitude_venus"></div>
+                        <div class="widget-text" id="visibility_venus_2"></div>
+                    </div>
                 </div>
             </div>
-            <div>
+            <!-- <div>
                 <div class="button-container">
                     <button class="action-button" onclick="toggleGraph('venus')"></button>
-                </div>        
-            </div>
+                </div>
+            </div> -->
             <div class="cell graph">
                 <div id="venus_graph"></div>
             </div>
@@ -165,7 +169,7 @@
             <div class="flex-text">Lune</div>
         </div>
     </div>
-    <script src="main.js"></script>   
+    <script src="main.js"></script>
 </body>
 
 </html>

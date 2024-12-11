@@ -131,7 +131,12 @@ body {
 .column {
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
+}
+
+.widgetColumn {
+    align-items: left;
 }
 
 .planet-image-widget {
@@ -143,7 +148,6 @@ body {
 .constellation-image-widget {
     width: 200px;
     height: 200px;
-    margin-bottom: 20px;
 }
 
 .button-container {
