@@ -46,18 +46,6 @@ const constellationsPath = {
     Vir: "images/constellations/Virgo.png"
 }
 
-const azimuthLabels = [
-    { range: [0, 22.5], label: "N" },
-    { range: [22.5, 67.5], label: "NE" },
-    { range: [67.5, 112.5], label: "E" },
-    { range: [112.5, 157.5], label: "SE" },
-    { range: [157.5, 202.5], label: "S" },
-    { range: [202.5, 247.5], label: "SO" },
-    { range: [247.5, 292.5], label: "O" },
-    { range: [292.5, 337.5], label: "NO" },
-    { range: [337.5, 360], label: "N" } // Wrap around to North
-];
-
 const constellationsData = {
     Aqr: { // Aquarius
         cdi_00: -11.367683,
@@ -69,29 +57,101 @@ const constellationsData = {
         ref_x: 372.32342,
         ref_y: 253.0641
     },
-    Tau: {
-        cdi_00: -10.123456,
-        cdi_10: -10.654321,
-        cdi_01: 10.654321,
-        cdi_11: -10.123456,
-        ref_ra: 45.67890,
-        ref_dec: -12.345678,
-        ref_x: 123.45678,
-        ref_y: 234.56789
-    },
-    // Add similar objects for other constellations
     Gem: {
-        cdi_00: -9.876543,
-        cdi_10: -9.543210,
-        cdi_01: 9.543210,
-        cdi_11: -9.876543,
-        ref_ra: 67.89012,
-        ref_dec: -23.456789,
-        ref_x: 345.67890,
-        ref_y: 456.78901
+        cdi_00: -19.875374,
+        cdi_10: 0.56472264,
+        cdi_01: -0.48259705,
+        cdi_11: -20.06562,
+        ref_ra: 103.40336,
+        ref_dec: 15.306631,
+        ref_x: 344.00997,
+        ref_y: 455.03114
+    },
+    Leo: {
+        cdi_00: -16.403893,
+        cdi_10: 0.72232026,
+        cdi_01: -0.7669055,
+        cdi_11: -16.443213,
+        ref_ra: 158.41863,
+        ref_dec: 17.563596,
+        ref_x: 353.19142,
+        ref_y: 318.93981
+    }, 
+    Oph: {
+        cdi_00: -9.9481519,
+        cdi_10: -9.5731434,
+        cdi_01: 9.5731434,
+        cdi_11: -9.9481519,
+        ref_ra: 21.35726,
+        ref_dec: 19.167862,
+        ref_x: 334.70198,
+        ref_y: 111.67419
+    },
+    Psc: {
+        cdi_00: -9.9481519,
+        cdi_10: -9.5731434,
+        cdi_01: 9.5731434,
+        cdi_11: -9.9481519,
+        ref_ra: 21.35726,
+        ref_dec: 19.167862,
+        ref_x: 334.70198,
+        ref_y: 111.67419
+    },
+    Sco: {
+        cdi_00: -19.190467,
+        cdi_10: 0.058417915,
+        cdi_01: -0.058417915,
+        cdi_11: -19.190467,
+        ref_ra: 254.12843,
+        ref_dec: -32.788151,
+        ref_x: 276.3185,
+        ref_y: 317.03021
+    },
+    Sgr: {
+        cdi_00: -17.046297,
+        cdi_10: 0.9709383,
+        cdi_01: -0.91149182,
+        cdi_11: -17.223345,
+        ref_ra: 288.48749,
+        ref_dec: -39.497587,
+        ref_x: 242.28439,
+        ref_y: 435.2103
+    },
+    Tau: {
+        cdi_00: -17.344077,
+        cdi_10: -5.4522668,
+        cdi_01: 5.4522668,
+        cdi_11: -17.344077,
+        ref_ra: 64.468332,
+        ref_dec: 18.901513,
+        ref_x: 334.40742,
+        ref_y: 326.6959
+    },
+    Vir: {
+        cdi_00: -9.3107963,
+        cdi_10: 8.3483396,
+        cdi_01: -8.4188516,
+        cdi_11: -9.2241696,
+        ref_ra: 199.55795,
+        ref_dec: -1.4257751,
+        ref_x: 345.16144,
+        ref_y: 325.2609
     }
-    // ...
+
+
 };
+
+const azimuthLabels = [
+    { range: [0, 22.5], label: "N" },
+    { range: [22.5, 67.5], label: "NE" },
+    { range: [67.5, 112.5], label: "E" },
+    { range: [112.5, 157.5], label: "SE" },
+    { range: [157.5, 202.5], label: "S" },
+    { range: [202.5, 247.5], label: "SO" },
+    { range: [247.5, 292.5], label: "O" },
+    { range: [292.5, 337.5], label: "NO" },
+    { range: [337.5, 360], label: "N" } // Wrap around to North
+];
 
 
 // Create the json objects with the planets data 
@@ -115,7 +175,7 @@ function displayData(planet) {
 }
 
 // Update the grah and time every minute
-setInterval(updateGrah, 60000);
+//setInterval(updateGrah, 60000);
 
 function updateGrah() {
     // array.forEach(element => {
@@ -162,6 +222,11 @@ function magRiseSet(planet) {
     document.getElementById(idNameVis).innerHTML = `${constellations[planetsData[planet].constellation[0]]}`;
 }
 
+function todaysDate() {
+    const date = planetsData["venus"].date[0].toString();
+    document.getElementById("title-date").innerHTML = `Montréal - ${formatDate(date)}`;
+}
+
 function formatDate(dateString) {
     // Define the months in French
     const months = {
@@ -185,8 +250,8 @@ function formatDate(dateString) {
     // Convert the month to French
     const monthInFrench = months[month.toLowerCase()];
 
-     // Remove leading zero from days
-     const formattedDay = parseInt(day, 10);
+    // Remove leading zero from days
+    const formattedDay = parseInt(day, 10);
 
     // Return the formatted date in French
     return `${formattedDay} ${monthInFrench} ${year}`;
@@ -201,16 +266,37 @@ function formatTime(time) {
     return `${formattedHours}h${minutes}`;
 }
 
-function displayConstellation(planet, constellation) {
+function drawConstellationGraph(planet, constellation) {
+    //console.log(constellationsData[constellation]);
     let idNameConst = `constellation_${planet}_img`;
-    console.log(idNameConst);
-    const pth = constellationsPath[constellation].toString();
-    document.getElementById(idNameConst).src = pth;
-}
+    const imgPath = constellationsPath[constellation].toString();
+    //console.log(imgPath);
+    const svgWidth = 600;
+    const svgHeight = 600;
+    const planetPos = planetOnConstellation(constellationsData[constellation], raStringToDegrees(planetsData[planet].ra[0]), decStringToDegrees(planetsData[planet].dec[0]));
+    //console.log(`${planet} ra: ${planetsData[planet].ra[0]} dec: ${planetsData[planet].dec[0]}`);
+    // Create SVG elements
+    let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" width="100%" height="100%">`;
+    // Add the constellation image
+    svg += `<image xlink:href="${imgPath}" width="${svgWidth}" height="${svgHeight}" onerror="this.style.display='none'" />`;
+    // Add the circle and the planet point
+    console.log(planetPos);
+    svg += `<circle cx="${planetPos.x}" cy="${planetPos.y}" r="5" fill="orange" />`; // Point
+    svg += `<circle cx="${planetPos.x}" cy="${planetPos.y}" r="30" fill="none" stroke="#03334F" stroke-width="8" />`; // Circle around the point
+    // Add text
+    svg += `<text x="${svgWidth/2}" y="50" font-size="30" text-anchor="middle" fill="white">à minuit</text>`;
+    // Terminate the svg string
+    svg += `</svg>`;
 
-function todaysDate() {
-    const date = planetsData["venus"].date[0].toString();
-    document.getElementById("title-date").innerHTML = `Montréal - ${formatDate(date)}`;
+    // Insert SVG into the DOM
+    const element = document.getElementById(idNameConst);
+    if (element) {
+        element.innerHTML = svg;
+        //console.log("SVG inserted successfully");
+    } else {
+        console.error("Element not found:", idNameConst);
+    }
+
 }
 
 function drawElevationGraph(elevation, azimuth, visStartIndex, visEndIndex, visible, time, graphName, currentTime) {
@@ -328,7 +414,7 @@ function drawElevationGraph(elevation, azimuth, visStartIndex, visEndIndex, visi
     // Altitude Heading text above the max
     svg += `<text x="${maxElevationX}" y="${maxElevationY - 5}" text-anchor="middle" font-size="12px" fill="grey">A H: ${maxElevation.toFixed(2)}°</text>`;
     // Zero elevation
-    svg += `<text x="${maxElevationX - 150}" y="${zeroElevationY - 2}" text-anchor="right" font-size="12px" fill="grey">Horizon (0°)</text>`;
+    svg += `<text x="${maxElevationX - 40}" y="${zeroElevationY + 13}" text-anchor="right" font-size="12px" fill="grey">Horizon (0°)</text>`;
     // Add the vertical line at max elevation
     //svg += `<line x1="${maxElevationX}" y1="${zeroElevationY - 2}" x2="${maxElevationX}" y2="${maxElevationY}" style="stroke:grey;stroke-width:0,5;stroke-dasharray:5,5"/>`;
 
@@ -340,10 +426,10 @@ function drawElevationGraph(elevation, azimuth, visStartIndex, visEndIndex, visi
 
     // azimuth and time
     svg += `<text x="${firstAzimuthX}" y="${minElevationY}" text-anchor="middle" font-size="14px" fill="white">${getAzimuthLabel(azimuth[0])}</text>`;
-    svg += `<text x="${firstAzimuthX}" y="${minElevationY-50}" text-anchor="middle" font-size="14px" fill="lightgrey">${formatTime(time[0])}</text>`;
+    svg += `<text x="${firstAzimuthX}" y="${minElevationY - 50}" text-anchor="middle" font-size="14px" fill="lightgrey">${formatTime(time[0])}</text>`;
     svg += `<text x="${middleAzimuthX}" y="${minElevationY}" text-anchor="middle" font-size="14px" fill="white">${getAzimuthLabel(azimuth[Math.floor((numValues - 1) / 2)])}</text>`;
-    svg += `<text x="${lastAzimuthX}" y="${minElevationY}" text-anchor="middle" font-size="14px" fill="white">${getAzimuthLabel(azimuth[numValues - 1])}</text>`; 
-    svg += `<text x="${lastAzimuthX}" y="${minElevationY-50}" text-anchor="middle" font-size="14px" fill="lightgrey">${formatTime(time[time.length-1])}</text>`;   
+    svg += `<text x="${lastAzimuthX}" y="${minElevationY}" text-anchor="middle" font-size="14px" fill="white">${getAzimuthLabel(azimuth[numValues - 1])}</text>`;
+    svg += `<text x="${lastAzimuthX}" y="${minElevationY - 50}" text-anchor="middle" font-size="14px" fill="lightgrey">${formatTime(time[time.length - 1])}</text>`;
 
     // Define the gradient
     svg += `
@@ -357,7 +443,7 @@ function drawElevationGraph(elevation, azimuth, visStartIndex, visEndIndex, visi
     `;
 
     // Draw the gradient bar
-    svg += `<rect x="${padding}" y="${svgHeight - yBottomOffset + 5}" width="${svgWidth - 2 * padding}" height="5" fill="url(#multiColorGradient)" />`;
+    svg += `<rect x="0" y="${svgHeight - yBottomOffset + 7}" width="${svgWidth}" height="5" fill="url(#multiColorGradient)" />`;
 
 
 
@@ -368,7 +454,12 @@ function drawElevationGraph(elevation, azimuth, visStartIndex, visEndIndex, visi
     document.getElementById(graphName).innerHTML = svg;
 }
 
+function drawGraph(obj) {
+    const object = planetsData[obj];
+    const graphName = `${obj}_graph`;
 
+    drawElevationGraph(object.elevation, object.azimuth, object.visibilityStartIndex, object.visibilityEndEndex, object.visibility, object.time, graphName, currentTime());
+}
 
 function getAzimuthLabel(azimuth) {
     for (const { range, label } of azimuthLabels) {
@@ -379,24 +470,8 @@ function getAzimuthLabel(azimuth) {
     return "Unknown"; // Fallback
 }
 
-function drawGraph(obj) {
-    const object = planetsData[obj];
-    const graphName = `${obj}_graph`;
-
-    drawElevationGraph(object.elevation, object.azimuth, object.visibilityStartIndex, object.visibilityEndEndex, object.visibility, object.time, graphName, currentTime());
-}
-
-function toggleGraph(obj) {
-    const graphContainer = document.getElementById(`${obj}_graph`);
-    if (graphContainer.style.display === 'none') {
-        graphContainer.style.display = 'block';
-        drawGraph(obj);
-    } else {
-        graphContainer.style.display = 'none';
-    }
-}
-
 function planetOnConstellation(constellation, _ra, _dec) {
+    console.log(`ra: ${_ra} dec: ${_dec}`);
     const pi = Math.PI;
     const dtor = pi / 180.0;
     const ref_ra = constellation.ref_ra; // Set this value
@@ -409,8 +484,8 @@ function planetOnConstellation(constellation, _ra, _dec) {
     const dec = _dec; // Set this value
     const ref_xsize = 600; // Set this value
     const ref_ysize = 600; // Set this value
-    const scaled_xsize = 300; // Set this value
-    const scaled_ysize = 300; // Set this value
+    const scaled_xsize = 600; // Set this value
+    const scaled_ysize = 600; // Set this value
     const ref_x = constellation.ref_x;
     const ref_y = constellation.ref_y;
 
@@ -448,9 +523,33 @@ function planetOnConstellation(constellation, _ra, _dec) {
     const yscaled = y / ref_ysize * scaled_ysize;
     console.log("x:", xscaled);
     console.log("y:", yscaled);
-    return(xscaled,yscaled);
-    
+    const pos = {x: xscaled, y: yscaled};
+    return pos;
+
 }
+function raStringToDegrees(raString) {
+    // Split the string into hours, minutes, and seconds
+    const [hours, minutes, seconds] = raString.split(':').map(Number);
+
+    // Convert to decimal hours
+    const decimalHours = hours + (minutes / 60) + (seconds / 3600);
+
+    // Convert to degrees
+    const degrees = decimalHours * 15;
+
+    return degrees;
+}
+function decStringToDegrees(decString) {
+    // Split the string into degrees, minutes, and seconds
+    const sign = decString.startsWith('-') ? -1 : 1;
+    const [degrees, minutes, seconds] = decString.replace(/^[+-]/, '').split(':').map(Number);
+
+    // Convert to decimal degrees
+    const decimalDegrees = degrees + (minutes / 60) + (seconds / 3600);
+    // Adjust for the sign
+    return decimalDegrees * sign;
+}
+
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
@@ -458,13 +557,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         await Promise.all(Object.keys(planets).map(planet => fetchData(planet)));
         console.log(planetsData);
         Object.keys(planets).forEach(planet => displayData(planet));
-        displayConstellation("mercury", planetsData.mercury.constellation[0]);
-        displayConstellation("venus", planetsData.venus.constellation[0]);
+        drawConstellationGraph("mercury", planetsData.mercury.constellation[0]);
+        drawConstellationGraph("venus", planetsData.venus.constellation[0]);
         drawGraph("mercury");
         drawGraph("venus");
         magRiseSet("mercury");
         magRiseSet("venus");
-        planetOnConstellation(constellationsData.Aqr,  322.88971698347876,  -5.5711748282114666 );
+        //planetOnConstellation(constellationsData.Aqr, 322.88971698347876, -5.5711748282114666);
 
     } catch (error) {
         console.error('Error fetching data:', error);
