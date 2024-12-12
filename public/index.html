@@ -82,6 +82,16 @@
                 <div class="until_class" id="visibility_until_neptune"></div>
             </div>
         </div>
+        <div class="grid-item">
+            <div class="planet-info">
+                <img src="images/icons/moon.png" alt="Moon" class="planet-image">
+                <div class="planet-name">Lune</div>
+            </div>
+            <div id="body_text_moon" class="dynamic-text">
+                <div class="visibility_class" id="visibility_moon"></div>
+                <div class="until_class" id="visibility_until_moon"></div>
+            </div>
+        </div>
     </div>
     <div class="flex-grid">
         <div class="widget">
@@ -101,14 +111,11 @@
                         <div class="widget-text" id="set_mercury"></div>
                         <div class="widget-text" id="magnitude_mercury"></div>
                         <div class="widget-text" id="visibility_mercury_2"></div>
+                        <div class="widget-text" id="from_mercury"></div>
+                        <div class="widget-text" id="until_mercury"></div>
                     </div>
                 </div>
             </div>
-            <!-- <div>
-                <div class="button-container">
-                    <button class="action-button" onclick="toggleGraph('mercury')"></button>
-                </div>
-            </div> -->
             <div class="cell graph">
                 <div id="mercury_graph"></div>
             </div>
@@ -131,42 +138,196 @@
                         <div class="widget-text" id="set_venus"></div>
                         <div class="widget-text" id="magnitude_venus"></div>
                         <div class="widget-text" id="visibility_venus_2"></div>
+                        <div class="widget-text" id="from_venus"></div>
+                        <div class="widget-text" id="until_venus"></div>
                     </div>
                 </div>
             </div>
-            <!-- <div>
-                <div class="button-container">
-                    <button class="action-button" onclick="toggleGraph('venus')"></button>
-                </div>
-            </div> -->
             <div class="cell graph">
                 <div id="venus_graph"></div>
             </div>
         </div>
-        <div class="flex-item">
-            <img src="images/icons/jupiter.png" alt="Image 5" class="flex-image">
-            <div class="flex-text">Jupiter</div>
+        <div class="widget">
+            <div class="columns-container">
+                <div class="column">
+                    <div class="planet-name">Mars</div>
+                    <img src="images/icons/mars.png" alt="mars" class="planet-image-widget">
+                </div>
+                <div class="column">
+                    <div class="constellation-name" id="constellation_mars"></div>
+                    <div id="constellation_mars_img" class="constellation-image-widget"></div>
+                </div>
+                <div class="column">
+                    <div class="widgetColumn">
+                        <div class="widget-text" id="rise_mars"></div>
+                        <div class="widget-text" id="culm_mars"></div>
+                        <div class="widget-text" id="set_mars"></div>
+                        <div class="widget-text" id="magnitude_mars"></div>
+                        <div class="widget-text" id="visibility_mars_2"></div>
+                        <div class="widget-text" id="from_mars"></div>
+                        <div class="widget-text" id="until_mars"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="cell graph">
+                <div id="mars_graph"></div>
+            </div>
         </div>
-        <div class="flex-item">
-            <img src="images/icons/saturn.png" alt="Image 6" class="flex-image">
-            <div class="flex-text">Saturne</div>
+        <div class="widget">
+            <div class="columns-container">
+                <div class="column">
+                    <div class="planet-name">Jupiter</div>
+                    <img src="images/icons/jupiter.png" alt="jupiter" class="planet-image-widget">
+                </div>
+                <div class="column">
+                    <div class="constellation-name" id="constellation_jupiter"></div>
+                    <div id="constellation_jupiter_img" class="constellation-image-widget"></div>
+                </div>
+                <div class="column">
+                    <div class="widgetColumn">
+                        <div class="widget-text" id="rise_jupiter"></div>
+                        <div class="widget-text" id="culm_jupiter"></div>
+                        <div class="widget-text" id="set_jupiter"></div>
+                        <div class="widget-text" id="magnitude_jupiter"></div>
+                        <div class="widget-text" id="visibility_jupiter_2"></div>
+                        <div class="widget-text" id="from_jupiter"></div>
+                        <div class="widget-text" id="until_jupiter"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="cell graph">
+                <div id="jupiter_graph"></div>
+            </div>
         </div>
-        <div class="flex-item">
-            <img src="images/icons/uranus.png" alt="Image 7" class="flex-image">
-            <div class="flex-text">Uranus</div>
+        <div class="widget">
+            <div class="columns-container">
+                <div class="column">
+                    <div class="planet-name">Saturne</div>
+                    <img src="images/icons/saturn.png" alt="saturn" class="planet-image-widget">
+                </div>
+                <div class="column">
+                    <div class="constellation-name" id="constellation_saturn"></div>
+                    <div id="constellation_saturn_img" class="constellation-image-widget"></div>
+                </div>
+                <div class="column">
+                    <div class="widgetColumn">
+                        <div class="widget-text" id="rise_saturn"></div>
+                        <div class="widget-text" id="culm_saturn"></div>
+                        <div class="widget-text" id="set_saturn"></div>
+                        <div class="widget-text" id="magnitude_saturn"></div>
+                        <div class="widget-text" id="visibility_saturn_2"></div>
+                        <div class="widget-text" id="from_saturn"></div>
+                        <div class="widget-text" id="until_saturn"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="cell graph">
+                <div id="saturn_graph"></div>
+            </div>
         </div>
-        <div class="flex-item">
-            <img src="images/icons/neptune.png" alt="Image 8" class="flex-image">
-            <div class="flex-text">Neptune</div>
+        <div class="widget">
+            <div class="columns-container">
+                <div class="column">
+                    <div class="planet-name">Uranus</div>
+                    <img src="images/icons/uranus.png" alt="uranus" class="planet-image-widget">
+                </div>
+                <div class="column">
+                    <div class="constellation-name" id="constellation_uranus"></div>
+                    <div id="constellation_uranus_img" class="constellation-image-widget"></div>
+                </div>
+                <div class="column">
+                    <div class="widgetColumn">
+                        <div class="widget-text" id="rise_uranus"></div>
+                        <div class="widget-text" id="culm_uranus"></div>
+                        <div class="widget-text" id="set_uranus"></div>
+                        <div class="widget-text" id="magnitude_uranus"></div>
+                        <div class="widget-text" id="visibility_uranus_2"></div>
+                        <div class="widget-text" id="from_uranus"></div>
+                        <div class="widget-text" id="until_uranus"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="cell graph">
+                <div id="uranus_graph"></div>
+            </div>
         </div>
-        <div class="flex-item">
-            <div></div>
-            <img src="images/icons/sun.png" alt="Image 1" class="flex-image">
-            <div class="flex-text">Soleil</div>
+        <div class="widget">
+            <div class="columns-container">
+                <div class="column">
+                    <div class="planet-name">Neptune</div>
+                    <img src="images/icons/neptune.png" alt="neptune" class="planet-image-widget">
+                </div>
+                <div class="column">
+                    <div class="constellation-name" id="constellation_neptune"></div>
+                    <div id="constellation_neptune_img" class="constellation-image-widget"></div>
+                </div>
+                <div class="column">
+                    <div class="widgetColumn">
+                        <div class="widget-text" id="rise_neptune"></div>
+                        <div class="widget-text" id="culm_neptune"></div>
+                        <div class="widget-text" id="set_neptune"></div>
+                        <div class="widget-text" id="magnitude_neptune"></div>
+                        <div class="widget-text" id="visibility_neptune_2"></div>
+                        <div class="widget-text" id="from_neptune"></div>
+                        <div class="widget-text" id="until_neptune"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="cell graph">
+                <div id="neptune_graph"></div>
+            </div>
         </div>
-        <div class="flex-item">
-            <img src="images/icons/moon.png" alt="Image 2" class="flex-image">
-            <div class="flex-text">Lune</div>
+        <div class="widget">
+            <div class="columns-container">
+                <div class="column">
+                    <div class="planet-name">Lune</div>
+                    <img src="images/icons/moon.png" alt="moon" class="planet-image-widget">
+                </div>
+                <div class="column">
+                    <div class="constellation-name" id="constellation_moon"></div>
+                    <div id="constellation_moon_img" class="constellation-image-widget"></div>
+                </div>
+                <div class="column">
+                    <div class="widgetColumn">
+                        <div class="widget-text" id="rise_moon"></div>
+                        <div class="widget-text" id="culm_moon"></div>
+                        <div class="widget-text" id="set_moon"></div>
+                        <div class="widget-text" id="magnitude_moon"></div>
+                        <div class="widget-text" id="visibility_moon_2"></div>
+                        <div class="widget-text" id="from_moon"></div>
+                        <div class="widget-text" id="until_moon"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="cell graph">
+                <div id="moon_graph"></div>
+            </div>
+        </div>
+        <div class="widget">
+            <div class="columns-container">
+                <div class="column">
+                    <div class="planet-name">Soleil</div>
+                    <img src="images/icons/sun.png" alt="sun" class="planet-image-widget">
+                </div>
+                <div class="column">
+                    <div class="constellation-name" id="constellation_sun"></div>
+                    <div id="constellation_sun_img" class="constellation-image-widget"></div>
+                </div>
+                <div class="column">
+                    <div class="widgetColumn">
+                        <div class="widget-text" id="rise_sun"></div>
+                        <div class="widget-text" id="culm_sun"></div>
+                        <div class="widget-text" id="set_sun"></div>
+                        <div class="widget-text" id="magnitude_sun"></div>
+                        <div class="widget-text" id="visibility_sun_2"></div>
+                        <div class="widget-text" id="from_sun" style="display: none"></div>
+                        <div class="widget-text" id="until_sun" style="display: none"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="cell graph">
+                <div id="sun_graph"></div>
+            </div>
         </div>
     </div>
     <script src="main.js"></script>

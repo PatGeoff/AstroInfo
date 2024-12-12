@@ -11,9 +11,14 @@ let data;
 
 // Global date variable for testing
 const annee = 2024;
-const mois = 12; // mois de 1 à 12 mais dans une Date c,est 0-11
-const jour = 1;
-const testDate = new Date(annee, mois - 1, jour); // Example: December 25, 2024 (months are zero-indexed)
+const mois = 10; // mois de 1 à 12 mais dans une Date c','est 0-11
+const jour = 10;
+//const testDate = new Date(annee, mois - 1, jour); // Example: December 25, 2024 (months are zero-indexed)
+const testDate = new Date();
+
+let sunRise = null;
+let sunSet = null;
+
 
 
 const bodies = {
@@ -31,7 +36,7 @@ const bodies = {
 
 
 // Function to construct API URL for IST
-export function constructApiUrlIST(body) {
+function constructApiUrlIST(body) {
     // Extract day, month, and year from the global test date
     const day = testDate.getDate(); // Day of the month (1-31)
     const month = testDate.getMonth() + 1; // Month (0-11, so add 1)
@@ -42,7 +47,7 @@ export function constructApiUrlIST(body) {
     return params;
 }
 
-function createDateWithTime(set) {
+function createDateWithTime(rise, set) {
     // Split the "set" time into hours and minutes
     const [hours, minutes] = set[0].split(':').map(Number);
 
@@ -50,16 +55,16 @@ function createDateWithTime(set) {
     const date = new Date(testDate.getFullYear(), testDate.getMonth(), testDate.getDate(), hours, minutes);
 
     // Check if the time is before noon
-    if (hours < 12) {
+    if (set < rise) {
         // If before noon, set the date to tomorrow
         date.setDate(date.getDate() + 1);
     }
-    console.log(date);
+    //console.log(date);
     return date;
 }
 
 // Function to construct API URL for JPL
-export function constructApiUrlJpl(rise, set, body) {
+function constructApiUrlJpl(rise, set, body) {
     // Define the planet number
     const id = bodies[body];
 
@@ -79,17 +84,12 @@ export function constructApiUrlJpl(rise, set, body) {
     // Adjust start time for UTC
     const startUTC = new Date(start.getTime() - (offset * 60 * 60 * 1000));
 
-    const stopTimeDate = createDateWithTime(set);
-    //console.log('Stop Time Date:', stopTimeDate);
 
-    if (!(stopTimeDate instanceof Date) || isNaN(stopTimeDate.getTime())) {
-        throw new Error(`Invalid stop time generated from set: ${set}`);
-    }
+    const stopTimeDate = createDateWithTime(rise, set); 
 
     // Adjust stop time for UTC
     const stopTimeUTC = new Date(stopTimeDate.getTime() - (offset * 60 * 60 * 1000));
     const stopTime = stopTimeUTC.toISOString();
-
     const params = `format=text&COMMAND='${id}'&OBJ_DATA=YES&MAKE_EPHEM=YES&EPHEM_TYPE=OBSERVER&CENTER=coord@399&SITE_COORD='286.42,45.5017,0'&START_TIME='${encodeURIComponent(startUTC.toISOString())}'&STOP_TIME='${encodeURIComponent(stopTime)}'&STEP_SIZE='10m'&QUANTITIES='4,9,10,29,43'&TIME_ZONE=-5`;
 
     return params;
@@ -115,7 +115,7 @@ async function fetchData(body) {
         const itsData = await itsResponse.text();
         //console.log(itsData);
 
-        const dataits = getValuesITS(itsData);
+        const dataits = getValuesITS(itsData, body);
 
         //console.log(dataits.ra);
         //console.log(dataits.dec);
@@ -138,6 +138,7 @@ async function fetchData(body) {
             throw new Error('Network response was not ok for https://ssd.jpl.nasa.gov/api/horizons.api');
         }
         const jplData = await jplResponse.text();
+
 
         // Get the values between the Rise and Set times from IPS query.
         const datajpl = getValuesJpl(extractTextBetweenMarkersJPL(jplData), startTime[0], stopTime[0], dataits.observable);
@@ -168,12 +169,12 @@ function writeDataFile(body, data) {
 
     // Append to the existing file
     fs.writeFileSync(filePath, stringData, 'utf8');
-    console.log('Data has been written to the file.');
+    console.log(`${body} data has been written to the file`);
 
 }
 
 function getValuesJpl(data, startVisTime, endVisTime, observable) {
-
+    //console.log(data);
     //console.log(`startVisTime = ${startVisTime} and endVisTime = ${endVisTime}`);
 
     // Function to extract the hour part of the time string
@@ -197,6 +198,8 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
     let visibilityStartIndex = null;
     let visibilityEndIndex = null;
     let visibility = null;
+    let sunRiseAzimuthIndex = null;
+    let sunSetAzimuthIndex = null;
 
     lines.forEach(line => {
         let values = line.trim().split(/\s+/); // Split by whitespace and trim
@@ -248,31 +251,44 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
                 minDiff = diff;
             }
         });
-
         return closestIndex;
     }
 
-    //console.log(observable[0]);
-
     if (observable[0] !== "Not observable") {
         visibility = true;
-        //console.log(observable);
-        const [start, end] = observable[0].split("until").map(str => str.trim());
-        visibilityStartIndex = findClosestIndex(time, start);
-        visibilityEndIndex = findClosestIndex(time, end);
-        //console.log(`the value from In-The-Sky is ${start} and the closest value from JPL is  ${time[visibilityStartIndex]}`);
-        //console.log(`the value from In-The-Sky is ${end} and the closest value from JPL is  ${time[visibilityEndIndex]}`);
+        // if it is not the Sun
+        if (observable[0] !== "Visible all day") {
+            //console.log(observable);
+            const [start, end] = observable[0].split("until").map(str => str.trim());
+            visibilityStartIndex = findClosestIndex(time, start);
+            visibilityEndIndex = findClosestIndex(time, end);
+        }
     }
     else {
         visibility = false;
     }
-    //console.log(`is visible: ${visibility}`);
-    //console.log(time);
-    //console.log(elevation);
 
-    // for (let i = 0; i < time.length; i++) {
-    //     console.log(`Index ${i}: time = ${time[i]}, elevation = ${elevation[i]}`);
-    // }
+    // Find the closest azimuth index to sunRise and sunSet and get the direction for the svg gradient 
+    if (sunSet != null && sunRise != null) {
+        try {
+            sunRiseAzimuthIndex = findClosestIndex(time, sunRise);
+            //console.log(`sunRise: ${sunRise} and index: ${sunRiseAzimuthIndex}`);
+
+        }
+        catch (error) {
+            console.log(error);
+        }
+        try {
+            sunSetAzimuthIndex = findClosestIndex(time, sunSet);
+            //console.log(`sunSet: ${sunSet} and index: ${sunSetAzimuthIndex}`);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    else {
+        console.log("Sun data was not obtained");
+    }
 
     return {
         time,
@@ -285,7 +301,9 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
         pabLat,
         visibilityStartIndex,
         visibilityEndIndex,
-        visibility
+        visibility,
+        sunRiseAzimuthIndex,
+        sunSetAzimuthIndex
     };
 }
 
@@ -304,7 +322,7 @@ function extractTextBetweenMarkersJPL(data) {
     return data.substring(startIndex + startMarker.length, endIndex).trim();
 }
 
-export function getValuesITS(data) {
+function getValuesITS(data, body) {
     // Split the data into lines
     const lines = data.trim().split('\n');
     //console.log(data);
@@ -318,6 +336,8 @@ export function getValuesITS(data) {
     const magnitude = [];
     const observable = [];
     const until = [];
+    let from = "";
+    let to = "";
     let observability = null;
 
     // Loop through each line (skipping the header and the last 3 rows)
@@ -336,33 +356,42 @@ export function getValuesITS(data) {
             set.push(values[13]); // Set time
             magnitude.push(values[14]);
             observable.push(values[15]); // Observable time
+            // If the planet or Moon is visible, value[15] is in the format "00:00 until 00:00", otherwise it is "Not oservable", and if it is the Sun it is "Visible all day"
+            if (values[15].includes("until")) {
+                from = values[15].split("until")[0];
+                to = values[15].split("until")[1];
+            }
         }
         let lastObservability = observability;
         observability = values[15];
         // Debugging statements
-        console.log(`Iteration ${i}:`);
-        console.log(`lastObservability: ${lastObservability}`);
-        console.log(`observability: ${observability}`);
+        //console.log(`Iteration ${i}:`);
+        //console.log(`lastObservability: ${lastObservability}`);
+        //console.log(`observability: ${observability}`);
 
         if (observability != null && lastObservability != null) {
             // When the planet will be visible again
             if (lastObservability.includes("observable") && observability.includes("until")) {
-                console.log("//////////////////////////////////////////////////");
+                //console.log("//////////////////////////////////////////////////");
                 // Get the date for the index
-                until.push(date[i-3]); // -3 because we start at i = 3 and the first value is 0
+                until.push(date[i - 3]); // -3 because we start at i = 3 and the first value is 0
                 // Keep only the first Date value for today and clear the 99 unused
                 date = date.slice(0, 1);
                 break;
             }
             // Until when the planet is visible
             else if (lastObservability.includes("until") && observability.includes("observable")) {
-                console.log("//////////////////////////////////////////////////");
+                //console.log("//////////////////////////////////////////////////");
                 // Get the date for the index
-                until.push(date[i-3]);
+                until.push(date[i - 3]);
                 // Keep only the first Date value for today and clear the 99 unused
                 date = date.slice(0, 1);
                 break;
             }
+        }
+        if (body == "sun") {
+            sunRise = rise[0];
+            sunSet = set[0];
         }
 
     };
@@ -376,11 +405,15 @@ export function getValuesITS(data) {
         set,
         magnitude,
         observable,
-        until
+        until,
+        from,
+        to
     };
 }
 
 
+
+await fetchData("sun");
 await fetchData("mercury");
 await fetchData("venus");
 await fetchData("mars");
@@ -388,3 +421,4 @@ await fetchData("jupiter");
 await fetchData("saturn");
 await fetchData("uranus");
 await fetchData("neptune");
+await fetchData("moon");

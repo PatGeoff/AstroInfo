@@ -136,6 +136,7 @@ body {
 }
 
 .widgetColumn {
+    padding-left: 20px;
     align-items: left;
 }
 
