@@ -197,90 +197,90 @@ const constellationsData = {
     },
     Sgr: { //Sagittarius
         simplesoln: 0,
-        cdi_00: -17.001807, 
-        cdi_10: 0.0084249277, 
-        cdi_01: -0.0084249277, 
-        cdi_11: -17.001807, 
-        ref_ra: 281.95589, 
-        ref_dec: -30.251013, 
-        ref_x: 327.92165, 
+        cdi_00: -17.001807,
+        cdi_10: 0.0084249277,
+        cdi_01: -0.0084249277,
+        cdi_11: -17.001807,
+        ref_ra: 281.95589,
+        ref_dec: -30.251013,
+        ref_x: 327.92165,
         ref_y: 277.48399
     },
     Leo: { //Leo
         simplesoln: 0,
-        cdi_00: -16.403893, 
-        cdi_10: 0.72232026, 
-        cdi_01: -0.7669055, 
-        cdi_11: -16.443213, 
-        ref_ra: 158.41863, 
-        ref_dec: 17.563596, 
-        ref_x: 353.19142, 
+        cdi_00: -16.403893,
+        cdi_10: 0.72232026,
+        cdi_01: -0.7669055,
+        cdi_11: -16.443213,
+        ref_ra: 158.41863,
+        ref_dec: 17.563596,
+        ref_x: 353.19142,
         ref_y: 318.93981
     },
     Gem: { //Gemini
         simplesoln: 0,
-        cdi_00: -19.875374, 
-        cdi_10: 0.56472264, 
-        cdi_01: -0.48259705, 
-        cdi_11: -20.06562, 
-        ref_ra: 103.40336, 
-        ref_dec: 15.306631, 
-        ref_x: 344.00997, 
+        cdi_00: -19.875374,
+        cdi_10: 0.56472264,
+        cdi_01: -0.48259705,
+        cdi_11: -20.06562,
+        ref_ra: 103.40336,
+        ref_dec: 15.306631,
+        ref_x: 344.00997,
         ref_y: 455.03114
     },
     Psc: { //Piscies
         simplesoln: 0,
-        cdi_00: -9.9481519, 
-        cdi_10: -9.5731434, 
-        cdi_01: 9.5731434, 
-        cdi_11: -9.9481519, 
-        ref_ra: 21.35726, 
-        ref_dec: 19.167862, 
-        ref_x: 334.70198, 
+        cdi_00: -9.9481519,
+        cdi_10: -9.5731434,
+        cdi_01: 9.5731434,
+        cdi_11: -9.9481519,
+        ref_ra: 21.35726,
+        ref_dec: 19.167862,
+        ref_x: 334.70198,
         ref_y: 111.67419
     },
     Sco: { //Scorpius
         simplesoln: 0,
-        cdi_00: -19.190467, 
-        cdi_10: 0.058417915, 
-        cdi_01: -0.058417915, 
-        cdi_11: -19.190467, 
-        ref_ra: 254.12843, 
-        ref_dec: -32.788151, 
-        ref_x: 276.3185, 
+        cdi_00: -19.190467,
+        cdi_10: 0.058417915,
+        cdi_01: -0.058417915,
+        cdi_11: -19.190467,
+        ref_ra: 254.12843,
+        ref_dec: -32.788151,
+        ref_x: 276.3185,
         ref_y: 317.03021
     },
     Tau: { //Taurus
         simplesoln: 0,
-        cdi_00: -17.344077, 
-        cdi_10: -5.4522668, 
-        cdi_01: 5.4522668, 
-        cdi_11: -17.344077, 
-        ref_ra: 64.468332, 
-        ref_dec: 18.901513, 
-        ref_x: 334.40742, 
+        cdi_00: -17.344077,
+        cdi_10: -5.4522668,
+        cdi_01: 5.4522668,
+        cdi_11: -17.344077,
+        ref_ra: 64.468332,
+        ref_dec: 18.901513,
+        ref_x: 334.40742,
         ref_y: 326.6959
     },
     Vir: { //Virgo
         simplesoln: 0,
-        cdi_00: -9.3107963, 
-        cdi_10: 8.3483396, 
-        cdi_01: -8.4188516, 
-        cdi_11: -9.2241696, 
-        ref_ra: 199.55795, 
-        ref_dec: -1.4257751, 
-        ref_x: 345.16144, 
+        cdi_00: -9.3107963,
+        cdi_10: 8.3483396,
+        cdi_01: -8.4188516,
+        cdi_11: -9.2241696,
+        ref_ra: 199.55795,
+        ref_dec: -1.4257751,
+        ref_x: 345.16144,
         ref_y: 325.2609
     },
     Cap: { //Capricorn
         simplesoln: 0,
-        cdi_00: -19.579798, 
-        cdi_10: 2.2608228, 
-        cdi_01: -2.2608228, 
-        cdi_11: -19.579798, 
-        ref_ra: 313.76427, 
-        ref_dec: -15.632532, 
-        ref_x: 374.75648, 
+        cdi_00: -19.579798,
+        cdi_10: 2.2608228,
+        cdi_01: -2.2608228,
+        cdi_11: -19.579798,
+        ref_ra: 313.76427,
+        ref_dec: -15.632532,
+        ref_x: 374.75648,
         ref_y: 228.83217
     },
     Ari: { //Aries
@@ -401,7 +401,7 @@ function visibility(planet) {
         } catch (error) {
             document.getElementById(idNameUntil).innerHTML = `pour plus de 250 jours`;
         }
-       
+
     }
 }
 
@@ -459,11 +459,9 @@ function formatDate(dateString) {
 
     // Split the input date string
     const [year, month, day] = dateString.split(' ');
-    console.log(dateString);
 
     // Convert the month to French
     const monthInFrench = months[month.toLowerCase()];
-    console.log(monthInFrench);
 
     // Remove leading zero from days
     const formattedDay = parseInt(day, 10);
@@ -497,10 +495,12 @@ function drawConstellationGraph(planet, constellation) {
     svg += `<image xlink:href="${imgPath}" width="${svgWidth}" height="${svgHeight}" onerror="this.style.display='none'" />`;
     // Add the circle and the planet point
     //console.log(planetPos);
-    svg += `<circle cx="${planetPos.x}" cy="${planetPos.y}" r="5" fill="orange" />`; // Point
-    svg += `<circle cx="${planetPos.x}" cy="${planetPos.y}" r="60" fill="none" stroke="#03334F" stroke-width="8" />`; // Circle around the point
-    // Add text
-    svg += `<text x="${svgWidth / 2}" y="50" font-size="30" text-anchor="middle" fill="grey">à 22h ce soir</text>`;
+    if (planet != "sun" && planet != "moon") {
+        svg += `<circle cx="${planetPos.x}" cy="${planetPos.y}" r="5" fill="orange" />`; // Point
+        svg += `<circle cx="${planetPos.x}" cy="${planetPos.y}" r="60" fill="none" stroke="#03334F" stroke-width="8" />`; // Circle around the point
+        // Add text
+        svg += `<text x="${svgWidth / 2}" y="50" font-size="30" text-anchor="middle" fill="grey">à 22h ce soir</text>`;
+    }
     // Terminate the svg string
     svg += `</svg>`;
 
@@ -517,16 +517,22 @@ function drawConstellationGraph(planet, constellation) {
 
 //function drawElevationGraph(elevation, azimuth, visStartIndex, visEndIndex, visible, time, graphName, currentTime, from, until ) {
 function drawElevationGraph(obj, graphName, currentTime,) {
+
+
     const elevation = obj.elevation;
     const azimuth = obj.azimuth;
     const visStartIndex = obj.visibilityStartIndex;
     const visEndIndex = obj.visibilityEndIndex;
     const visible = obj.visibility;
-    const time = obj.time;
-    const from = obj.from;
-    const until = obj.to;
-    const rise = obj.rise;
-    const set = obj.set;
+    const rise = obj.rise; // time at which the planet rises from the horizon
+    const set = obj.set;   // time at which the planet sets from the horizon
+    const time = obj.time; // time array from rise to set
+    const from = obj.from; // time at wich the planet starts to be visible depending on the time of the day and it's elevation 
+    const until = obj.to;  // time at wich the planet starts to disappear if it was visible 
+    const sunRiseIndex = obj.sunRiseAzimuthIndex !== undefined ? obj.sunRiseAzimuthIndex : 0; // time index for this particular planet corresponding to the closest time at which the sun rises
+    const sunCulmIndex = obj.sunCulmAzimuthIndex !== undefined ? obj.sunCulmAzimuthIndex : 0; // time index for this particular planet corresponding to the closest time at which the sun culminates
+    const sunSetIndex = obj.sunSetAzimuthIndex !== undefined ? obj.sunSetAzimuthIndex : 0;   // time index for this particular planet corresponding to the closest time at which the sun sets
+    const midnightAzimuthIndex = obj.midnightAzimuthIndex !== undefined ? obj.midnightAzimuthIndex : 0;
 
     // Create data array with azimuth and elevation pairs
     const data = azimuth.map((az, index) => {
@@ -559,22 +565,6 @@ function drawElevationGraph(obj, graphName, currentTime,) {
 
     // Create SVG elements
     let svg = `<svg viewBox="0 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" width="100%" height="100%">`;
-
-  // Gradient setup
-    
-    // // Define the gradient
-    // svg += `
-    //     <defs>
-    //         <linearGradient id="multiColorGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-    //             <stop offset="0%" style="stop-color: blue; stop-opacity: 1" />
-    //             <stop offset="50%" style="stop-color: black; stop-opacity: 1" />
-    //             <stop offset="100%" style="stop-color: blue; stop-opacity: 1" />
-    //         </linearGradient>
-    //     </defs>
-    // `;
-
-    // // Draw the gradient bar
-    // svg += `<rect x="0" y="${svgHeight -4}" width="${svgWidth}" height="4" fill="url(#multiColorGradient)" />`;
 
 
 
@@ -610,21 +600,63 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     // Find the y-coordinate for zero elevation
     const zeroElevationY = svgHeight - topMargin - padding - ((0 - minElevation) / (maxElevation - minElevation)) * (svgHeight - topMargin - padding) + 50;
 
-    // // Gradient setup
-    
+    //console.log(`planet:${graphName} rise:${rise} set: ${set} from:${from} until${until} sunRiseIndex${sunRiseIndex} corresponding time to sunRiseIndex: ${time[sunRiseIndex]} sunCulmIndex${sunCulmIndex} corresponding time to sunCulmIndex: ${time[sunCulmIndex]}  sunSetIndex${sunSetIndex} corresponding time to sunSetIndex: ${time[sunSetIndex]}`);
+
+
+    console.log(`${graphName} minuit:${midnightAzimuthIndex} time at index: ${time[midnightAzimuthIndex]}`);
+
+    // Gradient setup
+    let stops = [];
+
+    if (sunSetIndex < sunRiseIndex) {
+        // Sunset before sunrise (wrap-around scenario)
+        stops.push({ offset: Math.floor(sunSetIndex * 100 / time.length), color: 'black' });
+        stops.push({ offset: Math.min(100, Math.floor(sunSetIndex * 100 / time.length) + 2), color: 'blue' });
+        stops.push({ offset: Math.max(0, Math.floor(sunRiseIndex * 100 / time.length) - 2), color: 'blue' });
+        stops.push({ offset: Math.floor(sunRiseIndex * 100 / time.length), color: 'blue' });
+        stops.push({ offset: Math.floor(sunCulmIndex * 100 / time.length), color: '#06C1F9' });
+        stops.push({ offset: Math.floor(sunCulmIndex * 100 / time.length), color: 'blue' });
+        stops.push({ offset: 100, color: 'black' });
+    } else {
+        // Normal scenario
+        stops.push({ offset: 0, color: 'black' });
+        stops.push({ offset: Math.max(0, Math.floor(sunRiseIndex * 100 / time.length) - 2), color: 'black' });
+        stops.push({ offset: Math.floor(sunRiseIndex * 100 / time.length), color: 'blue' });
+        stops.push({ offset: Math.floor(sunCulmIndex * 100 / time.length), color: '#06C1F9' });
+        stops.push({ offset: Math.floor(sunSetIndex * 100 / time.length), color: 'blue' });
+        stops.push({ offset: Math.min(100, Math.floor(sunSetIndex * 100 / time.length) + 2), color: 'black' });
+        stops.push({ offset: 100, color: 'black' });
+    }
+
+    // Add stops around midnight if it's not zero
+    if (midnightAzimuthIndex !== 0) {
+        const midnightOffset = Math.floor(midnightAzimuthIndex * 100 / time.length);
+        stops.push({ offset: Math.max(0, midnightOffset - 2), color: 'black' });
+        stops.push({ offset: midnightOffset, color: 'black' });
+        stops.push({ offset: Math.min(100, midnightOffset + 2), color: 'black' });
+    }
+
+    // Sort stops by offset to ensure correct order
+    stops.sort((a, b) => a.offset - b.offset);
+
+    // Generate the gradient stops
+    let gradientStops = stops.map(stop => `<stop offset="${stop.offset}%" style="stop-color: ${stop.color}; stop-opacity: 1" />`).join('\n');
+
+    // Generate a unique ID for each gradient
+    const uniqueId = `multiColorGradient_${Math.random().toString(36).substr(2, 9)}`;
+
     // Define the gradient
     svg += `
-        <defs>
-            <linearGradient id="multiColorGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" style="stop-color: blue; stop-opacity: 1" />
-                <stop offset="50%" style="stop-color: black; stop-opacity: 1" />
-                <stop offset="100%" style="stop-color: blue; stop-opacity: 1" />
-            </linearGradient>
-        </defs>
+ <defs>
+     <linearGradient id="${uniqueId}" x1="0%" y1="0%" x2="100%" y2="0%">
+                 ${gradientStops}
+    </linearGradient>
+</defs>
     `;
 
+
     // Draw the gradient bar
-    svg += `<rect x="0" y="${zeroElevationY - 4}" width="${svgWidth}" height="10" fill="url(#multiColorGradient)" />`;
+    svg += `<rect x="0" y="${zeroElevationY - 6}" width="${svgWidth}" height="6" fill="url(#${uniqueId})" />`;
 
 
     // Draw the horizontal line at zero elevation
@@ -818,9 +850,9 @@ function planetOnConstellationTEST(constellation, _ra, _dec) {
     const ref_y = constellation.ref_y;
     let xscaled = 0.0;
     let yscaled = 0.0;
-	
-	let x, y;
-	if (constellation.simplesoln === 0) {
+
+    let x, y;
+    if (constellation.simplesoln === 0) {
         const r00 = Math.cos(ref_ra * dtor) * Math.sin(ref_dec * dtor);
         const r10 = Math.sin(ref_ra * dtor) * Math.sin(ref_dec * dtor);
         const r20 = -Math.cos(ref_dec * dtor);
@@ -847,16 +879,16 @@ function planetOnConstellationTEST(constellation, _ra, _dec) {
         xscaled = x / ref_xsize * scaled_xsize;
         yscaled = y / ref_ysize * scaled_ysize;
     } else {
-		const u = (ra - ref_ra) * Math.cos(ref_dec * dtor);
-		const v = (dec - ref_dec);
-		const xdif = cdi_00 * u + cdi_01 * v;
-		const ydif = cdi_10 * u + cdi_11 * v;
-		x = xdif + ref_x;
-		y = ydif + ref_y;
+        const u = (ra - ref_ra) * Math.cos(ref_dec * dtor);
+        const v = (dec - ref_dec);
+        const xdif = cdi_00 * u + cdi_01 * v;
+        const ydif = cdi_10 * u + cdi_11 * v;
+        x = xdif + ref_x;
+        y = ydif + ref_y;
         xscaled = x / ref_xsize * scaled_xsize;
         yscaled = (ref_ysize - y) / ref_ysize * scaled_ysize;
-	}
-	//console.log("x:", xscaled);
+    }
+    //console.log("x:", xscaled);
     //console.log("y:", yscaled);
     const pos = { x: xscaled, y: yscaled };
     return pos;

@@ -18,7 +18,7 @@ const testDate = new Date();
 
 let sunRise = null;
 let sunSet = null;
-
+let sunCulm = null;
 
 
 const bodies = {
@@ -200,6 +200,8 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
     let visibility = null;
     let sunRiseAzimuthIndex = null;
     let sunSetAzimuthIndex = null;
+    let sunCulmAzimuthIndex = null;
+    let midnightAzimuthIndex = null;
 
     lines.forEach(line => {
         let values = line.trim().split(/\s+/); // Split by whitespace and trim
@@ -268,8 +270,8 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
         visibility = false;
     }
 
-    // Find the closest azimuth index to sunRise and sunSet and get the direction for the svg gradient 
-    if (sunSet != null && sunRise != null) {
+    // Find the closest azimuth index to sunRise, sunSet and sunCulm
+    if (sunSet != null && sunRise != null) { 
         try {
             sunRiseAzimuthIndex = findClosestIndex(time, sunRise);
             //console.log(`sunRise: ${sunRise} and index: ${sunRiseAzimuthIndex}`);
@@ -280,6 +282,20 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
         }
         try {
             sunSetAzimuthIndex = findClosestIndex(time, sunSet);
+            //console.log(`sunSet: ${sunSet} and index: ${sunSetAzimuthIndex}`);
+
+        } catch (error) {
+            console.log(error);
+        }
+        try {
+            sunCulmAzimuthIndex = findClosestIndex(time, sunCulm);
+            //console.log(`sunSet: ${sunSet} and index: ${sunSetAzimuthIndex}`);
+
+        } catch (error) {
+            console.log(error);
+        }
+        try {
+            midnightAzimuthIndex = findClosestIndex(time, "00:00");
             //console.log(`sunSet: ${sunSet} and index: ${sunSetAzimuthIndex}`);
 
         } catch (error) {
@@ -303,7 +319,9 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
         visibilityEndIndex,
         visibility,
         sunRiseAzimuthIndex,
-        sunSetAzimuthIndex
+        sunSetAzimuthIndex,
+        sunCulmAzimuthIndex,
+        midnightAzimuthIndex
     };
 }
 
@@ -356,7 +374,7 @@ function getValuesITS(data, body) {
             set.push(values[13]); // Set time
             magnitude.push(values[14]);
             observable.push(values[15]); // Observable time
-            // If the planet or Moon is visible, value[15] is in the format "00:00 until 00:00", otherwise it is "Not oservable", and if it is the Sun it is "Visible all day"
+            // If the planet or Moon is visible, value[15] is in the format "00:00 until 00:00", otherwise it is "Not oservable", and if it is the Sun it is "Visible all day" all the time
             if (values[15].includes("until")) {
                 from = values[15].split("until")[0];
                 to = values[15].split("until")[1];
@@ -364,10 +382,6 @@ function getValuesITS(data, body) {
         }
         let lastObservability = observability;
         observability = values[15];
-        // Debugging statements
-        //console.log(`Iteration ${i}:`);
-        //console.log(`lastObservability: ${lastObservability}`);
-        //console.log(`observability: ${observability}`);
 
         if (observability != null && lastObservability != null) {
             // When the planet will be visible again
@@ -392,6 +406,7 @@ function getValuesITS(data, body) {
         if (body == "sun") {
             sunRise = rise[0];
             sunSet = set[0];
+            sunCulm = culm[0];
         }
 
     };
