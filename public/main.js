@@ -603,10 +603,11 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     //console.log(`planet:${graphName} rise:${rise} set: ${set} from:${from} until${until} sunRiseIndex${sunRiseIndex} corresponding time to sunRiseIndex: ${time[sunRiseIndex]} sunCulmIndex${sunCulmIndex} corresponding time to sunCulmIndex: ${time[sunCulmIndex]}  sunSetIndex${sunSetIndex} corresponding time to sunSetIndex: ${time[sunSetIndex]}`);
 
 
-    console.log(`${graphName} minuit:${midnightAzimuthIndex} time at index: ${time[midnightAzimuthIndex]}`);
+    //console.log(`${graphName} minuit:${midnightAzimuthIndex} time at index: ${time[midnightAzimuthIndex]}`);
 
     // Gradient setup
     let stops = [];
+
 
     if (sunSetIndex < sunRiseIndex) {
         // Sunset before sunrise (wrap-around scenario)
@@ -694,14 +695,42 @@ function drawElevationGraph(obj, graphName, currentTime,) {
                 svg += `<text x="${intersection.x + 30}" y="${intersection.y + 5}" text-anchor="middle" font-size="12px" fill="white">${formatTime(until)}</text>`;
             }
         }
-        //svg += `<text x="${svgWidth / 2}" y="${svgHeight / 2}" text-anchor="middle" font-size="14px" fill="green">Visible en ce moment</text>`;
     } else {
-        //svg += `<text x="${svgWidth / 2}" y="${svgHeight / 2}" text-anchor="middle" font-size="14px" fill="red">NON visible en ce moment</text>`;
         const text = "Non visible en ce moment";
-        const fontSize = 14;
+        const fontSize = 16;
         svg += `<rect x="${svgWidth / 2 - (text.length * fontSize / 4)}" y="${svgHeight / 2 - fontSize}" width="${text.length * fontSize / 2}" height="${fontSize * 1.5}" fill="#600429"></rect>`;
         svg += `<text x="${svgWidth / 2}" y="${svgHeight / 2}" text-anchor="middle" font-size="${fontSize}px" fill="white">${text}</text>`;
 
+    }
+
+    // Function to draw diagonal lines
+    function drawDiagonals(svg, scaledAzimuth, scaledElevation, visStartIndex, visEndIndex, zeroElevationY) {
+        
+        const totalWidth = scaledAzimuth[visEndIndex] - scaledAzimuth[visStartIndex];
+
+        let divider = totalWidth > 50.0 ? 20 : 10;
+       
+        const numDiagonals = Math.floor(totalWidth / divider); // Adjust the divisor to control spacing
+        const stepX = totalWidth / numDiagonals;
+
+        for (let i = 1; i <= numDiagonals -1; i++) {
+            const x = scaledAzimuth[visStartIndex] + i * stepX;
+            const intersection = findIntersection(x, scaledAzimuth, scaledElevation);
+            if (intersection) {
+                svg += `<line x1="${x}" y1="${intersection.y}" x2="${x}" y2="${zeroElevationY}" style="stroke:#2A3044;stroke-width:1;stroke-dasharray:5,5"/>`;
+            }
+        }
+        return svg;
+    }
+    if ((visible && visStartIndex != null && visEndIndex != null) || obj.bodyName == "sun") {
+        if (obj.bodyName == "sun"){
+            svg = drawDiagonals(svg, scaledAzimuth, scaledElevation, 0, time.length, zeroElevationY);
+        }
+        else{
+            
+            svg = drawDiagonals(svg, scaledAzimuth, scaledElevation, visStartIndex, visEndIndex, zeroElevationY);
+            //console.log(` ${scaledAzimuth}  ${scaledElevation}  ${visStartIndex}  ${visEndIndex}  ${zeroElevationY}  `);
+        }
     }
 
     // Add text for max elevation
@@ -730,10 +759,12 @@ function drawElevationGraph(obj, graphName, currentTime,) {
 
     // Moon and Sun icons
     if (midnightAzimuthIndex > 0 && midnightAzimuthIndex < scaledAzimuth.length - 1) {
-        svg += `<image href="images/resources/smallMoon.png" x="${scaledAzimuth[midnightAzimuthIndex]}" y="${zeroElevationY - 20}" width="15" height="15" />`;
+        //svg += `<image href="images/resources/smallMoon.png" x="${scaledAzimuth[midnightAzimuthIndex]}" y="${zeroElevationY - 22}" width="15" height="15" />`;
+        //svg += `<text x="${scaledAzimuth[midnightAzimuthIndex]}" y="${zeroElevationY - 22}" text-anchor="middle" font-size="14px" fill="lightgrey">minuit</text>`;
     }
-    if (sunCulmIndex> 0 && sunCulmIndex < scaledAzimuth.length - 1) {
-    svg += `<image href="images/resources/smallSun.png" x="${scaledAzimuth[sunCulmIndex]}" y="${zeroElevationY - 20}" width="15" height="15" opacity="1" />`;
+    if (sunCulmIndex > 0 && sunCulmIndex < scaledAzimuth.length - 1) {
+        //svg += `<image href="images/resources/smallSun.png" x="${scaledAzimuth[sunCulmIndex]}" y="${zeroElevationY - 22}" width="15" height="15" opacity="1" />`;
+        
     }
 
     svg += `</svg>`;
@@ -741,6 +772,7 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     // Insert SVG into the DOM
     document.getElementById(graphName).innerHTML = svg;
 }
+
 
 function drawGraph(obj) {
     const object = planetsData[obj];

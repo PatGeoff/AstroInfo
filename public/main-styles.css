@@ -83,7 +83,6 @@ body {
     gap: 20px;
     background-color: black;
     padding: 20px;
-    margin-top: 40px;
 }
 
 .flex-item {
@@ -175,6 +174,20 @@ body {
 
 .action-button:hover {
     background-color: rgba(0, 0, 0, 0.5); /* Optional: Add a semi-transparent background on hover */
+}
+
+.infos-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: #080808;
+}
+
+.infos {
+    padding: 20px; /* Add padding inside each .infos div */
+    color: gray;
+    border-radius: 8px; /* Optional: Add rounded corners */
+    text-align: left; /* Center the text inside each .infos div */
 }
 
 /* Responsive Styles */

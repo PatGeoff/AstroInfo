@@ -11,10 +11,10 @@ let data;
 
 // Global date variable for testing
 const annee = 2024;
-const mois = 10; // mois de 1 à 12 mais dans une Date c','est 0-11
-const jour = 10;
-//const testDate = new Date(annee, mois - 1, jour); // Example: December 25, 2024 (months are zero-indexed)
-const testDate = new Date();
+const mois = 22; // mois de 1 à 12 mais dans une Date c','est 0-11
+const jour = 3;
+const testDate = new Date(annee, mois - 1, jour); // Example: December 25, 2024 (months are zero-indexed)
+//const testDate = new Date();
 
 let sunRise = null;
 let sunSet = null;
@@ -202,6 +202,7 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
     let sunSetAzimuthIndex = null;
     let sunCulmAzimuthIndex = null;
     let midnightAzimuthIndex = null;
+    
 
     lines.forEach(line => {
         let values = line.trim().split(/\s+/); // Split by whitespace and trim
@@ -345,6 +346,7 @@ function getValuesITS(data, body) {
     const lines = data.trim().split('\n');
     //console.log(data);
     // Initialize arrays for Rise, Culm, Set, and Observable
+    const bodyName = body;
     let date = [];
     const ra = [];
     const dec = [];
@@ -412,6 +414,7 @@ function getValuesITS(data, body) {
     };
 
     return {
+        bodyName,
         date,
         ra,
         dec,
