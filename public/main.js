@@ -728,6 +728,14 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     svg += `<text x="${lastAzimuthX}" y="${minElevationY + 20}" text-anchor="middle" font-size="14px" fill="white">${getAzimuthLabel(azimuth[numValues - 1])}</text>`;
     svg += `<text x="${lastAzimuthX}" y="${minElevationY + 2}" text-anchor="middle" font-size="14px" fill="lightgrey">${formatTime(set.toString())}</text>`;
 
+    // Moon and Sun icons
+    if (midnightAzimuthIndex > 0 && midnightAzimuthIndex < scaledAzimuth.length - 1) {
+        svg += `<image href="images/resources/smallMoon.png" x="${scaledAzimuth[midnightAzimuthIndex]}" y="${zeroElevationY - 20}" width="15" height="15" />`;
+    }
+    if (sunCulmIndex> 0 && sunCulmIndex < scaledAzimuth.length - 1) {
+    svg += `<image href="images/resources/smallSun.png" x="${scaledAzimuth[sunCulmIndex]}" y="${zeroElevationY - 20}" width="15" height="15" opacity="1" />`;
+    }
+
     svg += `</svg>`;
 
     // Insert SVG into the DOM
