@@ -350,6 +350,7 @@ const fetchData = async (planet) => {
         }
         const data = await response.json();
         planetsData[planet] = data;
+        //(planetsData[planet]);
     } catch (error) {
         console.error(`Error fetching data for ${planet}:`, error);
     }
@@ -361,6 +362,9 @@ function displayData(planet) {
     drawConstellationGraph(planet, planetsData[planet].constellation[0]);
     drawGraph(planet);
     magRiseSet(planet);
+    if (planet == "sun"){
+        nauticalInfo(planet);
+    }
 }
 
 // Update the grah and time every minute
@@ -381,6 +385,7 @@ function currentTime() {
     const timeString = `${hours}h${minutes}`;
     return timeString;
 }
+
 
 function visibility(planet) {
     if (planet !== "sun") {
@@ -415,8 +420,19 @@ function magRiseSet(planet) {
     idNameVis = `set_${planet}`;
     document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Coucher: </span><span style="color: white;">${formatTime(planetsData[planet].set)}</span>`;
 
+    idNameVis = `phase_${planet}`;
+    document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Phase: </span><span style="color: white;">${planetsData[planet].phase}°</span>`;
+
     idNameVis = `magnitude_${planet}`;
     document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Magnitude: </span><span style="color: white;">${planetsData[planet].magnitude}</span>`;
+    
+    idNameVis = `distance_${planet}`;
+    let distanceAU = parseFloat(planetsData[planet].distance).toFixed(3);
+    document.getElementById(idNameVis).innerHTML = `
+        <span style="color: grey;">Distance: </span>
+        <span style="color: white;">${distanceAU} AU</span>
+        <div style="color: white; margin-left: 20px;">(${convertAUtoKM(planetsData[planet].distance)} km)</div>
+    `;
 
     idNameVis = `constellation_${planet}`;
     document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Constellation: </span><span style="color: white;">${constellations[planetsData[planet].constellation[0]]}</span>`;
@@ -434,6 +450,46 @@ function magRiseSet(planet) {
     idNameVis = `until_${planet}`;
     document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Jusqu'à: </span><span style="color: white;">${text}</span>`;
 }
+
+function nauticalInfo(planet){
+    const rise = planetsData[planet].rise[0];
+    const set = planetsData[planet].set[0];
+    const nauticalSunrise = adjustTimeByMinutes(rise, -8);
+    const nauticalSunset = adjustTimeByMinutes(set, +8);
+
+    let idNameVis = "nautical_sunrise";
+    document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Début de l'aube Nautique: </span><span style="color: white;">${formatTime(nauticalSunrise)}</span>`;
+
+    idNameVis = "sunrise";
+    document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Lever du Soleil: </span><span style="color: white;">${formatTime(rise)}</span>`;
+
+    idNameVis = "nautical_sunset";
+    document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Fin du crépuscule Nautique: </span><span style="color: white;">${formatTime(nauticalSunset)}</span>`;
+
+    idNameVis = "sunset";
+    document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Coucher du Soleil: </span><span style="color: white;">${formatTime(set)}</span>`;
+
+}
+
+function adjustTimeByMinutes(timeStr, minutes) {
+    // Split the time string into hours and minutes
+    let [hours, mins] = timeStr.split(':').map(Number);
+    
+    // Create a new Date object with the given time
+    let date = new Date();
+    date.setHours(hours);
+    date.setMinutes(mins);
+    
+    // Adjust the time by the specified number of minutes
+    date.setMinutes(date.getMinutes() + minutes);
+    
+    // Format the new time back to a string
+    let newHours = String(date.getHours()).padStart(2, '0');
+    let newMinutes = String(date.getMinutes()).padStart(2, '0');
+    
+    return `${newHours}:${newMinutes}`;
+}
+
 
 function todaysDate() {
     const date = planetsData["venus"].date[0].toString();
@@ -477,6 +533,11 @@ function formatTime(time) {
     const formattedHours = parseInt(hours, 10);
     // Return the formatted time string
     return `${formattedHours}h${minutes}`;
+}
+
+function convertAUtoKM(dist) {
+    const AU_TO_KM = 149597870.7;
+    return Math.round(dist * AU_TO_KM);
 }
 
 function drawConstellationGraph(planet, constellation) {
@@ -567,7 +628,14 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     let svg = `<svg viewBox="0 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" width="100%" height="100%">`;
 
 
-
+    // for (let i = 0; i < numValues - 1; i++) {
+    //     const xMid = (scaledAzimuth[i] + scaledAzimuth[i + 1]) / 2;
+    //     const yMid = (scaledElevation[i] + scaledElevation[i + 1]) / 2;
+    //     let pathData = `M ${scaledAzimuth[i]},${scaledElevation[i]} Q ${scaledAzimuth[i]},${scaledElevation[i]} ${xMid},${yMid}`;
+    //     pathData += ` T ${scaledAzimuth[i + 1]},${scaledElevation[i + 1]}`;
+    //     let color = i % 2 === 0 ? 'red' : 'blue'; // Example: alternate colors
+    //     svg += `<path d="${pathData}" style="fill:none;stroke:${color};stroke-width:1"/>`;
+    // }
     // Draw the path for the elevation graph using cubic Bézier curves
     let pathData = `M ${scaledAzimuth[0]},${scaledElevation[0]}`;
     for (let i = 1; i < numValues - 1; i++) {
@@ -717,7 +785,7 @@ function drawElevationGraph(obj, graphName, currentTime,) {
             const x = scaledAzimuth[visStartIndex] + i * stepX;
             const intersection = findIntersection(x, scaledAzimuth, scaledElevation);
             if (intersection) {
-                svg += `<line x1="${x}" y1="${intersection.y}" x2="${x}" y2="${zeroElevationY}" style="stroke:#2A3044;stroke-width:1;stroke-dasharray:5,5"/>`;
+                svg += `<line x1="${x}" y1="${intersection.y+2}" x2="${x}" y2="${zeroElevationY}" style="stroke:#2A3044;stroke-width:1;stroke-dasharray:5,5"/>`;
             }
         }
         return svg;
@@ -759,11 +827,11 @@ function drawElevationGraph(obj, graphName, currentTime,) {
 
     // Moon and Sun icons
     if (midnightAzimuthIndex > 0 && midnightAzimuthIndex < scaledAzimuth.length - 1) {
-        //svg += `<image href="images/resources/smallMoon.png" x="${scaledAzimuth[midnightAzimuthIndex]}" y="${zeroElevationY - 22}" width="15" height="15" />`;
+        svg += `<image href="images/resources/smallMoon.png" x="${scaledAzimuth[midnightAzimuthIndex]}" y="${zeroElevationY - 22}" width="15" height="15" />`;
         //svg += `<text x="${scaledAzimuth[midnightAzimuthIndex]}" y="${zeroElevationY - 22}" text-anchor="middle" font-size="14px" fill="lightgrey">minuit</text>`;
     }
     if (sunCulmIndex > 0 && sunCulmIndex < scaledAzimuth.length - 1) {
-        //svg += `<image href="images/resources/smallSun.png" x="${scaledAzimuth[sunCulmIndex]}" y="${zeroElevationY - 22}" width="15" height="15" opacity="1" />`;
+        svg += `<image href="images/resources/smallSun.png" x="${scaledAzimuth[sunCulmIndex]}" y="${zeroElevationY - 22}" width="15" height="15" opacity="1" />`;
         
     }
 

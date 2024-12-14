@@ -12,9 +12,9 @@ let data;
 // Global date variable for testing
 const annee = 2024;
 const mois = 22; // mois de 1 à 12 mais dans une Date c','est 0-11
-const jour = 3;
-const testDate = new Date(annee, mois - 1, jour); // Example: December 25, 2024 (months are zero-indexed)
-//const testDate = new Date();
+const jour = 6;
+//const testDate = new Date(annee, mois - 1, jour); // Example: December 25, 2024 (months are zero-indexed)
+const testDate = new Date();
 
 let sunRise = null;
 let sunSet = null;
@@ -43,7 +43,8 @@ function constructApiUrlIST(body) {
     const year = testDate.getFullYear(); // Full year (e.g., 2024)
 
     // Fetching 100 rows to be able to know when or until when the planet will be visible. After that, we only need one single line for the present day. 
-    const params = `startday=${day}&startmonth=${month}&startyear=${year}&ird=1&irs=1&ima=1&ipm=0&iph=0&ias=0&iss=0&iob=1&ide=0&ids=0&interval=4&tz=0&format=csv&rows=250&objtype=1&objpl=${body}&objtxt=${body}&town=6077243`;
+    const params = `startday=${day}&startmonth=${month}&startyear=${year}&ird=1&irs=1&ima=1&ipm=0&iph=1&ias=0&iss=0&iob=1&ide=1&ids=0&interval=4&tz=0&format=csv&rows=250&objtype=1&objpl=${body}&objtxt=${body}&town=6077243`;
+
     return params;
 }
 
@@ -354,6 +355,8 @@ function getValuesITS(data, body) {
     const culm = [];
     const set = [];
     const magnitude = [];
+    const phase = [];
+    const distance = [];
     const observable = [];
     const until = [];
     let from = "";
@@ -373,17 +376,19 @@ function getValuesITS(data, body) {
             dec.push(`${values[8]}:${values[9]}:${values[10]}`);
             rise.push(values[11]); // Rise time
             culm.push(values[12]); // Culmination time
-            set.push(values[13]); // Set time
+            set.push(values[13]); // Set time            
             magnitude.push(values[14]);
-            observable.push(values[15]); // Observable time
+            phase.push(values[15]); 
+            distance.push(values[16]);
+            observable.push(values[17]); // Observable time
             // If the planet or Moon is visible, value[15] is in the format "00:00 until 00:00", otherwise it is "Not oservable", and if it is the Sun it is "Visible all day" all the time
-            if (values[15].includes("until")) {
-                from = values[15].split("until")[0];
-                to = values[15].split("until")[1];
+            if (values[17].includes("until")) {
+                from = values[17].split("until")[0];
+                to = values[17].split("until")[1];
             }
         }
         let lastObservability = observability;
-        observability = values[15];
+        observability = values[17];
 
         if (observability != null && lastObservability != null) {
             // When the planet will be visible again
@@ -422,6 +427,8 @@ function getValuesITS(data, body) {
         culm,
         set,
         magnitude,
+        phase,
+        distance,
         observable,
         until,
         from,
