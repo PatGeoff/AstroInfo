@@ -48,141 +48,6 @@ const constellationsPath = {
     Vir: "images/constellations/Virgo.png"
 }
 
-// const constellationsData = {
-//     Aqr: { // Aquarius
-//         cdi_00: -11.367683,
-//         cdi_10: -11.061433,
-//         cdi_01: 11.061433,
-//         cdi_11: -11.367683,
-//         ref_ra: 332.53346,
-//         ref_dec: -7.3112996,
-//         ref_x: 372.32342,
-//         ref_y: 253.0641
-//     },
-//     Ari: { // Aquarius
-//         cdi_00: -11.367683,
-//         cdi_10: -11.061433,
-//         cdi_01: 11.061433,
-//         cdi_11: -11.367683,
-//         ref_ra: 332.53346,
-//         ref_dec: -7.3112996,
-//         ref_x: 372.32342,
-//         ref_y: 253.0641
-//     },
-//     Cnc: {
-//         cdi_00: -19.875374,
-//         cdi_10: 0.56472264,
-//         cdi_01: -0.48259705,
-//         cdi_11: -20.06562,
-//         ref_ra: 103.40336,
-//         ref_dec: 15.306631,
-//         ref_x: 344.00997,
-//         ref_y: 455.03114
-//     },
-//     Cap: {
-//         cdi_00: -19.875374,
-//         cdi_10: 0.56472264,
-//         cdi_01: -0.48259705,
-//         cdi_11: -20.06562,
-//         ref_ra: 103.40336,
-//         ref_dec: 15.306631,
-//         ref_x: 344.00997,
-//         ref_y: 455.03114
-//     },
-//     Gem: {
-//         cdi_00: -19.875374,
-//         cdi_10: 0.56472264,
-//         cdi_01: -0.48259705,
-//         cdi_11: -20.06562,
-//         ref_ra: 103.40336,
-//         ref_dec: 15.306631,
-//         ref_x: 344.00997,
-//         ref_y: 455.03114
-//     },
-//     Leo: {
-//         cdi_00: -16.403893,
-//         cdi_10: 0.72232026,
-//         cdi_01: -0.7669055,
-//         cdi_11: -16.443213,
-//         ref_ra: 158.41863,
-//         ref_dec: 17.563596,
-//         ref_x: 353.19142,
-//         ref_y: 318.93981
-//     },
-//     Lib: {
-//         cdi_00: -16.403893,
-//         cdi_10: 0.72232026,
-//         cdi_01: -0.7669055,
-//         cdi_11: -16.443213,
-//         ref_ra: 158.41863,
-//         ref_dec: 17.563596,
-//         ref_x: 353.19142,
-//         ref_y: 318.93981
-//     },
-//     Oph: {
-//         cdi_00: -9.9481519,
-//         cdi_10: -9.5731434,
-//         cdi_01: 9.5731434,
-//         cdi_11: -9.9481519,
-//         ref_ra: 21.35726,
-//         ref_dec: 19.167862,
-//         ref_x: 334.70198,
-//         ref_y: 111.67419
-//     },
-//     Psc: {
-//         cdi_00: -9.9481519,
-//         cdi_10: -9.5731434,
-//         cdi_01: 9.5731434,
-//         cdi_11: -9.9481519,
-//         ref_ra: 21.35726,
-//         ref_dec: 19.167862,
-//         ref_x: 334.70198,
-//         ref_y: 111.67419
-//     },
-//     Sco: {
-//         cdi_00: -19.190467,
-//         cdi_10: 0.058417915,
-//         cdi_01: -0.058417915,
-//         cdi_11: -19.190467,
-//         ref_ra: 254.12843,
-//         ref_dec: -32.788151,
-//         ref_x: 276.3185,
-//         ref_y: 317.03021
-//     },
-//     Sgr: {
-//         cdi_00: -17.046297,
-//         cdi_10: 0.9709383,
-//         cdi_01: -0.91149182,
-//         cdi_11: -17.223345,
-//         ref_ra: 288.48749,
-//         ref_dec: -39.497587,
-//         ref_x: 242.28439,
-//         ref_y: 435.2103
-//     },
-//     Tau: {
-//         cdi_00: -17.344077,
-//         cdi_10: -5.4522668,
-//         cdi_01: 5.4522668,
-//         cdi_11: -17.344077,
-//         ref_ra: 64.468332,
-//         ref_dec: 18.901513,
-//         ref_x: 334.40742,
-//         ref_y: 326.6959
-//     },
-//     Vir: {
-//         cdi_00: -9.3107963,
-//         cdi_10: 8.3483396,
-//         cdi_01: -8.4188516,
-//         cdi_11: -9.2241696,
-//         ref_ra: 199.55795,
-//         ref_dec: -1.4257751,
-//         ref_x: 345.16144,
-//         ref_y: 325.2609
-//     }
-
-
-// };
-
 const constellationsData = {
     Aqr: { //Aquarius
         simplesoln: 0,
@@ -340,7 +205,6 @@ const azimuthLabels = [
     { range: [337.5, 360], label: "N" } // Wrap around to North
 ];
 
-
 // Create the json objects with the planets data 
 const fetchData = async (planet) => {
     try {
@@ -350,7 +214,8 @@ const fetchData = async (planet) => {
         }
         const data = await response.json();
         planetsData[planet] = data;
-        //(planetsData[planet]);
+        //console.log(`planet rise: ${data.rise}`);
+        //console.log(`planet set: ${data.set}`);;        
     } catch (error) {
         console.error(`Error fetching data for ${planet}:`, error);
     }
@@ -385,7 +250,6 @@ function currentTime() {
     const timeString = `${hours}h${minutes}`;
     return timeString;
 }
-
 
 function visibility(planet) {
     if (planet !== "sun") {
@@ -431,7 +295,7 @@ function magRiseSet(planet) {
     document.getElementById(idNameVis).innerHTML = `
         <span style="color: grey;">Distance: </span>
         <span style="color: white;">${distanceAU} AU</span>
-        <div style="color: white; margin-left: 20px;">(${convertAUtoKM(planetsData[planet].distance)} km)</div>
+        <div style="color: #C6C6C6; font-size: 12px; argin-left: 20px;">(${convertAUtoKM(planetsData[planet].distance)} km)</div>
     `;
 
     idNameVis = `constellation_${planet}`;
@@ -783,19 +647,17 @@ function drawElevationGraph(obj, graphName, currentTime,) {
             const x = scaledAzimuth[visStartIndex] + i * stepX;
             const intersection = findIntersection(x, scaledAzimuth, scaledElevation);
             if (intersection) {
-                svg += `<line x1="${x}" y1="${intersection.y+2}" x2="${x}" y2="${zeroElevationY}" style="stroke:#2A3044;stroke-width:1;stroke-dasharray:5,5"/>`;
+                svg += `<line x1="${x}" y1="${intersection.y+2}" x2="${x}" y2="${zeroElevationY-6}" style="stroke:#2A3044;stroke-width:1;stroke-dasharray:5,5"/>`;
             }
         }
         return svg;
     }
     if ((visible && visStartIndex != null && visEndIndex != null) || obj.bodyName == "sun") {
         if (obj.bodyName == "sun"){
-            svg = drawDiagonals(svg, scaledAzimuth, scaledElevation, 0, time.length, zeroElevationY);
+            svg = drawDiagonals(svg, scaledAzimuth, scaledElevation, 1, time.length-1, zeroElevationY);
         }
         else{
-            
             svg = drawDiagonals(svg, scaledAzimuth, scaledElevation, visStartIndex, visEndIndex, zeroElevationY);
-            //console.log(` ${scaledAzimuth}  ${scaledElevation}  ${visStartIndex}  ${visEndIndex}  ${zeroElevationY}  `);
         }
     }
 
