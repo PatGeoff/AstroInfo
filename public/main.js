@@ -454,8 +454,8 @@ function magRiseSet(planet) {
 function nauticalInfo(planet){
     const rise = planetsData[planet].rise[0];
     const set = planetsData[planet].set[0];
-    const nauticalSunrise = adjustTimeByMinutes(rise, -8);
-    const nauticalSunset = adjustTimeByMinutes(set, +8);
+    const nauticalSunrise = adjustTimeByMinutes(rise, -35);
+    const nauticalSunset = adjustTimeByMinutes(set, +35);
 
     let idNameVis = "nautical_sunrise";
     document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Début de l'aube Nautique: </span><span style="color: white;">${formatTime(nauticalSunrise)}</span>`;
@@ -489,7 +489,6 @@ function adjustTimeByMinutes(timeStr, minutes) {
     
     return `${newHours}:${newMinutes}`;
 }
-
 
 function todaysDate() {
     const date = planetsData["venus"].date[0].toString();
@@ -547,7 +546,7 @@ function drawConstellationGraph(planet, constellation) {
     //console.log(imgPath);
     const svgWidth = 600;
     const svgHeight = 600;
-    const planetPos = planetOnConstellationTEST(constellationsData[constellation], raStringToDegrees(planetsData[planet].ra[0]), decStringToDegrees(planetsData[planet].dec[0]));
+    const planetPos = planetOnConstellation(constellationsData[constellation], raStringToDegrees(planetsData[planet].ra[0]), decStringToDegrees(planetsData[planet].dec[0]));
     //console.log(`${planet} ra: ${planetsData[planet].ra[0]} dec: ${planetsData[planet].dec[0]}`);
     //console.log(`x: ${planetPos.x} y: ${planetPos.y}`);
     // Create SVG elements
@@ -576,7 +575,6 @@ function drawConstellationGraph(planet, constellation) {
 
 }
 
-//function drawElevationGraph(elevation, azimuth, visStartIndex, visEndIndex, visible, time, graphName, currentTime, from, until ) {
 function drawElevationGraph(obj, graphName, currentTime,) {
 
 
@@ -841,7 +839,6 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     document.getElementById(graphName).innerHTML = svg;
 }
 
-
 function drawGraph(obj) {
     const object = planetsData[obj];
     const graphName = `${obj}_graph`;
@@ -858,87 +855,6 @@ function getAzimuthLabel(azimuth) {
 }
 
 function planetOnConstellation(constellation, _ra, _dec) {
-    //console.log(`ra: ${_ra} dec: ${_dec}`);
-    const pi = Math.PI;
-    const dtor = pi / 180.0;
-    const ref_ra = constellation.ref_ra; // Set this value
-    const ref_dec = constellation.ref_dec; // Set this value
-    const cdi_00 = constellation.cdi_00; // Set this value
-    const cdi_01 = constellation.cdi_01; // Set this value
-    const cdi_10 = constellation.cdi_10; // Set this value
-    const cdi_11 = constellation.cdi_11; // Set this value
-    const ra = _ra; // Set this value
-    const dec = _dec; // Set this value
-    const ref_xsize = 600; // Set this value
-    const ref_ysize = 600; // Set this value
-    const scaled_xsize = 600; // Set this value
-    const scaled_ysize = 600; // Set this value
-    const ref_x = constellation.ref_x;
-    const ref_y = constellation.ref_y;
-
-    const r00 = Math.cos(ref_ra * dtor) * Math.sin(ref_dec * dtor);
-    const r10 = Math.sin(ref_ra * dtor) * Math.sin(ref_dec * dtor);
-    const r20 = -Math.cos(ref_dec * dtor);
-    const r01 = -Math.sin(ref_ra * dtor);
-    const r11 = Math.cos(ref_ra * dtor);
-    const r02 = Math.cos(ref_ra * dtor) * Math.cos(ref_dec * dtor);
-    const r12 = Math.sin(ref_ra * dtor) * Math.cos(ref_dec * dtor);
-    const r22 = Math.sin(ref_dec * dtor);
-
-    const l = Math.cos(dec * dtor) * Math.cos(ra * dtor);
-    const m = Math.cos(dec * dtor) * Math.sin(ra * dtor);
-    const n = Math.sin(dec * dtor);
-
-    const b0 = r00 * l + r10 * m + r20 * n;
-    const b1 = r01 * l + r11 * m;
-    const b2 = r02 * l + r12 * m + r22 * n;
-
-    const theta = Math.asin(b2);
-    const phi = Math.atan2(b1, b0);
-
-    const r_theta = 1.0 / (dtor * Math.tan(theta));
-    const u = r_theta * Math.sin(phi);
-    const v = -r_theta * Math.cos(phi);
-
-    const xdif = cdi_00 * u + cdi_01 * v;
-    const ydif = cdi_10 * u + cdi_11 * v;
-
-    const x = xdif + (ref_x - 1);
-    const y = ydif + (ref_y - 1);
-
-    const xscaled = x / ref_xsize * scaled_xsize;
-    const yscaled = y / ref_ysize * scaled_ysize;
-    //console.log("x:", xscaled);
-    //console.log("y:", yscaled);
-    const pos = { x: xscaled, y: yscaled };
-    return pos;
-
-}
-function raStringToDegrees(raString) {
-    // Split the string into hours, minutes, and seconds
-    const [hours, minutes, seconds] = raString.split(':').map(Number);
-
-    // Convert to decimal hours
-    const decimalHours = hours + (minutes / 60) + (seconds / 3600);
-
-    // Convert to degrees
-    const degrees = decimalHours * 15;
-
-    return degrees;
-}
-function decStringToDegrees(decString) {
-    // Split the string into degrees, minutes, and seconds
-    const sign = decString.startsWith('-') ? -1 : 1;
-    const [degrees, minutes, seconds] = decString.replace(/^[+-]/, '').split(':').map(Number);
-
-    // Convert to decimal degrees
-    const decimalDegrees = degrees + (minutes / 60) + (seconds / 3600);
-    // Adjust for the sign
-    return decimalDegrees * sign;
-}
-
-
-function planetOnConstellationTEST(constellation, _ra, _dec) {
     //console.log(`constellation: ${constellation} ra: ${_ra} dec: ${_dec}`);
     const pi = Math.PI;
     const dtor = pi / 180.0;
@@ -1002,7 +918,29 @@ function planetOnConstellationTEST(constellation, _ra, _dec) {
     return pos;
 }
 
+function raStringToDegrees(raString) {
+    // Split the string into hours, minutes, and seconds
+    const [hours, minutes, seconds] = raString.split(':').map(Number);
 
+    // Convert to decimal hours
+    const decimalHours = hours + (minutes / 60) + (seconds / 3600);
+
+    // Convert to degrees
+    const degrees = decimalHours * 15;
+
+    return degrees;
+}
+
+function decStringToDegrees(decString) {
+    // Split the string into degrees, minutes, and seconds
+    const sign = decString.startsWith('-') ? -1 : 1;
+    const [degrees, minutes, seconds] = decString.replace(/^[+-]/, '').split(':').map(Number);
+
+    // Convert to decimal degrees
+    const decimalDegrees = degrees + (minutes / 60) + (seconds / 3600);
+    // Adjust for the sign
+    return decimalDegrees * sign;
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
