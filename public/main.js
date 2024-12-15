@@ -227,7 +227,7 @@ function displayData(planet) {
     drawConstellationGraph(planet, planetsData[planet].constellation[0]);
     drawGraph(planet);
     magRiseSet(planet);
-    if (planet == "sun"){
+    if (planet == "sun") {
         nauticalInfo(planet);
     }
 }
@@ -289,7 +289,7 @@ function magRiseSet(planet) {
 
     idNameVis = `magnitude_${planet}`;
     document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Magnitude: </span><span style="color: white;">${planetsData[planet].magnitude}</span>`;
-    
+
     idNameVis = `distance_${planet}`;
     let distanceAU = parseFloat(planetsData[planet].distance).toFixed(3);
     document.getElementById(idNameVis).innerHTML = `
@@ -315,7 +315,7 @@ function magRiseSet(planet) {
     document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Jusqu'à: </span><span style="color: white;">${text}</span>`;
 }
 
-function nauticalInfo(planet){
+function nauticalInfo(planet) {
     const rise = planetsData[planet].rise[0];
     const set = planetsData[planet].set[0];
     const nauticalSunrise = adjustTimeByMinutes(rise, -35);
@@ -338,19 +338,19 @@ function nauticalInfo(planet){
 function adjustTimeByMinutes(timeStr, minutes) {
     // Split the time string into hours and minutes
     let [hours, mins] = timeStr.split(':').map(Number);
-    
+
     // Create a new Date object with the given time
     let date = new Date();
     date.setHours(hours);
     date.setMinutes(mins);
-    
+
     // Adjust the time by the specified number of minutes
     date.setMinutes(date.getMinutes() + minutes);
-    
+
     // Format the new time back to a string
     let newHours = String(date.getHours()).padStart(2, '0');
     let newMinutes = String(date.getMinutes()).padStart(2, '0');
-    
+
     return `${newHours}:${newMinutes}`;
 }
 
@@ -489,51 +489,16 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     // Create SVG elements
     let svg = `<svg viewBox="0 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" width="100%" height="100%">`;
 
-
-    // for (let i = 0; i < numValues - 1; i++) {
-    //     const xMid = (scaledAzimuth[i] + scaledAzimuth[i + 1]) / 2;
-    //     const yMid = (scaledElevation[i] + scaledElevation[i + 1]) / 2;
-    //     let pathData = `M ${scaledAzimuth[i]},${scaledElevation[i]} Q ${scaledAzimuth[i]},${scaledElevation[i]} ${xMid},${yMid}`;
-    //     pathData += ` T ${scaledAzimuth[i + 1]},${scaledElevation[i + 1]}`;
-    //     let color = i % 2 === 0 ? 'red' : 'blue'; // Example: alternate colors
-    //     svg += `<path d="${pathData}" style="fill:none;stroke:${color};stroke-width:1"/>`;
-    // }
-    // Draw the path for the elevation graph using cubic Bézier curves
-    let pathData = `M ${scaledAzimuth[0]},${scaledElevation[0]}`;
-    for (let i = 1; i < numValues - 1; i++) {
-        const xMid = (scaledAzimuth[i] + scaledAzimuth[i + 1]) / 2;
-        const yMid = (scaledElevation[i] + scaledElevation[i + 1]) / 2;
-        pathData += ` Q ${scaledAzimuth[i]},${scaledElevation[i]} ${xMid},${yMid}`;
-    }
-    pathData += ` T ${scaledAzimuth[numValues - 1]},${scaledElevation[numValues - 1]}`;
-    svg += `<path d="${pathData}" style="fill:none;stroke:white;stroke-width:1"/>`;
-
-    // Add y-axis labels
-    const yLabelInterval = (maxElevation - minElevation) / 5; // Adjust for more or fewer labels
-    for (let i = 0; i <= 5; i++) {
-        const yValue = minElevation + i * yLabelInterval;
-        const yPos = svgHeight - topMargin - ((yValue - minElevation) / (maxElevation - minElevation)) * (svgHeight - topMargin);
-        svg += `<text x="-15" y="${yPos}" font-size="10" text-anchor="end">${yValue.toFixed(1)}</text>`;
-    }
-
-    // Function to find the intersection point
-    const findIntersection = (x, scaledAzimuth, scaledElevation) => {
-        for (let i = 0; i < scaledAzimuth.length - 1; i++) {
-            if (x >= scaledAzimuth[i] && x <= scaledAzimuth[i + 1]) {
-                const y = scaledElevation[i] + (scaledElevation[i + 1] - scaledElevation[i]) * (x - scaledAzimuth[i]) / (scaledAzimuth[i + 1] - scaledAzimuth[i]);
-                return { x, y };
-            }
-        }
-        return null;
-    };
-
+    ///////
+    // Generate a unique ID for each gradient
+    const uniqueId = `multiColorGradient_${Math.random().toString(36).substr(2, 9)}`;
+    
     // Find the y-coordinate for zero elevation
     const zeroElevationY = svgHeight - topMargin - padding - ((0 - minElevation) / (maxElevation - minElevation)) * (svgHeight - topMargin - padding) + 50;
 
-    //console.log(`planet:${graphName} rise:${rise} set: ${set} from:${from} until${until} sunRiseIndex${sunRiseIndex} corresponding time to sunRiseIndex: ${time[sunRiseIndex]} sunCulmIndex${sunCulmIndex} corresponding time to sunCulmIndex: ${time[sunCulmIndex]}  sunSetIndex${sunSetIndex} corresponding time to sunSetIndex: ${time[sunSetIndex]}`);
 
-
-    //console.log(`${graphName} minuit:${midnightAzimuthIndex} time at index: ${time[midnightAzimuthIndex]}`);
+    // Draw the gradient bar
+    svg += `<rect x="0" y="${zeroElevationY - 6}" width="${svgWidth}" height="6" fill="url(#${uniqueId})" />`;
 
     // Gradient setup
     let stops = [];
@@ -573,21 +538,45 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     // Generate the gradient stops
     let gradientStops = stops.map(stop => `<stop offset="${stop.offset}%" style="stop-color: ${stop.color}; stop-opacity: 1" />`).join('\n');
 
-    // Generate a unique ID for each gradient
-    const uniqueId = `multiColorGradient_${Math.random().toString(36).substr(2, 9)}`;
-
     // Define the gradient
     svg += `
- <defs>
-     <linearGradient id="${uniqueId}" x1="0%" y1="0%" x2="100%" y2="0%">
-                 ${gradientStops}
-    </linearGradient>
+<defs>
+   <linearGradient id="${uniqueId}" x1="0%" y1="0%" x2="100%" y2="0%">
+               ${gradientStops}
+  </linearGradient>
 </defs>
-    `;
+  `;
 
 
-    // Draw the gradient bar
-    svg += `<rect x="0" y="${zeroElevationY - 6}" width="${svgWidth}" height="6" fill="url(#${uniqueId})" />`;
+    ///////
+    // Draw the path for the elevation graph using cubic Bézier curves
+    let pathData = `M ${scaledAzimuth[0]},${scaledElevation[0]}`;
+    for (let i = 1; i < numValues - 1; i++) {
+        const xMid = (scaledAzimuth[i] + scaledAzimuth[i + 1]) / 2;
+        const yMid = (scaledElevation[i] + scaledElevation[i + 1]) / 2;
+        pathData += ` Q ${scaledAzimuth[i]},${scaledElevation[i]} ${xMid},${yMid}`;
+    }
+    pathData += ` T ${scaledAzimuth[numValues - 1]},${scaledElevation[numValues - 1]}`;
+    svg += `<path d="${pathData}" style="fill:none;stroke:white;stroke-width:1"/>`;
+
+    // Add y-axis labels
+    const yLabelInterval = (maxElevation - minElevation) / 5; // Adjust for more or fewer labels
+    for (let i = 0; i <= 5; i++) {
+        const yValue = minElevation + i * yLabelInterval;
+        const yPos = svgHeight - topMargin - ((yValue - minElevation) / (maxElevation - minElevation)) * (svgHeight - topMargin);
+        svg += `<text x="-15" y="${yPos}" font-size="10" text-anchor="end">${yValue.toFixed(1)}</text>`;
+    }
+
+    // Function to find the intersection point
+    const findIntersection = (x, scaledAzimuth, scaledElevation) => {
+        for (let i = 0; i < scaledAzimuth.length - 1; i++) {
+            if (x >= scaledAzimuth[i] && x <= scaledAzimuth[i + 1]) {
+                const y = scaledElevation[i] + (scaledElevation[i + 1] - scaledElevation[i]) * (x - scaledAzimuth[i]) / (scaledAzimuth[i + 1] - scaledAzimuth[i]);
+                return { x, y };
+            }
+        }
+        return null;
+    };
 
 
     // Draw the horizontal line at zero elevation
@@ -635,28 +624,28 @@ function drawElevationGraph(obj, graphName, currentTime,) {
 
     // Function to draw diagonal lines
     function drawDiagonals(svg, scaledAzimuth, scaledElevation, visStartIndex, visEndIndex, zeroElevationY) {
-        
+
         const totalWidth = scaledAzimuth[visEndIndex] - scaledAzimuth[visStartIndex];
 
         let divider = totalWidth > 50.0 ? 20 : 10;
-       
+
         const numDiagonals = Math.floor(totalWidth / divider); // Adjust the divisor to control spacing
         const stepX = totalWidth / numDiagonals;
 
-        for (let i = 1; i <= numDiagonals -1; i++) {
+        for (let i = 1; i <= numDiagonals - 1; i++) {
             const x = scaledAzimuth[visStartIndex] + i * stepX;
             const intersection = findIntersection(x, scaledAzimuth, scaledElevation);
             if (intersection) {
-                svg += `<line x1="${x}" y1="${intersection.y+2}" x2="${x}" y2="${zeroElevationY-6}" style="stroke:#2A3044;stroke-width:1;stroke-dasharray:5,5"/>`;
+                svg += `<line x1="${x}" y1="${intersection.y + 2}" x2="${x}" y2="${zeroElevationY - 6}" style="stroke:#2A3044;stroke-width:1;stroke-dasharray:5,5"/>`;
             }
         }
         return svg;
     }
     if ((visible && visStartIndex != null && visEndIndex != null) || obj.bodyName == "sun") {
-        if (obj.bodyName == "sun"){
-            svg = drawDiagonals(svg, scaledAzimuth, scaledElevation, 1, time.length-1, zeroElevationY);
+        if (obj.bodyName == "sun") {
+            svg = drawDiagonals(svg, scaledAzimuth, scaledElevation, 1, time.length - 1, zeroElevationY);
         }
-        else{
+        else {
             svg = drawDiagonals(svg, scaledAzimuth, scaledElevation, visStartIndex, visEndIndex, zeroElevationY);
         }
     }
@@ -692,7 +681,7 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     }
     if (sunCulmIndex > 0 && sunCulmIndex < scaledAzimuth.length - 1) {
         svg += `<image href="images/resources/smallSun.png" x="${scaledAzimuth[sunCulmIndex]}" y="${zeroElevationY - 22}" width="15" height="15" opacity="1" />`;
-        
+
     }
 
     svg += `</svg>`;
