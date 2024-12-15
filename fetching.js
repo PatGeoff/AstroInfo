@@ -203,6 +203,7 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
     let sunSetAzimuthIndex = null;
     let sunCulmAzimuthIndex = null;
     let midnightAzimuthIndex = null;
+    let noonAzimuthIndex = null;
     
 
     lines.forEach(line => {
@@ -300,6 +301,11 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
             midnightAzimuthIndex = findClosestIndex(time, "00:00");
             //console.log(`sunSet: ${sunSet} and index: ${sunSetAzimuthIndex}`);
 
+        } catch (error) {
+            console.log(error);
+        }
+        try {
+            noonAzimuthIndex = findClosestIndex(time, "12:00");
         } catch (error) {
             console.log(error);
         }

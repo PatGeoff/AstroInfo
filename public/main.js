@@ -492,13 +492,13 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     ///////
     // Generate a unique ID for each gradient
     const uniqueId = `multiColorGradient_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     // Find the y-coordinate for zero elevation
     const zeroElevationY = svgHeight - topMargin - padding - ((0 - minElevation) / (maxElevation - minElevation)) * (svgHeight - topMargin - padding) + 50;
 
 
-    // Draw the gradient bar
-    svg += `<rect x="0" y="${zeroElevationY - 6}" width="${svgWidth}" height="6" fill="url(#${uniqueId})" />`;
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     // Gradient setup
     let stops = [];
@@ -506,10 +506,10 @@ function drawElevationGraph(obj, graphName, currentTime,) {
 
     if (sunSetIndex < sunRiseIndex) {
         // Sunset before sunrise (wrap-around scenario)
-        stops.push({ offset: Math.floor(sunSetIndex * 100 / time.length), color: 'black' });
-        stops.push({ offset: Math.min(100, Math.floor(sunSetIndex * 100 / time.length) + 2), color: 'blue' });
-        stops.push({ offset: Math.max(0, Math.floor(sunRiseIndex * 100 / time.length) - 2), color: 'blue' });
-        stops.push({ offset: Math.floor(sunRiseIndex * 100 / time.length), color: 'blue' });
+        stops.push({ offset: 0, color: 'black' });
+        stops.push({ offset: Math.floor(sunSetIndex * 100 / time.length) + 5, color: 'black' });
+        stops.push({ offset: Math.floor(sunRiseIndex * 100 / time.length) + 5, color: 'black' });
+        stops.push({ offset: Math.floor(sunRiseIndex * 100 / time.length) +5, color: 'blue' });
         stops.push({ offset: Math.floor(sunCulmIndex * 100 / time.length), color: '#06C1F9' });
         stops.push({ offset: Math.floor(sunCulmIndex * 100 / time.length), color: 'blue' });
         stops.push({ offset: 100, color: 'black' });
@@ -522,14 +522,6 @@ function drawElevationGraph(obj, graphName, currentTime,) {
         stops.push({ offset: Math.floor(sunSetIndex * 100 / time.length), color: 'blue' });
         stops.push({ offset: Math.min(100, Math.floor(sunSetIndex * 100 / time.length) + 2), color: 'black' });
         stops.push({ offset: 100, color: 'black' });
-    }
-
-    // Add stops around midnight if it's not zero
-    if (midnightAzimuthIndex !== 0) {
-        const midnightOffset = Math.floor(midnightAzimuthIndex * 100 / time.length);
-        stops.push({ offset: Math.max(0, midnightOffset - 2), color: 'black' });
-        stops.push({ offset: midnightOffset, color: 'black' });
-        stops.push({ offset: Math.min(100, midnightOffset + 2), color: 'black' });
     }
 
     // Sort stops by offset to ensure correct order
@@ -547,8 +539,15 @@ function drawElevationGraph(obj, graphName, currentTime,) {
 </defs>
   `;
 
+   // Draw the gradient bar
+   svg += `<rect x="${padding}" y="${zeroElevationY - 4}" width="${svgWidth-2*padding}" height="2" fill="url(#${uniqueId})" />`;
+   //svg += `<rect x="0" y="${zeroElevationY - 4}" width="${svgWidth}" height="2" fill="url(#${uniqueId})" />`;
 
-    ///////
+
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
     // Draw the path for the elevation graph using cubic Bézier curves
     let pathData = `M ${scaledAzimuth[0]},${scaledElevation[0]}`;
     for (let i = 1; i < numValues - 1; i++) {
@@ -655,7 +654,7 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     const maxElevationX = scaledAzimuth[maxElevationIndex];
     const maxElevationY = scaledElevation[maxElevationIndex]  // Position it above the max elevation point
     // Altitude Heading text above the max
-    svg += `<text x="${maxElevationX}" y="${maxElevationY - 5}" text-anchor="middle" font-size="12px" fill="grey">A H: ${maxElevation.toFixed(2)}°</text>`;
+    svg += `<text x="${maxElevationX+18}" y="${maxElevationY - 5}" text-anchor="end" font-size="12px" fill="grey">Élévation: ${maxElevation.toFixed(2)}°</text>`;
     // Zero elevation
     svg += `<text x="${maxElevationX - 40}" y="${zeroElevationY + 13}" text-anchor="right" font-size="12px" fill="grey">Horizon (0°)</text>`;
     // Add the vertical line at max elevation
@@ -677,10 +676,12 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     // Moon and Sun icons
     if (midnightAzimuthIndex > 0 && midnightAzimuthIndex < scaledAzimuth.length - 1) {
         svg += `<image href="images/resources/smallMoon.png" x="${scaledAzimuth[midnightAzimuthIndex]}" y="${zeroElevationY - 22}" width="15" height="15" />`;
+        svg += `<text x="${scaledAzimuth[midnightAzimuthIndex]+20}" y="${zeroElevationY - 10}" text-anchor="left" font-size="10px" fill="grey">minuit</text>`;
         //svg += `<text x="${scaledAzimuth[midnightAzimuthIndex]}" y="${zeroElevationY - 22}" text-anchor="middle" font-size="14px" fill="lightgrey">minuit</text>`;
     }
     if (sunCulmIndex > 0 && sunCulmIndex < scaledAzimuth.length - 1) {
         svg += `<image href="images/resources/smallSun.png" x="${scaledAzimuth[sunCulmIndex]}" y="${zeroElevationY - 22}" width="15" height="15" opacity="1" />`;
+        svg += `<text x="${scaledAzimuth[sunCulmIndex]+20}"  y="${zeroElevationY - 10}" text-anchor="left" font-size="10px" fill="grey">midi</text>`;
 
     }
 
