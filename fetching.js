@@ -43,7 +43,7 @@ function constructApiUrlIST(body) {
     const year = testDate.getFullYear(); // Full year (e.g., 2024)
 
     // Fetching 100 rows to be able to know when or until when the planet will be visible. After that, we only need one single line for the present day. 
-    const params = `startday=${day}&startmonth=${month}&startyear=${year}&ird=1&irs=1&ima=1&ipm=0&iph=1&ias=0&iss=0&iob=1&ide=1&ids=0&interval=4&tz=0&format=csv&rows=250&objtype=1&objpl=${body}&objtxt=${body}&town=6077243`;
+    const params = `startday=${day}&startmonth=${month}&startyear=${year}&ird=1&irs=1&ima=1&ipm=0&iph=1&ias=1&iss=0&iob=1&ide=1&ids=0&interval=4&tz=0&format=csv&rows=250&objtype=1&objpl=${body}&objtxt=${body}&town=6077243`;
 
     return params;
 }
@@ -191,7 +191,6 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
     let elevation = [];
     let magnitude = [];
     let illumination = [];
-    let diameter = [];
     let constellation = [];
     let phi = [];
     let pabLon = [];
@@ -329,7 +328,8 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
         sunRiseAzimuthIndex,
         sunSetAzimuthIndex,
         sunCulmAzimuthIndex,
-        midnightAzimuthIndex
+        midnightAzimuthIndex,
+        noonAzimuthIndex
     };
 }
 
@@ -361,6 +361,7 @@ function getValuesITS(data, body) {
     const culm = [];
     const set = [];
     const magnitude = [];
+    const diameter = [];
     const phase = [];
     const distance = [];
     const observable = [];
@@ -386,11 +387,12 @@ function getValuesITS(data, body) {
             magnitude.push(values[14]);
             phase.push(values[15]); 
             distance.push(values[16]);
-            observable.push(values[17]); // Observable time
+            diameter.push(values[17]);
+            observable.push(values[18]); // Observable time
             // If the planet or Moon is visible, value[15] is in the format "00:00 until 00:00", otherwise it is "Not oservable", and if it is the Sun it is "Visible all day" all the time
-            if (values[17].includes("until")) {
-                from = values[17].split("until")[0];
-                to = values[17].split("until")[1];
+            if (observable[0].includes("until")) {
+                from = observable[0].split("until")[0];
+                to = observable[0].split("until")[1];
             }
         }
         let lastObservability = observability;
@@ -399,7 +401,6 @@ function getValuesITS(data, body) {
         if (observability != null && lastObservability != null) {
             // When the planet will be visible again
             if (lastObservability.includes("observable") && observability.includes("until")) {
-                //console.log("//////////////////////////////////////////////////");
                 // Get the date for the index
                 until.push(date[i - 3]); // -3 because we start at i = 3 and the first value is 0
                 // Keep only the first Date value for today and clear the 99 unused
@@ -408,7 +409,6 @@ function getValuesITS(data, body) {
             }
             // Until when the planet is visible
             else if (lastObservability.includes("until") && observability.includes("observable")) {
-                //console.log("//////////////////////////////////////////////////");
                 // Get the date for the index
                 until.push(date[i - 3]);
                 // Keep only the first Date value for today and clear the 99 unused
@@ -435,14 +435,13 @@ function getValuesITS(data, body) {
         magnitude,
         phase,
         distance,
+        diameter,
         observable,
         until,
         from,
         to
     };
 }
-
-
 
 await fetchData("sun");
 await fetchData("mercury");

@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    <div class="weather-container" id="weather"></div>
     <div id="title-date" class="title"></div>
     <div class="grid-container">
         <div class="grid-item">
@@ -99,13 +100,18 @@
         </div>
         <div class="infos">
             <div>L'aube nautique se produit lorsque le centre du Soleil se trouve entre 6° et 12° sous l'horizon avant
-                le lever du soleil. Durant cette période le ciel commence à s'éclaircir. Il est encore
-                suffisamment sombre pour que les étoiles les plus brillantes soient encore visibles puis graduellement elles disparaissent.</div>
+                le lever du soleil. Durant cette période,
+                le ciel commence à s'éclaircir. Il est encore suffisamment sombre pour que les étoiles les plus
+                brillantes soient visibles, puis elles disparaissent graduellement.</div>
             <div class="info-nautique" id="nautical_sunrise">Début de l'aube Nautique</div>
             <div class="info-nautique" id="sunrise">Lever du Soleil</div>
             <br>
-            <div>L'aube nautique se produit lorsque le centre du Soleil se trouve entre 6° et 12° sous l'horizon avant le lever du soleil. Durant cette période, le ciel commence à s'éclaircir. 
-                Il est encore suffisamment sombre pour que les étoiles les plus brillantes soient visibles, puis elles disparaissent graduellement.</div>
+            <div>Le crépuscule nautique est une période de la journée où le centre du Soleil se trouve entre 6° et 12°
+                sous l'horizon,
+                après le coucher du soleil. Durant cette période, le ciel s'assombrit graduellement et la plupart des
+                étoiles deviennent visibles.
+                Celles dont la magnitude apparente est élevée, comme Neptune, apparaîtront bien après le crépuscule
+                nautique.</div>
             <div class="info-nautique" id="sunset">Coucher du Soleil</div>
             <div class="info-nautique" id="nautical_sunset">Fin du crépuscule Nautique</div>
         </div>
@@ -120,7 +126,9 @@
                     <div class="bottomInfo">
                         <div class="planet-bottominfo" id="phase_mercury">Phase:</div>
                         <div class="planet-bottominfo" id="magnitude_mercury">Magnitude:</div>
+                        <div class="planet-bottominfo" id="diameter_mercury">Diamètre angulaire:</div>
                         <div class="planet-bottominfo" id="distance_mercury">Distance:</div>
+
                     </div>
 
                 </div>
@@ -153,6 +161,7 @@
                     <div class="bottomInfo">
                         <div class="planet-bottominfo" id="phase_venus">Phase:</div>
                         <div class="planet-bottominfo" id="magnitude_venus">Magnitude:</div>
+                        <div class="planet-bottominfo" id="diameter_venus">Diamètre angulaire:</div>
                         <div class="planet-bottominfo" id="distance_venus">Distance:</div>
                     </div>
                 </div>
@@ -184,6 +193,7 @@
                     <div class="bottomInfo">
                         <div class="planet-bottominfo" id="phase_mars">Phase:</div>
                         <div class="planet-bottominfo" id="magnitude_mars">Magnitude:</div>
+                        <div class="planet-bottominfo" id="diameter_mars">Diamètre angulaire:</div>
                         <div class="planet-bottominfo" id="distance_mars">Distance:</div>
                     </div>
                 </div>
@@ -215,6 +225,7 @@
                     <div class="bottomInfo">
                         <div class="planet-bottominfo" id="phase_jupiter">Phase:</div>
                         <div class="planet-bottominfo" id="magnitude_jupiter">Magnitude:</div>
+                        <div class="planet-bottominfo" id="diameter_jupiter">Diamètre angulaire:</div>
                         <div class="planet-bottominfo" id="distance_jupiter">Distance:</div>
                     </div>
                 </div>
@@ -246,6 +257,7 @@
                     <div class="bottomInfo">
                         <div class="planet-bottominfo" id="phase_saturn">Phase:</div>
                         <div class="planet-bottominfo" id="magnitude_saturn">Magnitude:</div>
+                        <div class="planet-bottominfo" id="diameter_saturn">Diamètre angulaire:</div>
                         <div class="planet-bottominfo" id="distance_saturn">Distance:</div>
                     </div>
                 </div>
@@ -277,6 +289,7 @@
                     <div class="bottomInfo">
                         <div class="planet-bottominfo" id="phase_uranus">Phase:</div>
                         <div class="planet-bottominfo" id="magnitude_uranus">Magnitude:</div>
+                        <div class="planet-bottominfo" id="diameter_uranus">Diamètre angulaire:</div>
                         <div class="planet-bottominfo" id="distance_uranus">Distance:</div>
                     </div>
                 </div>
@@ -308,6 +321,7 @@
                     <div class="bottomInfo">
                         <div class="planet-bottominfo" id="phase_neptune">Phase:</div>
                         <div class="planet-bottominfo" id="magnitude_neptune">Magnitude:</div>
+                        <div class="planet-bottominfo" id="diameter_neptune">Diamètre angulaire:</div>
                         <div class="planet-bottominfo" id="distance_neptune">Distance:</div>
                     </div>
                 </div>
@@ -339,6 +353,7 @@
                     <div class="bottomInfo">
                         <div class="planet-bottominfo" id="phase_moon">Phase:</div>
                         <div class="planet-bottominfo" id="magnitude_moon">Magnitude:</div>
+                        <div class="planet-bottominfo" id="diameter_moon">Diamètre angulaire:</div>
                         <div class="planet-bottominfo" id="distance_moon">Distance:</div>
                     </div>
                 </div>
@@ -366,12 +381,13 @@
             <div class="columns-container">
                 <div class="column">
                     <div class="planet-name">Soleil</div>
-                    <img src="images/icons/sun.png" alt="sun" class="planet-image-widget">                    
+                    <img src="images/icons/sun.png" alt="sun" class="planet-image-widget">
                     <div class="bottomInfo">
                         <div class="planet-bottominfo" id="phase_sun">Phase:</div>
-                        <div class="planet-bottominfo" id="magnitude_sun";>Magnitude:</div>
+                        <div class="planet-bottominfo" id="magnitude_sun" ;>Magnitude:</div>
+                        <div class="planet-bottominfo" id="diameter_sun">Diamètre angulaire:</div>
                         <div class="planet-bottominfo" id="distance_sun">Distance:</div>
-                       </div>
+                    </div>
                 </div>
                 <div class="column">
                     <div class="constellation-name" id="constellation_sun"></div>
@@ -393,6 +409,7 @@
                 <div id="sun_graph"></div>
             </div>
         </div>
+       
     </div>
     <script src="main.js"></script>
 </body>

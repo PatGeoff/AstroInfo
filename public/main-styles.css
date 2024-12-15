@@ -8,7 +8,7 @@ body {
 .title {
     color: white;
     text-align: center;
-    padding-top: 60px;
+    padding-top: 10px;
     font-size: 18px;
 }
 
@@ -211,6 +211,52 @@ body {
 .bottomInfo{
     padding-left: 30px;
 }
+
+.action-button {
+    display: flex;
+    -ms-flex-align: start;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+
+.weather-container {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping */
+    justify-content: center; /* Center the container */
+    gap: 5px; /* Reduce the gap between items */
+    height: 100px; /* Set a fixed height */
+    overflow-x: auto; /* Allow horizontal scrolling if needed */
+    padding-top: 20px;
+}
+
+.forecast-item {
+    flex: 0 0 auto; /* Prevent flex items from growing or shrinking */
+    width: 80px; /* Set a fixed width */
+    text-align: center;
+    background-color: black;
+    color: white; /* Ensure text is visible on black background */
+    border-radius: 8px;
+    padding: 5px;
+}
+
+.forecast-time {
+    font-size: 0.8em; /* Adjust font size */
+    margin: 0; /* Remove default margin */
+}
+
+.forecast-icon {
+    width: 40px; /* Set a smaller width for the icons */
+    height: 40px; /* Set a smaller height for the icons */
+}
+
+.forecast-temp {
+    font-size: 0.8em; /* Adjust font size */
+    margin: 0; /* Remove default margin */
+}
+
+
 /* Responsive Styles */
 @media (max-width: 1200px) {
     .planet-image {

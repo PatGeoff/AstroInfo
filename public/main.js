@@ -290,6 +290,10 @@ function magRiseSet(planet) {
     idNameVis = `magnitude_${planet}`;
     document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Magnitude: </span><span style="color: white;">${planetsData[planet].magnitude}</span>`;
 
+    idNameVis = `diameter_${planet}`;
+    document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Diamètre angulaire: </span><span style="color: white;">${planetsData[planet].diameter}"</span>`;
+
+
     idNameVis = `distance_${planet}`;
     let distanceAU = parseFloat(planetsData[planet].distance).toFixed(3);
     document.getElementById(idNameVis).innerHTML = `
@@ -456,6 +460,7 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     const sunCulmIndex = obj.sunCulmAzimuthIndex !== undefined ? obj.sunCulmAzimuthIndex : 0; // time index for this particular planet corresponding to the closest time at which the sun culminates
     const sunSetIndex = obj.sunSetAzimuthIndex !== undefined ? obj.sunSetAzimuthIndex : 0;   // time index for this particular planet corresponding to the closest time at which the sun sets
     const midnightAzimuthIndex = obj.midnightAzimuthIndex !== undefined ? obj.midnightAzimuthIndex : 0;
+    const noonAzimuthIndex = obj.noonAzimuthIndex !== undefined ? obj.noonAzimuthIndex : 0;
 
     // Create data array with azimuth and elevation pairs
     const data = azimuth.map((az, index) => {
@@ -497,7 +502,7 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     const zeroElevationY = svgHeight - topMargin - padding - ((0 - minElevation) / (maxElevation - minElevation)) * (svgHeight - topMargin - padding) + 50;
 
 
- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
     // Gradient setup
@@ -509,7 +514,7 @@ function drawElevationGraph(obj, graphName, currentTime,) {
         stops.push({ offset: 0, color: 'black' });
         stops.push({ offset: Math.floor(sunSetIndex * 100 / time.length) + 5, color: 'black' });
         stops.push({ offset: Math.floor(sunRiseIndex * 100 / time.length) + 5, color: 'black' });
-        stops.push({ offset: Math.floor(sunRiseIndex * 100 / time.length) +5, color: 'blue' });
+        stops.push({ offset: Math.floor(sunRiseIndex * 100 / time.length) + 5, color: 'blue' });
         stops.push({ offset: Math.floor(sunCulmIndex * 100 / time.length), color: '#06C1F9' });
         stops.push({ offset: Math.floor(sunCulmIndex * 100 / time.length), color: 'blue' });
         stops.push({ offset: 100, color: 'black' });
@@ -539,12 +544,12 @@ function drawElevationGraph(obj, graphName, currentTime,) {
 </defs>
   `;
 
-   // Draw the gradient bar
-   svg += `<rect x="${padding}" y="${zeroElevationY - 4}" width="${svgWidth-2*padding}" height="2" fill="url(#${uniqueId})" />`;
-   //svg += `<rect x="0" y="${zeroElevationY - 4}" width="${svgWidth}" height="2" fill="url(#${uniqueId})" />`;
+    // Draw the gradient bar
+    svg += `<rect x="${padding}" y="${zeroElevationY - 4}" width="${svgWidth - 2 * padding}" height="2" fill="url(#${uniqueId})" />`;
+    //svg += `<rect x="0" y="${zeroElevationY - 4}" width="${svgWidth}" height="2" fill="url(#${uniqueId})" />`;
 
 
- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -654,7 +659,7 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     const maxElevationX = scaledAzimuth[maxElevationIndex];
     const maxElevationY = scaledElevation[maxElevationIndex]  // Position it above the max elevation point
     // Altitude Heading text above the max
-    svg += `<text x="${maxElevationX+18}" y="${maxElevationY - 5}" text-anchor="end" font-size="12px" fill="grey">Élévation: ${maxElevation.toFixed(2)}°</text>`;
+    svg += `<text x="${maxElevationX + 18}" y="${maxElevationY - 5}" text-anchor="end" font-size="12px" fill="grey">Élévation: ${maxElevation.toFixed(2)}°</text>`;
     // Zero elevation
     svg += `<text x="${maxElevationX - 40}" y="${zeroElevationY + 13}" text-anchor="right" font-size="12px" fill="grey">Horizon (0°)</text>`;
     // Add the vertical line at max elevation
@@ -676,12 +681,12 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     // Moon and Sun icons
     if (midnightAzimuthIndex > 0 && midnightAzimuthIndex < scaledAzimuth.length - 1) {
         svg += `<image href="images/resources/smallMoon.png" x="${scaledAzimuth[midnightAzimuthIndex]}" y="${zeroElevationY - 22}" width="15" height="15" />`;
-        svg += `<text x="${scaledAzimuth[midnightAzimuthIndex]+20}" y="${zeroElevationY - 10}" text-anchor="left" font-size="10px" fill="grey">minuit</text>`;
+        svg += `<text x="${scaledAzimuth[midnightAzimuthIndex] + 20}" y="${zeroElevationY - 10}" text-anchor="left" font-size="10px" fill="grey">minuit</text>`;
         //svg += `<text x="${scaledAzimuth[midnightAzimuthIndex]}" y="${zeroElevationY - 22}" text-anchor="middle" font-size="14px" fill="lightgrey">minuit</text>`;
     }
-    if (sunCulmIndex > 0 && sunCulmIndex < scaledAzimuth.length - 1) {
-        svg += `<image href="images/resources/smallSun.png" x="${scaledAzimuth[sunCulmIndex]}" y="${zeroElevationY - 22}" width="15" height="15" opacity="1" />`;
-        svg += `<text x="${scaledAzimuth[sunCulmIndex]+20}"  y="${zeroElevationY - 10}" text-anchor="left" font-size="10px" fill="grey">midi</text>`;
+    if (noonAzimuthIndex > 0 && noonAzimuthIndex < scaledAzimuth.length - 1) {
+        svg += `<image href="images/resources/smallSun.png" x="${scaledAzimuth[noonAzimuthIndex]}" y="${zeroElevationY - 22}" width="15" height="15" opacity="1" />`;
+        svg += `<text x="${scaledAzimuth[noonAzimuthIndex] + 20}"  y="${zeroElevationY - 10}" text-anchor="left" font-size="10px" fill="grey">midi</text>`;
 
     }
 
@@ -794,6 +799,90 @@ function decStringToDegrees(decString) {
     return decimalDegrees * sign;
 }
 
+// async function getWeatherData(){
+//     const apiKey = '7dac6f925e56f40fb760f02511225590';
+//     const city = 'Montreal';
+//     const url = `https://api.openweathermap.org/data/2.5/onecall?q=${city}&exclude=current,minutely,daily,alerts&units=metric&appid=${apiKey}`;
+
+//     weatherData = {};
+
+//     fetch(url)
+//         .then(response => response.json())                
+//         .then(data => {
+//             console.log(data);
+//             const weatherDiv = document.getElementById('weather');
+//             data.list.slice(0, 8).forEach(forecast => {
+//                 const date = new Date(forecast.dt * 1000);
+//                 const icon = `http://openweathermap.org/img/wn/${forecast.weather[0].icon}.png`;
+//                 const temp = forecast.main.temp;
+//                 const description = forecast.weather[0].description;
+//                 weatherData.push(date, icon, temp, description);
+//                 weatherDiv.innerHTML += `
+//                 <div>
+//                     <h3>${date.toLocaleTimeString()}</h3>
+//                     <img src="${icon}" alt="${description}">
+//                     <p>${temp}°C - ${description}</p>
+//                 </div>
+//             `;
+//             });
+//             return weatherData;
+//         })
+//         .catch(error => console.error('Error fetching weather data:', error));
+
+// }
+
+async function getWeatherData() {
+    const apiKey = 'fd05c92a7ac1463f9a3175814241512'; // Your WeatherAPI key
+    const city = 'Montreal';
+    const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&days=2`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log(data);
+
+        const weatherDiv = document.getElementById('weather');
+        weatherDiv.innerHTML = ''; // Clear previous data
+
+        const currentHour = new Date().getHours();
+        const todayForecasts = data.forecast.forecastday[0].hour.slice(currentHour);
+        const tomorrowForecasts = data.forecast.forecastday[1].hour;
+
+        // Parse the sunrise time from the second day's forecast
+        const sunriseTimeString = data.forecast.forecastday[1].astro.sunrise;
+        const [sunriseHour, sunriseMinute] = sunriseTimeString.split(':').map(Number);
+        const sunrisePeriod = sunriseTimeString.includes('AM') ? 'AM' : 'PM';
+        const sunriseHour24 = sunrisePeriod === 'PM' && sunriseHour !== 12 ? sunriseHour + 12 : sunriseHour;
+
+        // Calculate the index for the sunrise hour
+        const sunriseIndex = sunriseHour24;
+
+        // Combine today's and tomorrow's forecasts
+        const forecasts = todayForecasts.concat(tomorrowForecasts.slice(0, sunriseIndex+2));
+
+        forecasts.forEach(forecast => {
+            const date = new Date(forecast.time);
+            const timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const icon = forecast.condition.icon;
+            const temp = forecast.temp_c;
+
+            weatherDiv.innerHTML += `
+                <div class="forecast-item">
+                    <h3 class="forecast-time">${timeString}</h3>
+                    <img class="forecast-icon" src="${icon}">
+                    <p class="forecast-temp">${temp}°C</p>
+                </div>
+            `;
+        });
+
+        return data; // Return the fetched data
+    } catch (error) {
+        console.error('Error fetching weather data:', error);
+        alert('Failed to fetch weather data. Please try again later.');
+    }
+}
+
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         // Fetch data for all planets using the keys
@@ -802,7 +891,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         Object.keys(planets).forEach(planet => displayData(planet));
         //console.log(planetOnConstellationTEST(constellationsData.Cap, 295.85417, -23.790556));
         //planetOnConstellation(constellationsData.Aqr, 322.88971698347876, -5.5711748282114666);
-
+        getWeatherData();
     } catch (error) {
         console.error('Error fetching data:', error);
     }
