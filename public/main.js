@@ -471,7 +471,7 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     const svgWidth = 600;
     const svgHeight = 300;
     const topMargin = 30; // Add a top margin to accommodate the text
-    const padding = 50; // Add padding to the left and right sides of the graph
+    const padding = 65; // Add padding to the left and right sides of the graph
     const yBottomOffset = 20; // offset for the text and line from the bottom
 
     // Find the min and max elevation values
@@ -594,12 +594,13 @@ function drawElevationGraph(obj, graphName, currentTime,) {
             // Find and add the intersection point
             const intersection = findIntersection(verticalLineX, scaledAzimuth, scaledElevation);
 
-            svg += `<line x1="${verticalLineX}" y1="${zeroElevationY}" x2="${verticalLineX}" y2="${intersection.y}" style="stroke:grey;stroke-width:2"/>`;
+            svg += `<line x1="${verticalLineX}" y1="${zeroElevationY}" x2="${verticalLineX}" y2="${intersection.y}" style="stroke:white;stroke-width:2"/>`;
 
 
             if (intersection) {
                 svg += `<circle cx="${intersection.x}" cy="${intersection.y}" r="5" fill="grey"/>`;
-                svg += `<text x="${intersection.x + 30}" y="${intersection.y + 5}" text-anchor="middle" font-size="12px" fill="white">${formatTime(from)}</text>`;
+                svg += `<text x="${intersection.x + 15}" y="${intersection.y + 5}" text-anchor="start" font-size="12px" fill="white">${Math.trunc(elevation[visStartIndex])}°</text>`;
+                svg += `<text x="${intersection.x}" y="${zeroElevationY + 15}" text-anchor="middle" font-size="12px" fill="white">${formatTime(from)}</text>`;
             }
         }
 
@@ -611,18 +612,22 @@ function drawElevationGraph(obj, graphName, currentTime,) {
             // Find and add the intersection point
             const intersection = findIntersection(verticalLineX, scaledAzimuth, scaledElevation);
 
-            svg += `<line x1="${verticalLineX}" y1="${zeroElevationY}" x2="${verticalLineX}" y2="${intersection.y}" style="stroke:grey;stroke-width:2"/>`;
+            svg += `<line x1="${verticalLineX}" y1="${zeroElevationY}" x2="${verticalLineX}" y2="${intersection.y}" style="stroke:white;stroke-width:2"/>`;
 
             if (intersection) {
                 svg += `<circle cx="${intersection.x}" cy="${intersection.y}" r="5" fill="grey"/>`;
-                svg += `<text x="${intersection.x + 30}" y="${intersection.y + 5}" text-anchor="middle" font-size="12px" fill="white">${formatTime(until)}</text>`;
+                svg += `<text x="${intersection.x + 15}" y="${intersection.y + 5}" text-anchor="middle" font-size="12px" fill="white">${Math.trunc(elevation[visEndIndex])}°</text>`;
+                svg += `<text x="${intersection.x}" y="${zeroElevationY + 15}" text-anchor="middle" font-size="12px" fill="white">${formatTime(until)}</text>`;
+
             }
         }
+
+
     } else {
         const text = "Non visible cette nuit";
         const fontSize = 16;
-        svg += `<rect x="${svgWidth/2 + (svgWidth/3) - (text.length * fontSize / 4)}" y="${50 - fontSize}" width="${text.length * fontSize / 2}" height="${fontSize * 1.5}" fill="#600429" text-anchor="start"></rect>`;
-        svg += `<text x="${svgWidth/2 + (svgWidth/3) }" y="${50}" text-anchor="middle" font-size="${fontSize}px" fill="white">${text}</text>`;
+        svg += `<rect x="${svgWidth / 2 + (svgWidth / 3) - (text.length * fontSize / 4)}" y="${50 - fontSize}" width="${text.length * fontSize / 2}" height="${fontSize * 1.5}" fill="#600429" text-anchor="start"></rect>`;
+        svg += `<text x="${svgWidth / 2 + (svgWidth / 3)}" y="${50}" text-anchor="middle" font-size="${fontSize}px" fill="white">${text}</text>`;
 
     }
 
@@ -654,6 +659,15 @@ function drawElevationGraph(obj, graphName, currentTime,) {
         }
     }
 
+    // Add text in visible area
+    if (visStartIndex != null && visEndIndex != null) {
+        svg += `<text x="${scaledAzimuth[Math.floor((visStartIndex + visEndIndex) / 2)]}" y="175" text-anchor="middle" font-size="12px" fill="white">visible</text>`; //#7A8CC6
+    }
+    else if (obj.bodyName == "sun") {
+        svg += `<text x="${scaledAzimuth[sunCulmIndex]}" y="175" text-anchor="white" font-size="12px" fill="#7A8CC6">visible</text>`;
+    }
+
+
     // Add text for max elevation
     const maxElevationIndex = elevation.indexOf(maxElevation);
     const maxElevationX = scaledAzimuth[maxElevationIndex];
@@ -661,7 +675,7 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     // Altitude Heading text above the max
     svg += `<text x="${maxElevationX + 18}" y="${maxElevationY - 5}" text-anchor="end" font-size="12px" fill="grey">Élévation: ${maxElevation.toFixed(2)}°</text>`;
     // Zero elevation
-    svg += `<text x="${maxElevationX - 40}" y="${zeroElevationY + 13}" text-anchor="right" font-size="12px" fill="grey">Horizon (0°)</text>`;
+    svg += `<text x="0" y="${zeroElevationY - 5}" text-anchor="right" font-size="10px" fill="grey">Horizon (0°)</text>`;
     // Add the vertical line at max elevation
     //svg += `<line x1="${maxElevationX}" y1="${zeroElevationY - 2}" x2="${maxElevationX}" y2="${maxElevationY}" style="stroke:grey;stroke-width:0,5;stroke-dasharray:5,5"/>`;
 
@@ -672,11 +686,11 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     const minElevationY = svgHeight - yBottomOffset; // Position it below the graph
 
     // azimuth and time
-    svg += `<text x="${firstAzimuthX}" y="${minElevationY + 20}" text-anchor="middle" font-size="14px" fill="white">${getAzimuthLabel(azimuth[0])}</text>`;
-    svg += `<text x="${firstAzimuthX}" y="${minElevationY + 2}" text-anchor="middle" font-size="14px" fill="lightgrey">${formatTime(rise.toString())}</text>`;
-    svg += `<text x="${middleAzimuthX}" y="${minElevationY + 20}" text-anchor="middle" font-size="14px" fill="white">${getAzimuthLabel(azimuth[Math.floor((numValues - 1) / 2)])}</text>`;
-    svg += `<text x="${lastAzimuthX}" y="${minElevationY + 20}" text-anchor="middle" font-size="14px" fill="white">${getAzimuthLabel(azimuth[numValues - 1])}</text>`;
-    svg += `<text x="${lastAzimuthX}" y="${minElevationY + 2}" text-anchor="middle" font-size="14px" fill="lightgrey">${formatTime(set.toString())}</text>`;
+    svg += `<text x="${firstAzimuthX}" y="${minElevationY + 18}" text-anchor="middle" font-size="14px" fill="grey">${getAzimuthLabel(azimuth[0])}</text>`;
+    svg += `<text x="${firstAzimuthX}" y="${minElevationY + 2}" text-anchor="middle" font-size="14px" fill="grey">${formatTime(rise.toString())}</text>`;
+    svg += `<text x="${middleAzimuthX}" y="${minElevationY + 18}" text-anchor="middle" font-size="14px" fill="grey">${getAzimuthLabel(azimuth[Math.floor((numValues - 1) / 2)])}</text>`;
+    svg += `<text x="${lastAzimuthX}" y="${minElevationY + 18}" text-anchor="middle" font-size="14px" fill="grey">${getAzimuthLabel(azimuth[numValues - 1])}</text>`;
+    svg += `<text x="${lastAzimuthX}" y="${minElevationY + 2}" text-anchor="middle" font-size="14px" fill="grey">${formatTime(set.toString())}</text>`;
 
     // Moon and Sun icons
     if (midnightAzimuthIndex > 0 && midnightAzimuthIndex < scaledAzimuth.length - 1) {
@@ -799,37 +813,6 @@ function decStringToDegrees(decString) {
     return decimalDegrees * sign;
 }
 
-// async function getWeatherData(){
-//     const apiKey = '7dac6f925e56f40fb760f02511225590';
-//     const city = 'Montreal';
-//     const url = `https://api.openweathermap.org/data/2.5/onecall?q=${city}&exclude=current,minutely,daily,alerts&units=metric&appid=${apiKey}`;
-
-//     weatherData = {};
-
-//     fetch(url)
-//         .then(response => response.json())                
-//         .then(data => {
-//             console.log(data);
-//             const weatherDiv = document.getElementById('weather');
-//             data.list.slice(0, 8).forEach(forecast => {
-//                 const date = new Date(forecast.dt * 1000);
-//                 const icon = `http://openweathermap.org/img/wn/${forecast.weather[0].icon}.png`;
-//                 const temp = forecast.main.temp;
-//                 const description = forecast.weather[0].description;
-//                 weatherData.push(date, icon, temp, description);
-//                 weatherDiv.innerHTML += `
-//                 <div>
-//                     <h3>${date.toLocaleTimeString()}</h3>
-//                     <img src="${icon}" alt="${description}">
-//                     <p>${temp}°C - ${description}</p>
-//                 </div>
-//             `;
-//             });
-//             return weatherData;
-//         })
-//         .catch(error => console.error('Error fetching weather data:', error));
-
-// }
 
 async function getWeatherData() {
     const apiKey = 'fd05c92a7ac1463f9a3175814241512'; // Your WeatherAPI key
@@ -858,7 +841,7 @@ async function getWeatherData() {
         const sunriseIndex = sunriseHour24;
 
         // Combine today's and tomorrow's forecasts
-        const forecasts = todayForecasts.concat(tomorrowForecasts.slice(0, sunriseIndex+2));
+        const forecasts = todayForecasts.concat(tomorrowForecasts.slice(0, sunriseIndex + 2));
 
         forecasts.forEach(forecast => {
             const date = new Date(forecast.time);
@@ -889,8 +872,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         await Promise.all(Object.keys(planets).map(planet => fetchData(planet)));
         console.log(planetsData);
         Object.keys(planets).forEach(planet => displayData(planet));
-        //console.log(planetOnConstellationTEST(constellationsData.Cap, 295.85417, -23.790556));
-        //planetOnConstellation(constellationsData.Aqr, 322.88971698347876, -5.5711748282114666);
         getWeatherData();
     } catch (error) {
         console.error('Error fetching data:', error);
