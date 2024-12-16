@@ -278,8 +278,12 @@ function magRiseSet(planet) {
     let idNameVis = `rise_${planet}`;
     document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Lever: </span><span style="color: white;">${formatTime(planetsData[planet].rise)}</span>`;
 
+    // const elevation = planetsData[planet].elevation;
+    // const maxElevation = Math.max(...elevation);
+
     idNameVis = `culm_${planet}`;
-    document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Pt. Culm.: </span><span style="color: white;">${formatTime(planetsData[planet].culm)}</span>`;
+    // document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Culmination: </span><span style="color: white;">${formatTime(planetsData[planet].culm)} (${maxElevation.toFixed(2)}°)</span>`;
+    document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Culmination: </span><span style="color: white;">${formatTime(planetsData[planet].culm)}</span>`;
 
     idNameVis = `set_${planet}`;
     document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Coucher: </span><span style="color: white;">${formatTime(planetsData[planet].set)}</span>`;
@@ -664,7 +668,7 @@ function drawElevationGraph(obj, graphName, currentTime,) {
         svg += `<text x="${scaledAzimuth[Math.floor((visStartIndex + visEndIndex) / 2)]}" y="175" text-anchor="middle" font-size="12px" fill="white">visible</text>`; //#7A8CC6
     }
     else if (obj.bodyName == "sun") {
-        svg += `<text x="${scaledAzimuth[sunCulmIndex]}" y="175" text-anchor="white" font-size="12px" fill="#7A8CC6">visible</text>`;
+        svg += `<text x="${scaledAzimuth[sunCulmIndex]}" y="175" text-anchor="white" font-size="12px" fill="white">visible</text>`;
     }
 
 
@@ -673,7 +677,7 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     const maxElevationX = scaledAzimuth[maxElevationIndex];
     const maxElevationY = scaledElevation[maxElevationIndex]  // Position it above the max elevation point
     // Altitude Heading text above the max
-    svg += `<text x="${maxElevationX + 18}" y="${maxElevationY - 5}" text-anchor="end" font-size="12px" fill="grey">Élévation: ${maxElevation.toFixed(2)}°</text>`;
+    svg += `<text x="${maxElevationX + 18}" y="${maxElevationY - 5}" text-anchor="end" font-size="12px" fill="grey">culm: ${Math.trunc(maxElevation)}°</text>`;
     // Zero elevation
     svg += `<text x="0" y="${zeroElevationY - 5}" text-anchor="right" font-size="10px" fill="grey">Horizon (0°)</text>`;
     // Add the vertical line at max elevation
@@ -687,20 +691,20 @@ function drawElevationGraph(obj, graphName, currentTime,) {
 
     // azimuth and time
     svg += `<text x="${firstAzimuthX}" y="${minElevationY + 18}" text-anchor="middle" font-size="14px" fill="grey">${getAzimuthLabel(azimuth[0])}</text>`;
-    svg += `<text x="${firstAzimuthX}" y="${minElevationY + 2}" text-anchor="middle" font-size="14px" fill="grey">${formatTime(rise.toString())}</text>`;
+    svg += `<text x="${firstAzimuthX}" y="${minElevationY + 2}" text-anchor="middle" font-size="12px" fill="grey">${formatTime(rise.toString())}</text>`;
     svg += `<text x="${middleAzimuthX}" y="${minElevationY + 18}" text-anchor="middle" font-size="14px" fill="grey">${getAzimuthLabel(azimuth[Math.floor((numValues - 1) / 2)])}</text>`;
     svg += `<text x="${lastAzimuthX}" y="${minElevationY + 18}" text-anchor="middle" font-size="14px" fill="grey">${getAzimuthLabel(azimuth[numValues - 1])}</text>`;
-    svg += `<text x="${lastAzimuthX}" y="${minElevationY + 2}" text-anchor="middle" font-size="14px" fill="grey">${formatTime(set.toString())}</text>`;
+    svg += `<text x="${lastAzimuthX}" y="${minElevationY + 2}" text-anchor="middle" font-size="12px" fill="grey">${formatTime(set.toString())}</text>`;
 
     // Moon and Sun icons
     if (midnightAzimuthIndex > 0 && midnightAzimuthIndex < scaledAzimuth.length - 1) {
         svg += `<image href="images/resources/smallMoon.png" x="${scaledAzimuth[midnightAzimuthIndex]}" y="${zeroElevationY - 22}" width="15" height="15" />`;
-        svg += `<text x="${scaledAzimuth[midnightAzimuthIndex] + 20}" y="${zeroElevationY - 10}" text-anchor="left" font-size="10px" fill="grey">minuit</text>`;
+        svg += `<text x="${scaledAzimuth[midnightAzimuthIndex] - 8}" y="${zeroElevationY - 25}" text-anchor="start" font-size="10px" fill="grey">minuit</text>`;
         //svg += `<text x="${scaledAzimuth[midnightAzimuthIndex]}" y="${zeroElevationY - 22}" text-anchor="middle" font-size="14px" fill="lightgrey">minuit</text>`;
     }
     if (noonAzimuthIndex > 0 && noonAzimuthIndex < scaledAzimuth.length - 1) {
         svg += `<image href="images/resources/smallSun.png" x="${scaledAzimuth[noonAzimuthIndex]}" y="${zeroElevationY - 22}" width="15" height="15" opacity="1" />`;
-        svg += `<text x="${scaledAzimuth[noonAzimuthIndex] + 20}"  y="${zeroElevationY - 10}" text-anchor="left" font-size="10px" fill="grey">midi</text>`;
+        svg += `<text x="${scaledAzimuth[noonAzimuthIndex]-2 }"  y="${zeroElevationY - 25}" text-anchor="start" font-size="10px" fill="grey">midi</text>`;
 
     }
 
