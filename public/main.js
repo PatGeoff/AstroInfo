@@ -268,7 +268,7 @@ function visibility(planet) {
         try {
             document.getElementById(idNameUntil).innerHTML = `jusqu'au ${formatDate(date)}`;
         } catch (error) {
-            document.getElementById(idNameUntil).innerHTML = `pour plus de 250 jours`;
+            document.getElementById(idNameUntil).innerHTML = `pour au moins 250 jours`;
         }
 
     }
@@ -619,10 +619,10 @@ function drawElevationGraph(obj, graphName, currentTime,) {
             }
         }
     } else {
-        const text = "Non visible en ce moment";
+        const text = "Non visible cette nuit";
         const fontSize = 16;
-        svg += `<rect x="${svgWidth / 2 - (text.length * fontSize / 4)}" y="${svgHeight / 2 - fontSize}" width="${text.length * fontSize / 2}" height="${fontSize * 1.5}" fill="#600429"></rect>`;
-        svg += `<text x="${svgWidth / 2}" y="${svgHeight / 2}" text-anchor="middle" font-size="${fontSize}px" fill="white">${text}</text>`;
+        svg += `<rect x="${svgWidth/2 + (svgWidth/3) - (text.length * fontSize / 4)}" y="${50 - fontSize}" width="${text.length * fontSize / 2}" height="${fontSize * 1.5}" fill="#600429" text-anchor="start"></rect>`;
+        svg += `<text x="${svgWidth/2 + (svgWidth/3) }" y="${50}" text-anchor="middle" font-size="${fontSize}px" fill="white">${text}</text>`;
 
     }
 

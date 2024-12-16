@@ -394,8 +394,8 @@ function getValuesITS(data, body) {
             }
         }
         let lastObservability = observability;
-        observability = values[17];
-
+        observability = values[18];
+        //console.log(`lastObservability: ${lastObservability}  observability: ${observability}`);
         if (observability != null && lastObservability != null) {
             // When the planet will be visible again
             if (lastObservability.includes("observable") && observability.includes("until")) {

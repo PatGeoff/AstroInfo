@@ -31,6 +31,11 @@ body {
     font-size: 1.2em; /* Increased font size */
 }
 
+.legend{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 .planet-info {
     display: flex;
