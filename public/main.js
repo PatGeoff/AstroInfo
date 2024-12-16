@@ -271,34 +271,35 @@ function visibility(planet) {
 
 function magRiseSet(planet) {
     let idNameVis = `rise_${planet}`;
-    document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Lever: </span><span style="color: white;">${formatTime(planetsData[planet].rise)}</span>`;
+    document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Lever: </span><span style="color: grey;">${formatTime(planetsData[planet].rise)}</span>`;
 
     // const elevation = planetsData[planet].elevation;
     // const maxElevation = Math.max(...elevation);
 
     idNameVis = `culm_${planet}`;
     // document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Culmination: </span><span style="color: white;">${formatTime(planetsData[planet].culm)} (${maxElevation.toFixed(2)}°)</span>`;
-    document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Culmination: </span><span style="color: white;">${formatTime(planetsData[planet].culm)}</span>`;
+    document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Culmination: </span><span style="color: grey;">${formatTime(planetsData[planet].culm)}</span>`;
 
     idNameVis = `set_${planet}`;
-    document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Coucher: </span><span style="color: white;">${formatTime(planetsData[planet].set)}</span>`;
+    document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Coucher: </span><span style="color: grey;">${formatTime(planetsData[planet].set)}</span>`;
 
     idNameVis = `phase_${planet}`;
-    document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Phase: </span><span style="color: white;">${planetsData[planet].phase}°</span>`;
+    document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Phase: </span><span style="color: grey;">${planetsData[planet].phase}°</span>`;
 
     idNameVis = `magnitude_${planet}`;
-    document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Magnitude: </span><span style="color: white;">${planetsData[planet].magnitude}</span>`;
+    document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Magnitude: </span><span style="color: grey;">${planetsData[planet].magnitude}</span>`;
 
     idNameVis = `diameter_${planet}`;
-    document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Diamètre angulaire: </span><span style="color: white;">${planetsData[planet].diameter}"</span>`;
+    document.getElementById(idNameVis).innerHTML = `<span style="color: grey;">Diamètre angulaire: </span><span style="color: grey;">${planetsData[planet].diameter}"</span>`;
 
 
     idNameVis = `distance_${planet}`;
     let distanceAU = parseFloat(planetsData[planet].distance).toFixed(3);
     document.getElementById(idNameVis).innerHTML = `
         <span style="color: grey;">Distance: </span>
-        <span style="color: white;">${distanceAU} AU</span>
-        <div style="color: #C6C6C6; font-size: 12px; argin-left: 20px;">(${convertAUtoKM(planetsData[planet].distance)} km)</div>
+        <span style="color: grey;">${distanceAU} AU</span>
+        <div style="color: grey; font-size: 12px; argin-left: 20px;">(${convertAUtoKM(planetsData[planet].distance)} km)</div>
+        
     `;
 
     idNameVis = `constellation_${planet}`;
