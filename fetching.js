@@ -5,7 +5,7 @@ import fs from 'fs';
 import path from 'path';
 
 // Enlever ça lors du déploiement
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 let data;
 
@@ -86,7 +86,7 @@ function constructApiUrlJpl(rise, set, body) {
     const startUTC = new Date(start.getTime() - (offset * 60 * 60 * 1000));
 
 
-    const stopTimeDate = createDateWithTime(rise, set); 
+    const stopTimeDate = createDateWithTime(rise, set);
 
     // Adjust stop time for UTC
     const stopTimeUTC = new Date(stopTimeDate.getTime() - (offset * 60 * 60 * 1000));
@@ -103,13 +103,13 @@ async function fetchData(body) {
     // Prepare the first fetch
     baseUrl = 'https://in-the-sky.org/ephemeris.php';
     params = constructApiUrlIST(body);
-    //console.log(`${baseUrl}?${params}`);
 
     try {
-        let requestString = `https://astroinfo:8890/proxy.php?baseUrl=${encodeURIComponent(baseUrl)}&params=${encodeURIComponent(params)}`
-        //console.log(requestString);
-        const itsResponse = await fetch(requestString);
-        //console.log()
+        const url1 =`${baseUrl}?${params}`
+        // let requestString = `proxy?baseUrl=${encodeURIComponent(baseUrl)}&params=${encodeURIComponent(params)}`
+        // console.log("TODO");
+        // console.log(requestStringrequestString);
+        const itsResponse = await fetch(url1);
         if (!itsResponse.ok) {
             throw new Error('Network response was not ok for https://in-the-sky.org/ephemeris.php');
         }
@@ -131,10 +131,11 @@ async function fetchData(body) {
         // Prepare the second fetch using data from the first fetch
         baseUrl = 'https://ssd.jpl.nasa.gov/api/horizons.api';
         params = constructApiUrlJpl(startTime, stopTime, body);
+        const url2 =`${baseUrl}?${params}`
         //console.log(`${baseUrl}?${params}`);
-        requestString = `https://astroinfo:8890/proxy.php?baseUrl=${encodeURIComponent(baseUrl)}&params=${encodeURIComponent(params)}`;
+        // requestString = `proxy?baseUrl=${encodeURIComponent(baseUrl)}&params=${encodeURIComponent(params)}`;
         //console.log(requestString);
-        const jplResponse = await fetch(requestString);
+        const jplResponse = await fetch(url2);
         if (!jplResponse.ok) {
             throw new Error('Network response was not ok for https://ssd.jpl.nasa.gov/api/horizons.api');
         }
@@ -162,7 +163,7 @@ function writeDataFile(body, data) {
     const filePath = path.join('public/data', fileName); // Assuming 'data' is in the root folder
 
     // Ensure the directory exists
-    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    fs.mkdirSync(path.dirname(filePath), {recursive: true});
 
     // Check if the data is an object and convert it to a string
     const stringData = typeof data === 'object' ? JSON.stringify(data, null, 2) : data;
@@ -203,7 +204,7 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
     let sunCulmAzimuthIndex = null;
     let midnightAzimuthIndex = null;
     let noonAzimuthIndex = null;
-    
+
 
     lines.forEach(line => {
         let values = line.trim().split(/\s+/); // Split by whitespace and trim
@@ -267,19 +268,17 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
             visibilityStartIndex = findClosestIndex(time, start);
             visibilityEndIndex = findClosestIndex(time, end);
         }
-    }
-    else {
+    } else {
         visibility = false;
     }
 
     // Find the closest azimuth index to sunRise, sunSet and sunCulm
-    if (sunSet != null && sunRise != null) { 
+    if (sunSet != null && sunRise != null) {
         try {
             sunRiseAzimuthIndex = findClosestIndex(time, sunRise);
             //console.log(`sunRise: ${sunRise} and index: ${sunRiseAzimuthIndex}`);
 
-        }
-        catch (error) {
+        } catch (error) {
             console.log(error);
         }
         try {
@@ -308,8 +307,7 @@ function getValuesJpl(data, startVisTime, endVisTime, observable) {
         } catch (error) {
             console.log(error);
         }
-    }
-    else {
+    } else {
         console.log("Sun data was not obtained");
     }
 
@@ -385,7 +383,7 @@ function getValuesITS(data, body) {
             culm.push(values[12]); // Culmination time
             set.push(values[13]); // Set time            
             magnitude.push(values[14]);
-            phase.push(values[15]); 
+            phase.push(values[15]);
             distance.push(values[16]);
             diameter.push(values[17]);
             observable.push(values[18]); // Observable time
@@ -422,7 +420,8 @@ function getValuesITS(data, body) {
             sunCulm = culm[0];
         }
 
-    };
+    }
+    ;
 
     return {
         bodyName,
@@ -443,12 +442,14 @@ function getValuesITS(data, body) {
     };
 }
 
-await fetchData("sun");
-await fetchData("mercury");
-await fetchData("venus");
-await fetchData("mars");
-await fetchData("jupiter");
-await fetchData("saturn");
-await fetchData("uranus");
-await fetchData("neptune");
-await fetchData("moon");
+export default async function fetchAll() {
+    await fetchData("sun");
+    await fetchData("mercury");
+    await fetchData("venus");
+    await fetchData("mars");
+    await fetchData("jupiter");
+    await fetchData("saturn");
+    await fetchData("uranus");
+    await fetchData("neptune");
+    await fetchData("moon");
+}

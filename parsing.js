@@ -2,15 +2,14 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 
-const app = express();
-const port = 3000;
+const router = express.Router();
 
-app.get('/data/:planet', (req, res) => {
+router.route('/data/:planet').get(function (req, res) {
     const planet = req.params.planet;
     const filePath = path.join(process.cwd(), 'public', 'data', `${planet}.json`);
-    console.log(`Fetching data for: ${planet}`);
-    console.log(`File path: ${filePath}`);
-    
+    console.log(`Fetching local data for: ${planet}`);
+    console.log(`Local file path: ${filePath}`);
+
     fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
             console.error(`Error reading file ${filePath}:`, err);
@@ -27,14 +26,4 @@ app.get('/data/:planet', (req, res) => {
     });
 });
 
-// Serve static files from the 'public' directory
-app.use(express.static('public'));
-
-// Serve the index.html file at the root URL
-app.get('/', (req, res) => {
-    res.sendFile(path.join(process.cwd(), 'public', 'index.html'));
-});
-
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
+export default router;
