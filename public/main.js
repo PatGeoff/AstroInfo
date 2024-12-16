@@ -193,6 +193,7 @@ const constellationsData = {
         ref_y: 303
     }
 };
+
 const azimuthLabels = [
     { range: [0, 22.5], label: "N" },
     { range: [22.5, 67.5], label: "NE" },
@@ -235,13 +236,7 @@ function displayData(planet) {
 // Update the grah and time every minute
 //setInterval(updateGrah, 60000);
 
-function updateGrah() {
-    // array.forEach(element => {
 
-    // });
-    drawGraph("mercury");
-    drawGraph("venus");
-}
 
 function currentTime() {
     const now = new Date();
@@ -411,6 +406,70 @@ function convertAUtoKM(dist) {
     return Math.round(dist * AU_TO_KM);
 }
 
+function planetOnConstellation(constellation, _ra, _dec) {
+    //console.log(`constellation: ${constellation.bodyName} ra: ${_ra} dec: ${_dec}`);
+    const pi = Math.PI;
+    const dtor = pi / 180.0;
+    const ref_ra = constellation.ref_ra; // Set this value
+    const ref_dec = constellation.ref_dec; // Set this value
+    const cdi_00 = constellation.cdi_00; // Set this value
+    const cdi_01 = constellation.cdi_01; // Set this value
+    const cdi_10 = constellation.cdi_10; // Set this value
+    const cdi_11 = constellation.cdi_11; // Set this value
+    const ra = _ra; // Set this value
+    const dec = _dec; // Set this value
+    const ref_xsize = 600; // Set this value
+    const ref_ysize = 600; // Set this value
+    const scaled_xsize = 600; // Set this value
+    const scaled_ysize = 600; // Set this value
+    const ref_x = constellation.ref_x;
+    const ref_y = constellation.ref_y;
+    let xscaled = 0.0;
+    let yscaled = 0.0;
+
+    let x, y;
+    if (constellation.simplesoln === 0) {
+        const r00 = Math.cos(ref_ra * dtor) * Math.sin(ref_dec * dtor);
+        const r10 = Math.sin(ref_ra * dtor) * Math.sin(ref_dec * dtor);
+        const r20 = -Math.cos(ref_dec * dtor);
+        const r01 = -Math.sin(ref_ra * dtor);
+        const r11 = Math.cos(ref_ra * dtor);
+        const r02 = Math.cos(ref_ra * dtor) * Math.cos(ref_dec * dtor);
+        const r12 = Math.sin(ref_ra * dtor) * Math.cos(ref_dec * dtor);
+        const r22 = Math.sin(ref_dec * dtor);
+        const l = Math.cos(dec * dtor) * Math.cos(ra * dtor);
+        const m = Math.cos(dec * dtor) * Math.sin(ra * dtor);
+        const n = Math.sin(dec * dtor);
+        const b0 = r00 * l + r10 * m + r20 * n;
+        const b1 = r01 * l + r11 * m;
+        const b2 = r02 * l + r12 * m + r22 * n;
+        const theta = Math.asin(b2);
+        const phi = Math.atan2(b1, b0);
+        const r_theta = 1.0 / (dtor * Math.tan(theta));
+        const u = r_theta * Math.sin(phi);
+        const v = -r_theta * Math.cos(phi);
+        const xdif = cdi_00 * u + cdi_01 * v;
+        const ydif = cdi_10 * u + cdi_11 * v;
+        const x = xdif + (ref_x - 1);
+        const y = ydif + (ref_y - 1);
+        xscaled = x / ref_xsize * scaled_xsize;
+        yscaled = y / ref_ysize * scaled_ysize;
+    } else {
+        const u = (ra - ref_ra) * Math.cos(ref_dec * dtor);
+        const v = (dec - ref_dec);
+        const xdif = cdi_00 * u + cdi_01 * v;
+        const ydif = cdi_10 * u + cdi_11 * v;
+        x = xdif + ref_x;
+        y = ydif + ref_y;
+        xscaled = x / ref_xsize * scaled_xsize;
+        yscaled = (ref_ysize - y) / ref_ysize * scaled_ysize;
+    }
+    //console.log("x:", xscaled);
+    //console.log("y:", yscaled);
+    const pos = { x: xscaled, y: yscaled };
+    return pos;
+}
+
 function drawConstellationGraph(planet, constellation) {
     //console.log(constellationsData[constellation]);
     let idNameConst = `constellation_${planet}_img`;
@@ -427,12 +486,12 @@ function drawConstellationGraph(planet, constellation) {
     svg += `<image xlink:href="${imgPath}" width="${svgWidth}" height="${svgHeight}" onerror="this.style.display='none'" />`;
     // Add the circle and the planet point
     //console.log(planetPos);
-    if (planet != "sun" && planet != "moon") {
+    //if (planet != "sun" && planet != "moon") {
         svg += `<circle cx="${planetPos.x}" cy="${planetPos.y}" r="5" fill="orange" />`; // Point
         svg += `<circle cx="${planetPos.x}" cy="${planetPos.y}" r="60" fill="none" stroke="#03334F" stroke-width="8" />`; // Circle around the point
         // Add text
         svg += `<text x="${svgWidth / 2}" y="50" font-size="30" text-anchor="middle" fill="grey">à 22h ce soir</text>`;
-    }
+    //}
     // Terminate the svg string
     svg += `</svg>`;
 
@@ -677,9 +736,9 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     const maxElevationX = scaledAzimuth[maxElevationIndex];
     const maxElevationY = scaledElevation[maxElevationIndex]  // Position it above the max elevation point
     // Altitude Heading text above the max
-    svg += `<text x="${maxElevationX + 18}" y="${maxElevationY - 5}" text-anchor="end" font-size="12px" fill="grey">culm: ${Math.trunc(maxElevation)}°</text>`;
+    svg += `<text x="${maxElevationX + 18}" y="${maxElevationY - 5}" text-anchor="end" font-size="10px" fill="grey">culm: ${Math.trunc(maxElevation)}°</text>`;
     // Zero elevation
-    svg += `<text x="0" y="${zeroElevationY - 5}" text-anchor="right" font-size="10px" fill="grey">Horizon (0°)</text>`;
+    svg += `<text x="0" y="${zeroElevationY - 5}" text-anchor="right" font-size="10px" fill="grey">Horizon: 0°</text>`;
     // Add the vertical line at max elevation
     //svg += `<line x1="${maxElevationX}" y1="${zeroElevationY - 2}" x2="${maxElevationX}" y2="${maxElevationY}" style="stroke:grey;stroke-width:0,5;stroke-dasharray:5,5"/>`;
 
@@ -729,69 +788,6 @@ function getAzimuthLabel(azimuth) {
     return "Unknown"; // Fallback
 }
 
-function planetOnConstellation(constellation, _ra, _dec) {
-    //console.log(`constellation: ${constellation} ra: ${_ra} dec: ${_dec}`);
-    const pi = Math.PI;
-    const dtor = pi / 180.0;
-    const ref_ra = constellation.ref_ra; // Set this value
-    const ref_dec = constellation.ref_dec; // Set this value
-    const cdi_00 = constellation.cdi_00; // Set this value
-    const cdi_01 = constellation.cdi_01; // Set this value
-    const cdi_10 = constellation.cdi_10; // Set this value
-    const cdi_11 = constellation.cdi_11; // Set this value
-    const ra = _ra; // Set this value
-    const dec = _dec; // Set this value
-    const ref_xsize = 600; // Set this value
-    const ref_ysize = 600; // Set this value
-    const scaled_xsize = 600; // Set this value
-    const scaled_ysize = 600; // Set this value
-    const ref_x = constellation.ref_x;
-    const ref_y = constellation.ref_y;
-    let xscaled = 0.0;
-    let yscaled = 0.0;
-
-    let x, y;
-    if (constellation.simplesoln === 0) {
-        const r00 = Math.cos(ref_ra * dtor) * Math.sin(ref_dec * dtor);
-        const r10 = Math.sin(ref_ra * dtor) * Math.sin(ref_dec * dtor);
-        const r20 = -Math.cos(ref_dec * dtor);
-        const r01 = -Math.sin(ref_ra * dtor);
-        const r11 = Math.cos(ref_ra * dtor);
-        const r02 = Math.cos(ref_ra * dtor) * Math.cos(ref_dec * dtor);
-        const r12 = Math.sin(ref_ra * dtor) * Math.cos(ref_dec * dtor);
-        const r22 = Math.sin(ref_dec * dtor);
-        const l = Math.cos(dec * dtor) * Math.cos(ra * dtor);
-        const m = Math.cos(dec * dtor) * Math.sin(ra * dtor);
-        const n = Math.sin(dec * dtor);
-        const b0 = r00 * l + r10 * m + r20 * n;
-        const b1 = r01 * l + r11 * m;
-        const b2 = r02 * l + r12 * m + r22 * n;
-        const theta = Math.asin(b2);
-        const phi = Math.atan2(b1, b0);
-        const r_theta = 1.0 / (dtor * Math.tan(theta));
-        const u = r_theta * Math.sin(phi);
-        const v = -r_theta * Math.cos(phi);
-        const xdif = cdi_00 * u + cdi_01 * v;
-        const ydif = cdi_10 * u + cdi_11 * v;
-        const x = xdif + (ref_x - 1);
-        const y = ydif + (ref_y - 1);
-        xscaled = x / ref_xsize * scaled_xsize;
-        yscaled = y / ref_ysize * scaled_ysize;
-    } else {
-        const u = (ra - ref_ra) * Math.cos(ref_dec * dtor);
-        const v = (dec - ref_dec);
-        const xdif = cdi_00 * u + cdi_01 * v;
-        const ydif = cdi_10 * u + cdi_11 * v;
-        x = xdif + ref_x;
-        y = ydif + ref_y;
-        xscaled = x / ref_xsize * scaled_xsize;
-        yscaled = (ref_ysize - y) / ref_ysize * scaled_ysize;
-    }
-    //console.log("x:", xscaled);
-    //console.log("y:", yscaled);
-    const pos = { x: xscaled, y: yscaled };
-    return pos;
-}
 
 function raStringToDegrees(raString) {
     // Split the string into hours, minutes, and seconds
