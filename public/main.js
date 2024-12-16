@@ -603,7 +603,7 @@ function drawElevationGraph(obj, graphName, currentTime,) {
 
             if (intersection) {
                 svg += `<circle cx="${intersection.x}" cy="${intersection.y}" r="5" fill="grey"/>`;
-                svg += `<text x="${intersection.x + 15}" y="${intersection.y + 5}" text-anchor="start" font-size="12px" fill="white">${Math.trunc(elevation[visStartIndex])}°</text>`;
+                svg += `<text x="${intersection.x + 10}" y="${intersection.y + 5}" text-anchor="start" font-size="12px" fill="white">${Math.trunc(elevation[visStartIndex])}°</text>`;
                 svg += `<text x="${intersection.x}" y="${zeroElevationY + 15}" text-anchor="middle" font-size="12px" fill="white">${formatTime(from)}</text>`;
             }
         }
@@ -620,7 +620,7 @@ function drawElevationGraph(obj, graphName, currentTime,) {
 
             if (intersection) {
                 svg += `<circle cx="${intersection.x}" cy="${intersection.y}" r="5" fill="grey"/>`;
-                svg += `<text x="${intersection.x + 15}" y="${intersection.y + 5}" text-anchor="middle" font-size="12px" fill="white">${Math.trunc(elevation[visEndIndex])}°</text>`;
+                svg += `<text x="${intersection.x + 10}" y="${intersection.y + 5}" text-anchor="start" font-size="12px" fill="white">${Math.trunc(elevation[visEndIndex])}°</text>`;
                 svg += `<text x="${intersection.x}" y="${zeroElevationY + 15}" text-anchor="middle" font-size="12px" fill="white">${formatTime(until)}</text>`;
 
             }
