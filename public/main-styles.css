@@ -225,25 +225,20 @@ body {
     gap: 10px;
 }
 
-
 .weather-container {
-    display: flex;
-    flex-wrap: nowrap; /* Prevent wrapping */
-    justify-content: center; /* Center the container */
-    gap: 5px; /* Reduce the gap between items */
-    height: 100px; /* Set a fixed height */
-    overflow-x: auto; /* Allow horizontal scrolling if needed */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Create columns that fit the container */
     padding-top: 20px;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-bottom: 20px;
 }
 
 .forecast-item {
-    flex: 0 0 auto; /* Prevent flex items from growing or shrinking */
-    width: 80px; /* Set a fixed width */
     text-align: center;
     background-color: black;
     color: white; /* Ensure text is visible on black background */
     border-radius: 8px;
-    padding: 5px;
 }
 
 .forecast-time {
@@ -252,8 +247,8 @@ body {
 }
 
 .forecast-icon {
-    width: 40px; /* Set a smaller width for the icons */
-    height: 40px; /* Set a smaller height for the icons */
+    width: 30px; /* Set a smaller width for the icons */
+    height: 30px; /* Set a smaller height for the icons */
 }
 
 .forecast-temp {
