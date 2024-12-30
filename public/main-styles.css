@@ -226,19 +226,21 @@ body {
 }
 
 .weather-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Create columns that fit the container */
+    display: flex;
+    overflow-x: auto; /* Add horizontal scroll bar */
     padding-top: 20px;
-    margin-left: 20%;
-    margin-right: 20%;
     margin-bottom: 20px;
+    width: 100%; /* Ensure it fits the entire width of the page */
+    justify-content: center; /* Center the forecast items */
 }
 
 .forecast-item {
+    flex: 0 0 auto; /* Prevent items from shrinking or growing */
     text-align: center;
     background-color: black;
     color: white; /* Ensure text is visible on black background */
     border-radius: 8px;
+    margin-right: 10px; /* Add some space between items */
 }
 
 .forecast-time {
