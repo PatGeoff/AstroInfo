@@ -60,8 +60,8 @@ body {
 
 .planet-image {
     margin-right: 10px;
-    width: 100px; /* Increase the width */
-    height: 100px; /* Increase the height */
+    width: 150px; /* Increase the width */
+    height: 150px; /* Increase the height */
 }
 
 .planet-name {
