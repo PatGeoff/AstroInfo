@@ -6,9 +6,11 @@ body {
 }
 
 .title {
+    background-color: #080808;
     color: white;
     text-align: center;
     padding-top: 10px;
+    padding-bottom: 10px;
     font-size: 18px;
 }
 
@@ -267,8 +269,8 @@ body {
 /* Responsive Styles */
 @media (max-width: 1200px) {
     .planet-image {
-        width: 50px;
-        height: 50px;
+        width: 70px;
+        height: 70px;
     }
     .planet-name {
         font-size: 1.4em;
@@ -284,8 +286,8 @@ body {
 
 @media (max-width: 992px) {
     .planet-image {
-        width: 40px;
-        height: 40px;
+        width: 60px;
+        height: 60px;
     }
     .planet-name {
         font-size: 1.3em;
@@ -304,8 +306,8 @@ body {
 
 @media (max-width: 768px) {
     .planet-image {
-        width: 30px;
-        height: 30px;
+        width: 50px;
+        height: 50px;
     }
     .planet-name {
         font-size: 1em;
@@ -316,10 +318,7 @@ body {
     .planet-name, .constellation-name {
         font-size: 1.2em;
     }
-    .planet-image, .constellation-image {
-        width: 30px;
-        height: 30px;
-    }
+   
     .columns-container {
         grid-template-columns: 1fr;
     }
