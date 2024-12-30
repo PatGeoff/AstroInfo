@@ -752,7 +752,9 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     // azimuth and time
     svg += `<text x="${firstAzimuthX}" y="${minElevationY + 18}" text-anchor="middle" font-size="14px" fill="grey">${getAzimuthLabel(azimuth[0])}</text>`;
     svg += `<text x="${firstAzimuthX}" y="${minElevationY + 2}" text-anchor="middle" font-size="12px" fill="grey">${formatTime(rise.toString())}</text>`;
+    svg += `<text x="${(middleAzimuthX+firstAzimuthX)/2}" y="${minElevationY + 18}" text-anchor="middle" font-size="14px" fill="grey">${getAzimuthLabel(azimuth[Math.floor((numValues - 1) * 0.25)])}</text>`;
     svg += `<text x="${middleAzimuthX}" y="${minElevationY + 18}" text-anchor="middle" font-size="14px" fill="grey">${getAzimuthLabel(azimuth[Math.floor((numValues - 1) / 2)])}</text>`;
+    svg += `<text x="${(middleAzimuthX+lastAzimuthX)/2}" y="${minElevationY + 18}" text-anchor="middle" font-size="14px" fill="grey">${getAzimuthLabel(azimuth[Math.floor((numValues - 1) * 0.75)])}</text>`;
     svg += `<text x="${lastAzimuthX}" y="${minElevationY + 18}" text-anchor="middle" font-size="14px" fill="grey">${getAzimuthLabel(azimuth[numValues - 1])}</text>`;
     svg += `<text x="${lastAzimuthX}" y="${minElevationY + 2}" text-anchor="middle" font-size="12px" fill="grey">${formatTime(set.toString())}</text>`;
 
