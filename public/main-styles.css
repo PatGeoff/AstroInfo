@@ -12,6 +12,7 @@ body {
     font-size: 18px;
 }
 
+/* Grid Container */
 .grid-container {
     display: flex;
     overflow-x: auto; /* Add horizontal scroll bar */
@@ -28,6 +29,11 @@ body {
     color: white; /* Ensure text is visible on black background */
     border-radius: 8px;
     margin-right: 10px; /* Add some space between items */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px; /* Added padding for grid items */
+    font-size: 1.2em; /* Increased font size */
 }
 
 .legend{
