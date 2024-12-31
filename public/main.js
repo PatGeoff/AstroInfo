@@ -206,6 +206,30 @@ const azimuthLabels = [
     { range: [337.5, 360], label: "N" } // Wrap around to North
 ];
 
+const venusPhasesPaths = [
+    { range: [[195, 360], [0, 5]], MediaSource: "images/venus/phases/VenusPhases_00.png" },
+    { range: [5, 15], MediaSource: "images/venus/phases/VenusPhases_01.png" },
+    { range: [15, 25], MediaSource: "images/venus/phases/VenusPhases_02.png" },
+    { range: [25, 35], MediaSource: "images/venus/phases/VenusPhases_03.png" },
+    { range: [35, 45], MediaSource: "images/venus/phases/VenusPhases_04.png" },
+    { range: [45, 55], MediaSource: "images/venus/phases/VenusPhases_05.png" },
+    { range: [55, 65], MediaSource: "images/venus/phases/VenusPhases_06.png" },
+    { range: [65, 75], MediaSource: "images/venus/phases/VenusPhases_07.png" },
+    { range: [75, 85], MediaSource: "images/venus/phases/VenusPhases_08.png" },
+    { range: [85, 95], MediaSource: "images/venus/phases/VenusPhases_09.png" },
+    { range: [95, 105], MediaSource: "images/venus/phases/VenusPhases_10.png" },
+    { range: [105, 115], MediaSource: "images/venus/phases/VenusPhases_11.png" },
+    { range: [115, 125], MediaSource: "images/venus/phases/VenusPhases_12.png" },
+    { range: [125, 135], MediaSource: "images/venus/phases/VenusPhases_13.png" },
+    { range: [135, 145], MediaSource: "images/venus/phases/VenusPhases_14.png" },
+    { range: [145, 155], MediaSource: "images/venus/phases/VenusPhases_15.png" },
+    { range: [155, 165], MediaSource: "images/venus/phases/VenusPhases_16.png" },
+    { range: [165, 175], MediaSource: "images/venus/phases/VenusPhases_17.png" },
+    { range: [175, 185], MediaSource: "images/venus/phases/VenusPhases_18.png" },
+    { range: [185, 195], MediaSource: "images/venus/phases/VenusPhases_19.png" }
+];
+
+
 // Create the json objects with the planets data 
 const fetchData = async (planet) => {
     try {
@@ -298,7 +322,7 @@ function magRiseSet(planet) {
     document.getElementById(idNameVis).innerHTML = `
         <span style="color: grey;">Distance: </span>
         <span style="color: grey;">${distanceAU} AU</span>
-        <div style="color: grey; font-size: 12px; argin-left: 20px;">(${convertAUtoKM(planetsData[planet].distance)} km)</div>
+        <div style="color: grey; font-size: 8px; argin-left: 8px;">(${convertAUtoKM(planetsData[planet].distance)} km)</div>
         
     `;
 
@@ -824,28 +848,66 @@ async function getWeatherData() {
 
     try {
         const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
         const data = await response.json();
         console.log(data);
 
         const weatherDiv = document.getElementById('weather');
         weatherDiv.innerHTML = ''; // Clear previous data
 
-        const currentHour = new Date().getHours();
-        const todayForecasts = data.forecast.forecastday[0].hour.slice(currentHour);
-        const tomorrowForecasts = data.forecast.forecastday[1].hour;
+        // Get the sunset time for today
+        const sunsetTime = data.forecast.forecastday[0].astro.sunset;
+
+        // Parse the sunset time to get hours and minutes
+        const [sunsetHour, sunsetMinute] = sunsetTime.split(':').map(time => parseInt(time, 10));
+        const sunsetPeriod = sunsetTime.split(' ')[1]; // AM or PM
+
+        // Convert to 24-hour format if necessary
+        let sunsetHour24 = sunsetHour;
+        if (sunsetPeriod === 'PM' && sunsetHour !== 12) {
+            sunsetHour24 += 12;
+        } else if (sunsetPeriod === 'AM' && sunsetHour === 12) {
+            sunsetHour24 = 0;
+        }
+
+        // Create a Date object for today's sunset time
+        const now = new Date();
+        const sunsetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), sunsetHour24, sunsetMinute);
+
+        // Filter the forecast data to start from sunset
+        const todaysForecast = data.forecast.forecastday[0].hour.filter(hourData => {
+            const forecastDate = new Date(hourData.time);
+            return forecastDate >= sunsetDate;
+        });
 
         // Parse the sunrise time from the second day's forecast
         const sunriseTimeString = data.forecast.forecastday[1].astro.sunrise;
-        const [sunriseHour, sunriseMinute] = sunriseTimeString.split(':').map(Number);
-        const sunrisePeriod = sunriseTimeString.includes('AM') ? 'AM' : 'PM';
-        const sunriseHour24 = sunrisePeriod === 'PM' && sunriseHour !== 12 ? sunriseHour + 12 : sunriseHour;
+        const [sunriseHour, sunriseMinute] = sunriseTimeString.split(':').map(time => parseInt(time, 10));
+        const sunrisePeriod = sunriseTimeString.split(' ')[1]; // AM or PM
 
-        // Calculate the index for the sunrise hour
-        const sunriseIndex = sunriseHour24;
+        // Convert to 24-hour format if necessary
+        let sunriseHour24 = sunriseHour;
+        if (sunrisePeriod === 'PM' && sunriseHour !== 12) {
+            sunriseHour24 += 12;
+        } else if (sunrisePeriod === 'AM' && sunriseHour === 12) {
+            sunriseHour24 = 0;
+        }
+
+        // Create a Date object for tomorrow's sunrise time
+        const sunriseDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, sunriseHour24, sunriseMinute);
+
+        // Filter the forecast data to end at sunrise
+        const tomorrowForecasts = data.forecast.forecastday[1].hour.filter(hourData => {
+            const forecastDate = new Date(hourData.time);
+            return forecastDate < sunriseDate;
+        });
 
         // Combine today's and tomorrow's forecasts
-        const forecasts = todayForecasts.concat(tomorrowForecasts.slice(0, sunriseIndex + 2));
+        const forecasts = todaysForecast.concat(tomorrowForecasts);
 
+        // Process the filtered forecast data and update the DOM
         forecasts.forEach(forecast => {
             const date = new Date(forecast.time);
             const timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -868,6 +930,44 @@ async function getWeatherData() {
     }
 }
 
+function isInRange(value, range) {
+    if (Array.isArray(range[0])) {
+        // Handle wrap-around range
+        return (value >= range[0][0] && value <= range[0][1]) || (value >= range[1][0] && value <= range[1][1]);
+    } else {
+        // Handle normal range
+        return value >= range[0] && value < range[1];
+    }
+}
+
+function displayVenusPhases() {
+    const venusData = planetsData["venus"];
+    const illumination = venusData.illumination[0]; // Current illumination value
+    const nextIllumination = venusData.illumination[1]; // Next illumination value
+
+    //console.log('Current Illumination:', illumination);
+    //console.log('Next Illumination:', nextIllumination);
+
+    let phaseValue = illumination;
+    if (nextIllumination > illumination) {
+        // If the next illumination value is greater than the current, the left side is illuminated
+        phaseValue += 90;
+    }
+
+    //console.log('Phase Value:', phaseValue);
+
+    const phaseindex = venusPhasesPaths.find(p => {
+        //console.log(`Checking range: ${p.range} for phase value: ${phaseValue}`);
+        return isInRange(phaseValue, p.range);
+    });
+
+    if (phaseindex) {
+        //console.log('Phase found:', phaseindex);
+        document.getElementById('venus_phase_image').src = phaseindex.MediaSource;
+    } else {
+        console.error('No matching phase found for phase value:', phaseValue);
+    }
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
@@ -876,6 +976,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log(planetsData);
         Object.keys(planets).forEach(planet => displayData(planet));
         getWeatherData();
+        displayVenusPhases();
     } catch (error) {
         console.error('Error fetching data:', error);
     }

@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "Launch AstroInfo",
             "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}/AstroInfo"
+            "webRoot": "${workspaceFolder}/AstroInfo/public"
         }
     ]
 }

@@ -16,8 +16,10 @@ body {
 
 /* Grid Container */
 .grid-container {
-    display: flex;
-    overflow-x: auto; /* Add horizontal scroll bar */
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns */
+    grid-template-rows: repeat(2, 1fr); /* 2 rows */
+    gap: 20px; /* Space between grid items */
     padding-top: 20px;
     margin-bottom: 20px;
     width: 100%; /* Ensure it fits the entire width of the page */
@@ -25,16 +27,11 @@ body {
 }
 
 .grid-item {
-    flex: 0 0 auto; /* Prevent items from shrinking or growing */
     text-align: center;
     background-color: black;
     color: white; /* Ensure text is visible on black background */
     border-radius: 8px;
-    margin-right: 10px; /* Add some space between items */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px; /* Added padding for grid items */
+    padding: 0px; /* Added padding for grid items */
     font-size: 1.2em; /* Increased font size */
 }
 
@@ -62,8 +59,8 @@ body {
 
 .planet-image {
     margin-right: 10px;
-    width: 100px; /* Increase the width */
-    height: 100px; /* Increase the height */
+    width: 60px; /* Increase the width */
+    height: 60px; /* Increase the height */
 }
 
 .planet-name {
@@ -99,12 +96,12 @@ body {
 
 /* Flex Grid */
 .flex-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    grid-template-rows: repeat(3, 1fr); /* 3 rows */
+    gap: 20px; /* Space between grid items */
     background-color: black;
-    padding: 5%;
+    
 }
 
 .flex-item {
@@ -139,15 +136,15 @@ body {
     padding: 20px;
     border-radius: 10px;
     max-width: 600px;
-    margin: 20px auto;
 }
+
 
 .columns-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    
     width: 100%;
-    font-size: 14px;
+    font-size: 8px;
 }
 
 .column {
@@ -163,14 +160,14 @@ body {
 }
 
 .planet-image-widget {
-    width: 120px;
-    height: 120px;
+    width: 50px;
+    height: 50px;
     margin-bottom: 20px;
 }
 
 .constellation-image-widget {
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
 }
 
 .button-container {
@@ -221,7 +218,7 @@ body {
     font-size: 14px; /* Specify the font size */
 }
 .bottomInfo{
-    padding-left: 30px;
+    padding-left: 5px;
 }
 
 .action-button {
@@ -266,67 +263,5 @@ body {
     margin: 0; /* Remove default margin */
 }
 
-
-/* Responsive Styles */
-@media (max-width: 1200px) {
-    .planet-image {
-        width: 70px;
-        height: 70px;
-    }
-    .planet-name {
-        font-size: 1.4em;
-    }
-    .dynamic-text {
-        font-size: 1em;
-    }
-    .action-button {
-        width: 100%; /* Make the button full width */
-        height: 30px; /* Adjust height for larger screens */
-    }
-}
-
-@media (max-width: 992px) {
-    .planet-image {
-        width: 60px;
-        height: 60px;
-    }
-    .planet-name {
-        font-size: 1.3em;
-    }
-    .dynamic-text {
-        font-size: 0.9em;
-    }
-    .flex-item {
-        width: calc(50% - 40px);
-    }
-    .action-button {
-        width: 100%; /* Make the button full width */
-        height: 25px; /* Adjust height for medium screens */
-    }
-}
-
-@media (max-width: 768px) {
-    .planet-image {
-        width: 50px;
-        height: 50px;
-    }
-    .planet-name {
-        font-size: 1em;
-    }
-    .dynamic-text {
-        font-size: 0.8em;
-    }
-    .planet-name, .constellation-name {
-        font-size: 1.2em;
-    }
-   
-    .columns-container {
-        grid-template-columns: 1fr;
-    }
-    .action-button {
-        width: 100%; /* Make the button full width */
-        height: 20px; /* Adjust height for smaller screens */
-    }
-}
 
 
