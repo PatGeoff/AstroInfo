@@ -500,22 +500,38 @@ function drawConstellationGraph(planet, constellation) {
     let idNameConst = `constellation_${planet}_img`;
     const imgPath = constellationsPath[constellation].toString();
     //console.log(imgPath);
-    const svgWidth = 600;
-    const svgHeight = 600;
+
+    let svgWidth = 600;
+    let svgHeight = 600;
     const planetPos = planetOnConstellation(constellationsData[constellation], raStringToDegrees(planetsData[planet].ra[0]), decStringToDegrees(planetsData[planet].dec[0]));
     //console.log(`${planet} ra: ${planetsData[planet].ra[0]} dec: ${planetsData[planet].dec[0]}`);
     //console.log(`x: ${planetPos.x} y: ${planetPos.y}`);
     // Create SVG elements
-    let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" width="100%" height="100%" style="overflow: visible; position: absolute;">`;;
+    let width = 100;
+    let height = 100;
+    let xPos = 0;
+    if (constellation == "Ari") {
+        if (planetPos.x < -200) {
+            xPos = -310;
+            width = 70;
+            height = 70;
+        }
+        else if (planetPos.x > 200) {
+            width = 70;
+            height = 70;
+            xPos = -310;
+        }
+    }
+    let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${xPos} 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" width="${width}%" height="${height}%" style="overflow: visible; position: absolute;">`;;
     // Add the constellation image
     svg += `<image xlink:href="${imgPath}" width="${svgWidth}" height="${svgHeight}" onerror="this.style.display='none'" />`;
     // Add the circle and the planet point
     //console.log(planetPos);
     //if (planet != "sun" && planet != "moon") {
-        svg += `<circle cx="${planetPos.x}" cy="${planetPos.y}" r="5" fill="orange" />`; // Point
-        svg += `<circle cx="${planetPos.x}" cy="${planetPos.y}" r="60" fill="none" stroke="#03334F" stroke-width="8" />`; // Circle around the point
-        // Add text
-        svg += `<text x="${svgWidth / 2}" y="50" font-size="30" text-anchor="middle" fill="grey">à 22h ce soir</text>`;
+    svg += `<circle cx="${planetPos.x}" cy="${planetPos.y}" r="5" fill="orange" />`; // Point
+    svg += `<circle cx="${planetPos.x}" cy="${planetPos.y}" r="60" fill="none" stroke="#03334F" stroke-width="8" />`; // Circle around the point
+    // Add text
+    svg += `<text x="${svgWidth / 2}" y="50" font-size="30" text-anchor="middle" fill="grey">à 22h ce soir</text>`;
     //}
     // Terminate the svg string
     svg += `</svg>`;
@@ -776,9 +792,9 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     // azimuth and time
     svg += `<text x="${firstAzimuthX}" y="${minElevationY + 18}" text-anchor="middle" font-size="14px" fill="grey">${getAzimuthLabel(azimuth[0])}</text>`;
     svg += `<text x="${firstAzimuthX}" y="${minElevationY + 2}" text-anchor="middle" font-size="12px" fill="grey">${formatTime(rise.toString())}</text>`;
-    svg += `<text x="${(middleAzimuthX+firstAzimuthX)/2}" y="${minElevationY + 18}" text-anchor="middle" font-size="14px" fill="grey">${getAzimuthLabel(azimuth[Math.floor((numValues - 1) * 0.25)])}</text>`;
+    svg += `<text x="${(middleAzimuthX + firstAzimuthX) / 2}" y="${minElevationY + 18}" text-anchor="middle" font-size="14px" fill="grey">${getAzimuthLabel(azimuth[Math.floor((numValues - 1) * 0.25)])}</text>`;
     svg += `<text x="${middleAzimuthX}" y="${minElevationY + 18}" text-anchor="middle" font-size="14px" fill="grey">${getAzimuthLabel(azimuth[Math.floor((numValues - 1) / 2)])}</text>`;
-    svg += `<text x="${(middleAzimuthX+lastAzimuthX)/2}" y="${minElevationY + 18}" text-anchor="middle" font-size="14px" fill="grey">${getAzimuthLabel(azimuth[Math.floor((numValues - 1) * 0.75)])}</text>`;
+    svg += `<text x="${(middleAzimuthX + lastAzimuthX) / 2}" y="${minElevationY + 18}" text-anchor="middle" font-size="14px" fill="grey">${getAzimuthLabel(azimuth[Math.floor((numValues - 1) * 0.75)])}</text>`;
     svg += `<text x="${lastAzimuthX}" y="${minElevationY + 18}" text-anchor="middle" font-size="14px" fill="grey">${getAzimuthLabel(azimuth[numValues - 1])}</text>`;
     svg += `<text x="${lastAzimuthX}" y="${minElevationY + 2}" text-anchor="middle" font-size="12px" fill="grey">${formatTime(set.toString())}</text>`;
 
@@ -790,7 +806,7 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     }
     if (noonAzimuthIndex > 0 && noonAzimuthIndex < scaledAzimuth.length - 1) {
         svg += `<image href="images/resources/smallSun.png" x="${scaledAzimuth[noonAzimuthIndex]}" y="${zeroElevationY - 22}" width="15" height="15" opacity="1" />`;
-        svg += `<text x="${scaledAzimuth[noonAzimuthIndex]-2 }"  y="${zeroElevationY - 25}" text-anchor="start" font-size="10px" fill="grey">midi</text>`;
+        svg += `<text x="${scaledAzimuth[noonAzimuthIndex] - 2}"  y="${zeroElevationY - 25}" text-anchor="start" font-size="10px" fill="grey">midi</text>`;
 
     }
 
