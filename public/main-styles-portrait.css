@@ -1,9 +1,5 @@
 /* General Styles */
-body {
-    background-color: black;
-    color: white;
-    font-family: Arial, sans-serif;
-}
+
 
 .title {
     background-color: #080808;
@@ -95,14 +91,7 @@ body {
 }
 
 /* Flex Grid */
-.flex-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columns */
-    grid-template-rows: repeat(3, 1fr); /* 3 rows */
-    gap: 20px; /* Space between grid items */
-    background-color: black;
-    
-}
+
 
 .flex-item {
     display: flex;
@@ -128,6 +117,15 @@ body {
     text-align: center;
 }
 
+
+
+
+body {
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
 /* Widget Styles */
 .widget {
     display: flex;
@@ -138,6 +136,14 @@ body {
     max-width: 600px;
 }
 
+.flex-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    grid-template-rows: repeat(3, 1fr); /* 3 rows */
+    gap: 10px; /* Space between grid items */
+    background-color: black;
+    
+}
 
 .columns-container {
     display: grid;
@@ -168,7 +174,14 @@ body {
 .constellation-image-widget {
     width: 100px;
     height: 100px;
+    overflow: visible; /* Allow elements to overflow */
+    position: relative; /* Ensure positioning is preserved */
 }
+
+
+
+
+
 
 .button-container {
     display: flex;

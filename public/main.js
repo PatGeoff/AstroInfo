@@ -506,7 +506,7 @@ function drawConstellationGraph(planet, constellation) {
     //console.log(`${planet} ra: ${planetsData[planet].ra[0]} dec: ${planetsData[planet].dec[0]}`);
     //console.log(`x: ${planetPos.x} y: ${planetPos.y}`);
     // Create SVG elements
-    let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" width="100%" height="100%">`;
+    let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" width="100%" height="100%" style="overflow: visible; position: absolute;">`;;
     // Add the constellation image
     svg += `<image xlink:href="${imgPath}" width="${svgWidth}" height="${svgHeight}" onerror="this.style.display='none'" />`;
     // Add the circle and the planet point

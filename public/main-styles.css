@@ -1,9 +1,5 @@
 /* General Styles */
-body {
-    background-color: black;
-    color: white;
-    font-family: Arial, sans-serif;
-}
+
 
 .title {
     background-color: #080808;
@@ -95,17 +91,12 @@ body {
     margin-bottom: 10px;
     text-align: left;
     color: white;
+    overflow: visible;
+    position: relative;
 }
 
+
 /* Flex Grid */
-.flex-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    background-color: black;
-    padding: 5%;
-}
 
 .flex-item {
     display: flex;
@@ -131,7 +122,28 @@ body {
     text-align: center;
 }
 
-/* Widget Styles */
+
+
+
+body {
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    overflow: visible; /* Allow elements to overflow */
+    position: relative; /* Ensure positioning is preserved */
+}
+
+.flex-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    background-color: black;
+    padding: 5%;
+    overflow: visible; /* Allow elements to overflow */
+    position: relative; /* Ensure positioning is preserved */
+}
+
 .widget {
     display: flex;
     flex-direction: column;
@@ -140,6 +152,8 @@ body {
     border-radius: 10px;
     max-width: 600px;
     margin: 20px auto;
+    overflow: visible; /* Allow elements to overflow */
+    position: relative; /* Ensure positioning is preserved */
 }
 
 .columns-container {
@@ -148,6 +162,8 @@ body {
     gap: 20px;
     width: 100%;
     font-size: 14px;
+    overflow: visible; /* Allow elements to overflow */
+    position: relative; /* Ensure positioning is preserved */
 }
 
 .column {
@@ -155,7 +171,19 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    overflow: visible; /* Allow elements to overflow */
+    position: relative; /* Ensure positioning is preserved */
 }
+
+.constellation-image-widget {
+    width: 200px;
+    height: 200px;
+    overflow: visible; /* Allow elements to overflow */
+    position: relative; /* Ensure positioning is preserved */
+    z-index: 10; /* Ensure it is above other elements */
+}
+
+
 
 .widgetColumn {
     padding-left: 20px;
@@ -168,10 +196,7 @@ body {
     margin-bottom: 20px;
 }
 
-.constellation-image-widget {
-    width: 200px;
-    height: 200px;
-}
+
 
 .button-container {
     display: flex;
