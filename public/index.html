@@ -2,15 +2,22 @@
 <html lang="en">
 
 <head>
+    <title>AstroInfo</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Montréal - AstroInfo</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+   
     <link rel="stylesheet" href="main-styles.css">
     <link rel="stylesheet" href="widgets.css">
 </head>
 
 <body>
-    <div class="weather-container" id="weather"></div>
+    <div class="weather-wrapper">
+        <div class="weather-container" id="weather"></div>
+    </div>
+
     <div id="title-date" class="title"></div>
     <div class="grid-container">
         <div class="grid-item">
@@ -114,7 +121,7 @@
                 nautique.</div>
             <div class="info-nautique" id="sunset">Coucher du Soleil</div>
             <div class="info-nautique" id="nautical_sunset">Fin du crépuscule Nautique</div>
-           
+
         </div>
     </div>
 
@@ -123,7 +130,8 @@
             <div class="columns-container">
                 <div class="column">
                     <div class="planet-name">Mercure</div>
-                    <img src="images/icons/mercury.png" alt="Mercury" class="planet-image-widget" id="mercury_phase_image">
+                    <img src="images/icons/mercury.png" alt="Mercury" class="planet-image-widget"
+                        id="mercury_phase_image">
                     <div class="bottomInfo">
                         <div class="planet-bottominfo" id="phase_mercury">Phase:</div>
                         <div class="planet-bottominfo" id="magnitude_mercury">Magnitude:</div>
@@ -351,7 +359,7 @@
             <div class="columns-container">
                 <div class="column">
                     <div class="planet-name">Lune</div>
-                    <img src="images/icons/moon.png" alt="moon" class="planet-image-widget">
+                    <img src="images/icons/moon.png" alt="moon" class="planet-image-widget" id="moon_phase_image">
                     <div class="bottomInfo">
                         <div class="planet-bottominfo" id="phase_moon">Phase:</div>
                         <div class="planet-bottominfo" id="magnitude_moon">Magnitude:</div>

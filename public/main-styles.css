@@ -17,7 +17,7 @@
     padding-top: 20px;
     margin-bottom: 20px;
     width: 100%; /* Ensure it fits the entire width of the page */
-    justify-content: center; /* Center the grid items */
+    justify-content: flex-start; /* Align items to the start */
 }
 
 .grid-item {
@@ -257,13 +257,22 @@ body {
     gap: 10px;
 }
 
+/* Centering Wrapper */
+.weather-wrapper {
+    display: flex;
+    justify-content: center; /* Center the container horizontally */
+    width: 100%;
+    margin: 0 auto; /* Center the wrapper itself */
+}
+
+/* Weather Container */
 .weather-container {
     display: flex;
     overflow-x: auto; /* Add horizontal scroll bar */
     padding-top: 20px;
     margin-bottom: 20px;
     width: 100%; /* Ensure it fits the entire width of the page */
-    justify-content: center; /* Center the forecast items */
+    justify-content: flex-start; /* Align items to the start */
 }
 
 .forecast-item {
@@ -273,6 +282,10 @@ body {
     color: white; /* Ensure text is visible on black background */
     border-radius: 8px;
     margin-right: 10px; /* Add some space between items */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1em; /* Increased font size */
 }
 
 .forecast-time {

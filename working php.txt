@@ -1,6 +1,0 @@
-https://in-the-sky.org/ephemeris.php?ird=1&irs=1&ima=1&iob=1&objtype=1&objpl=Venus&objtxt=Mars&tz=0&startday=1&startmonth=1&startyear=2024&interval=4&rows=25
-
-
-
-startday$=1&startmonth=1&startyear=2025&ird=1&irs=1&ima=1&ipm=0&iph=0&ias=0&iss=0&iob=1&ide=0&ids=0&interval=4&tz=0&format=csv&rows=1&objtype=1&objpl=mercury&objtxt=mercury&town=6077243
-ird=1&irs=1&ima=1&iob=1&objtype=1&objpl=Venus&objtxt=Venus&tz=0&startday=1&startmonth=1&startyear=2025&interval=4&rows=25

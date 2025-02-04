@@ -217,18 +217,76 @@ const venusPhasesPaths = [
     { range: [65, 75], MediaSource: "images/venus/phases/VenusPhases_07.png" },
     { range: [75, 85], MediaSource: "images/venus/phases/VenusPhases_08.png" },
     { range: [85, 95], MediaSource: "images/venus/phases/VenusPhases_09.png" },
-    { range: [95, 105], MediaSource: "images/venus/phases/VenusPhases_10.png" },
-    { range: [105, 115], MediaSource: "images/venus/phases/VenusPhases_11.png" },
-    { range: [115, 125], MediaSource: "images/venus/phases/VenusPhases_12.png" },
-    { range: [125, 135], MediaSource: "images/venus/phases/VenusPhases_13.png" },
-    { range: [135, 145], MediaSource: "images/venus/phases/VenusPhases_14.png" },
-    { range: [145, 155], MediaSource: "images/venus/phases/VenusPhases_15.png" },
-    { range: [155, 165], MediaSource: "images/venus/phases/VenusPhases_16.png" },
-    { range: [165, 175], MediaSource: "images/venus/phases/VenusPhases_17.png" },
-    { range: [175, 185], MediaSource: "images/venus/phases/VenusPhases_18.png" },
-    { range: [185, 195], MediaSource: "images/venus/phases/VenusPhases_19.png" }
+    { range: [95, 105], MediaSource: "images/venus/phases/VenusPhases_19.png" },
+    { range: [105, 115], MediaSource: "images/venus/phases/VenusPhases_18.png" },
+    { range: [115, 125], MediaSource: "images/venus/phases/VenusPhases_17.png" },
+    { range: [125, 135], MediaSource: "images/venus/phases/VenusPhases_16.png" },
+    { range: [135, 145], MediaSource: "images/venus/phases/VenusPhases_15.png" },
+    { range: [145, 155], MediaSource: "images/venus/phases/VenusPhases_14.png" },
+    { range: [155, 165], MediaSource: "images/venus/phases/VenusPhases_13.png" },
+    { range: [165, 175], MediaSource: "images/venus/phases/VenusPhases_12.png" },
+    { range: [175, 185], MediaSource: "images/venus/phases/VenusPhases_11.png" },
+    { range: [185, 195], MediaSource: "images/venus/phases/VenusPhases_10.png" }
 ];
 
+
+const mercuryPhasesPaths = [
+    { range: [[193, 360], [0, 6]], MediaSource: "images/mercury/phases/mercuryPhases_00.png" },
+    { range: [6, 13], MediaSource: "images/mercury/phases/mercuryPhases_01.png" },
+    { range: [13, 20], MediaSource: "images/mercury/phases/mercuryPhases_02.png" },
+    { range: [20, 27], MediaSource: "images/mercury/phases/mercuryPhases_03.png" },
+    { range: [27, 34], MediaSource: "images/mercury/phases/mercuryPhases_04.png" },
+    { range: [34, 41], MediaSource: "images/mercury/phases/mercuryPhases_05.png" },
+    { range: [41, 48], MediaSource: "images/mercury/phases/mercuryPhases_06.png" },
+    { range: [48, 55], MediaSource: "images/mercury/phases/mercuryPhases_07.png" },
+    { range: [55, 62], MediaSource: "images/mercury/phases/mercuryPhases_08.png" },
+    { range: [62, 69], MediaSource: "images/mercury/phases/mercuryPhases_09.png" },
+    { range: [69, 76], MediaSource: "images/mercury/phases/mercuryPhases_10.png" },
+    { range: [76, 83], MediaSource: "images/mercury/phases/mercuryPhases_11.png" },
+    { range: [83, 90], MediaSource: "images/mercury/phases/mercuryPhases_12.png" },
+    { range: [90, 97], MediaSource: "images/mercury/phases/mercuryPhases_13.png" },
+    { range: [97, 104], MediaSource: "images/mercury/phases/mercuryPhases_14.png" },
+    { range: [104, 111], MediaSource: "images/mercury/phases/mercuryPhases_15.png" },
+    { range: [111, 118], MediaSource: "images/mercury/phases/mercuryPhases_16.png" },
+    { range: [118, 125], MediaSource: "images/mercury/phases/mercuryPhases_17.png" },
+    { range: [125, 132], MediaSource: "images/mercury/phases/mercuryPhases_18.png" },
+    { range: [132, 139], MediaSource: "images/mercury/phases/mercuryPhases_19.png" },
+    { range: [139, 146], MediaSource: "images/mercury/phases/mercuryPhases_20.png" },
+    { range: [146, 153], MediaSource: "images/mercury/phases/mercuryPhases_21.png" },
+    { range: [153, 160], MediaSource: "images/mercury/phases/mercuryPhases_22.png" },
+    { range: [160, 167], MediaSource: "images/mercury/phases/mercuryPhases_23.png" },
+    { range: [167, 174], MediaSource: "images/mercury/phases/mercuryPhases_24.png" },
+    { range: [174, 181], MediaSource: "images/mercury/phases/mercuryPhases_25.png" },
+    { range: [181, 187], MediaSource: "images/mercury/phases/mercuryPhases_26.png" },
+    { range: [187, 196], MediaSource: "images/mercury/phases/mercuryPhases_27.png" }
+];
+
+const moonPhasesPaths = [
+    { range: [[195, 360], [0, 8]], MediaSource: "images/moon/phases/MoonPhases_00.png" },
+    { range: [8, 16], MediaSource: "images/moon/phases/MoonPhases_01.png" },
+    { range: [16, 24], MediaSource: "images/moon/phases/MoonPhases_02.png" },
+    { range: [24, 32], MediaSource: "images/moon/phases/MoonPhases_03.png" },
+    { range: [32, 40], MediaSource: "images/moon/phases/MoonPhases_04.png" },
+    { range: [40, 48], MediaSource: "images/moon/phases/MoonPhases_05.png" },
+    { range: [48, 56], MediaSource: "images/moon/phases/MoonPhases_06.png" },
+    { range: [56, 64], MediaSource: "images/moon/phases/MoonPhases_07.png" },
+    { range: [64, 72], MediaSource: "images/moon/phases/MoonPhases_08.png" },
+    { range: [72, 80], MediaSource: "images/moon/phases/MoonPhases_09.png" },
+    { range: [80, 88], MediaSource: "images/moon/phases/MoonPhases_10.png" },
+    { range: [88, 96], MediaSource: "images/moon/phases/MoonPhases_11.png" },
+    { range: [96, 104], MediaSource: "images/moon/phases/MoonPhases_12.png" },
+    { range: [104, 112], MediaSource: "images/moon/phases/MoonPhases_13.png" },
+    { range: [112, 120], MediaSource: "images/moon/phases/MoonPhases_14.png" },
+    { range: [120, 128], MediaSource: "images/moon/phases/MoonPhases_15.png" },
+    { range: [128, 136], MediaSource: "images/moon/phases/MoonPhases_16.png" },
+    { range: [136, 144], MediaSource: "images/moon/phases/MoonPhases_17.png" },
+    { range: [144, 152], MediaSource: "images/moon/phases/MoonPhases_18.png" },
+    { range: [152, 160], MediaSource: "images/moon/phases/MoonPhases_19.png" },
+    { range: [160, 168], MediaSource: "images/moon/phases/MoonPhases_20.png" },
+    { range: [168, 176], MediaSource: "images/moon/phases/MoonPhases_21.png" },
+    { range: [176, 184], MediaSource: "images/moon/phases/MoonPhases_22.png" },
+    { range: [184, 187], MediaSource: "images/moon/phases/MoonPhases_23.png" }
+];
 
 // Create the json objects with the planets data 
 const fetchData = async (planet) => {
@@ -965,8 +1023,8 @@ function displayVenusPhases() {
     //console.log('Next Illumination:', nextIllumination);
 
     let phaseValue = illumination;
-    if (nextIllumination > illumination) {
-        // If the next illumination value is greater than the current, the left side is illuminated
+    if (nextIllumination < illumination) {
+        // If the next illumination value is greater than the current, the left right is illuminated
         phaseValue += 90;
     }
 
@@ -976,7 +1034,7 @@ function displayVenusPhases() {
         //console.log(`Checking range: ${p.range} for phase value: ${phaseValue}`);
         return isInRange(phaseValue, p.range);
     });
-
+    console.log(phaseindex.MediaSource);
     if (phaseindex) {
         //console.log('Phase found:', phaseindex);
         document.getElementById('venus_phase_image').src = phaseindex.MediaSource;
@@ -984,6 +1042,65 @@ function displayVenusPhases() {
         console.error('No matching phase found for phase value:', phaseValue);
     }
 }
+
+function displayMercuryPhases() {
+    const mercuryData = planetsData["mercury"];
+    const illumination = mercuryData.illumination[0]; // Current illumination value
+    const nextIllumination = mercuryData.illumination[1]; // Next illumination value
+
+    //console.log('Current Illumination:', illumination);
+    //console.log('Next Illumination:', nextIllumination);
+
+    let phaseValue = illumination;
+    if (nextIllumination < illumination) {
+        // If the next illumination value is greater than the current, the left right is illuminated
+        phaseValue += 90;
+    }
+
+    //console.log('Phase Value:', phaseValue);
+
+    const phaseindex = mercuryPhasesPaths.find(p => {
+        //console.log(`Checking range: ${p.range} for phase value: ${phaseValue}`);
+        return isInRange(phaseValue, p.range);
+    });
+    console.log(phaseindex.MediaSource);
+    if (phaseindex) {
+        //console.log('Phase found:', phaseindex);
+        document.getElementById('mercury_phase_image').src = phaseindex.MediaSource;
+    } else {
+        console.error('No matching phase found for phase value:', phaseValue);
+    }
+}
+
+function displayMoonPhases() {
+    const moonData = planetsData["moon"];
+    const illumination = moonData.illumination[0]; // Current illumination value
+    const nextIllumination = moonData.illumination[1]; // Next illumination value
+
+    //console.log('Current Illumination:', illumination);
+    //console.log('Next Illumination:', nextIllumination);
+
+    let phaseValue = illumination;
+    if (nextIllumination < illumination) {
+        // If the next illumination value is greater than the current, the left right is illuminated
+        phaseValue += 90;
+    }
+
+    //console.log('Phase Value:', phaseValue);
+
+    const phaseindex = moonPhasesPaths.find(p => {
+        //console.log(`Checking range: ${p.range} for phase value: ${phaseValue}`);
+        return isInRange(phaseValue, p.range);
+    });
+    console.log(phaseindex.MediaSource);
+    if (phaseindex) {
+        //console.log('Phase found:', phaseindex);
+        document.getElementById('moon_phase_image').src = phaseindex.MediaSource;
+    } else {
+        console.error('No matching phase found for phase value:', phaseValue);
+    }
+}
+
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
@@ -993,6 +1110,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         Object.keys(planets).forEach(planet => displayData(planet));
         getWeatherData();
         displayVenusPhases();
+        displayMercuryPhases();
+        displayMoonPhases();
     } catch (error) {
         console.error('Error fetching data:', error);
     }
