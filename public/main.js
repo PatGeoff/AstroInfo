@@ -1081,7 +1081,7 @@ function displayMoonPhases() {
     //console.log('Next Illumination:', nextIllumination);
 
     let phaseValue = illumination;
-    if (nextIllumination < illumination) {
+    if (nextIllumination > illumination) {
         // If the next illumination value is greater than the current, the left right is illuminated
         phaseValue += 90;
     }
