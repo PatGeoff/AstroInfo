@@ -10,8 +10,32 @@
 </head>
 
 <body>
-    <div class="weather-container" id="weather"></div>
+
     <div id="title-date" class="title"></div>
+    <div class="weather-container" id="weather"></div>
+    <div class="infos-wrapper">
+        <div id="info-icon">
+            <img src="images/icons/sun.png" alt="Sun Icon" id="sun-info-icon">
+        </div>
+        <div class="infos">
+            <div class="info-nautique" id="nautical_sunrise">Début de l'aube Nautique</div>
+            <div class="info-nautique" id="sunrise">Lever du Soleil</div>
+           <div>L'aube nautique se produit lorsque le centre du Soleil se trouve entre 6° et 12° sous l'horizon avant
+                le lever du soleil. Durant cette période,
+                le ciel commence à s'éclaircir. Il est encore suffisamment sombre pour que les étoiles les plus
+                brillantes soient visibles, puis elles disparaissent graduellement.</div>
+            <br>
+            <div class="info-nautique" id="sunset">Coucher du Soleil</div>
+            <div class="info-nautique" id="nautical_sunset">Fin du crépuscule Nautique</div>
+            <div>Le crépuscule nautique est une période de la journée où le centre du Soleil se trouve entre 6° et 12°
+                sous l'horizon,
+                après le coucher du soleil. Durant cette période, le ciel s'assombrit graduellement et la plupart des
+                étoiles deviennent visibles.
+                Celles dont la magnitude apparente est élevée, comme Neptune, apparaîtront bien après le crépuscule
+                nautique.</div>
+           
+        </div>
+    </div>
     <div class="grid-container">
         <div class="grid-item">
             <div class="planet-info">
@@ -93,32 +117,72 @@
                 <div class="until_class" id="visibility_until_moon"></div>
             </div>
         </div>
-    </div>
-    <div class="infos-wrapper">
-        <div id="info-icon">
-            <img src="images/icons/sun.png" alt="Sun Icon" id="sun-info-icon">
-        </div>
-        <div class="infos">
-            <div>L'aube nautique se produit lorsque le centre du Soleil se trouve entre 6° et 12° sous l'horizon avant
-                le lever du soleil. Durant cette période,
-                le ciel commence à s'éclaircir. Il est encore suffisamment sombre pour que les étoiles les plus
-                brillantes soient visibles, puis elles disparaissent graduellement.</div>
-            <div class="info-nautique" id="nautical_sunrise">Début de l'aube Nautique</div>
-            <div class="info-nautique" id="sunrise">Lever du Soleil</div>
-            <br>
-            <div>Le crépuscule nautique est une période de la journée où le centre du Soleil se trouve entre 6° et 12°
-                sous l'horizon,
-                après le coucher du soleil. Durant cette période, le ciel s'assombrit graduellement et la plupart des
-                étoiles deviennent visibles.
-                Celles dont la magnitude apparente est élevée, comme Neptune, apparaîtront bien après le crépuscule
-                nautique.</div>
-            <div class="info-nautique" id="sunset">Coucher du Soleil</div>
-            <div class="info-nautique" id="nautical_sunset">Fin du crépuscule Nautique</div>
-           
-        </div>
-    </div>
-    <br>
+    </div>   
     <div class="flex-grid">
+        <div class="widget">
+            <div class="columns-container">
+                <div class="column">
+                    <div class="planet-name">Soleil</div>
+                    <img src="images/icons/sun.png" alt="sun" class="planet-image-widget">
+                    <div class="bottomInfo">
+                        <div class="planet-bottominfo" id="phase_sun">Phase:</div>
+                        <div class="planet-bottominfo" id="magnitude_sun" ;>Magnitude:</div>
+                        <div class="planet-bottominfo" id="diameter_sun">Diamètre angulaire:</div>
+                        <div class="planet-bottominfo" id="distance_sun">Distance:</div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="constellation-name" id="constellation_sun"></div>
+                    <div id="constellation_sun_img" class="constellation-image-widget"></div>
+                </div>
+                <div class="column">
+                    <div class="widgetColumn">
+                        <div class="widget-text" id="rise_sun"></div>
+                        <div class="widget-text" id="culm_sun"></div>
+                        <div class="widget-text" id="set_sun"></div>
+                        <div class="widget-text" id="magnitude_sun"></div>
+                        <div class="widget-text" id="visibility_sun_2"></div>
+                        <div class="widget-text" id="from_sun" style="display: none"></div>
+                        <div class="widget-text" id="until_sun" style="display: none"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="cell graph">
+                <div id="sun_graph"></div>
+            </div>
+        </div>
+        <div class="widget">
+            <div class="columns-container">
+                <div class="column">
+                    <div class="planet-name">Lune</div>
+                    <img src="images/icons/moon.png" alt="moon" class="planet-image-widget">
+                    <div class="bottomInfo">
+                        <div class="planet-bottominfo" id="phase_moon">Phase:</div>
+                        <div class="planet-bottominfo" id="magnitude_moon">Magnitude:</div>
+                        <div class="planet-bottominfo" id="diameter_moon">Diamètre angulaire:</div>
+                        <div class="planet-bottominfo" id="distance_moon">Distance:</div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="constellation-name" id="constellation_moon"></div>
+                    <div id="constellation_moon_img" class="constellation-image-widget"></div>
+                </div>
+                <div class="column">
+                    <div class="widgetColumn">
+                        <div class="widget-text" id="from_moon"></div>
+                        <div class="widget-text" id="until_moon"></div>
+                        <div class="widget-text" id="rise_moon"></div>
+                        <div class="widget-text" id="culm_moon"></div>
+                        <div class="widget-text" id="set_moon"></div>
+                        <div class="widget-text" id="magnitude_moon"></div>
+                        <div class="widget-text" id="visibility_moon_2"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="cell graph">
+                <div id="moon_graph"></div>
+            </div>
+        </div>
         <div class="widget">
             <div class="columns-container">
                 <div class="column">
@@ -154,7 +218,6 @@
                 <div id="mercury_graph"></div>
             </div>
         </div>
-
         <div class="widget">
             <div class="columns-container">
                 <div class="column">
@@ -347,70 +410,8 @@
                 <div id="neptune_graph"></div>
             </div>
         </div>
-        <div class="widget">
-            <div class="columns-container">
-                <div class="column">
-                    <div class="planet-name">Lune</div>
-                    <img src="images/icons/moon.png" alt="moon" class="planet-image-widget">
-                    <div class="bottomInfo">
-                        <div class="planet-bottominfo" id="phase_moon">Phase:</div>
-                        <div class="planet-bottominfo" id="magnitude_moon">Magnitude:</div>
-                        <div class="planet-bottominfo" id="diameter_moon">Diamètre angulaire:</div>
-                        <div class="planet-bottominfo" id="distance_moon">Distance:</div>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="constellation-name" id="constellation_moon"></div>
-                    <div id="constellation_moon_img" class="constellation-image-widget"></div>
-                </div>
-                <div class="column">
-                    <div class="widgetColumn">
-                        <div class="widget-text" id="from_moon"></div>
-                        <div class="widget-text" id="until_moon"></div>
-                        <div class="widget-text" id="rise_moon"></div>
-                        <div class="widget-text" id="culm_moon"></div>
-                        <div class="widget-text" id="set_moon"></div>
-                        <div class="widget-text" id="magnitude_moon"></div>
-                        <div class="widget-text" id="visibility_moon_2"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="cell graph">
-                <div id="moon_graph"></div>
-            </div>
-        </div>
-        <div class="widget">
-            <div class="columns-container">
-                <div class="column">
-                    <div class="planet-name">Soleil</div>
-                    <img src="images/icons/sun.png" alt="sun" class="planet-image-widget">
-                    <div class="bottomInfo">
-                        <div class="planet-bottominfo" id="phase_sun">Phase:</div>
-                        <div class="planet-bottominfo" id="magnitude_sun" ;>Magnitude:</div>
-                        <div class="planet-bottominfo" id="diameter_sun">Diamètre angulaire:</div>
-                        <div class="planet-bottominfo" id="distance_sun">Distance:</div>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="constellation-name" id="constellation_sun"></div>
-                    <div id="constellation_sun_img" class="constellation-image-widget"></div>
-                </div>
-                <div class="column">
-                    <div class="widgetColumn">
-                        <div class="widget-text" id="rise_sun"></div>
-                        <div class="widget-text" id="culm_sun"></div>
-                        <div class="widget-text" id="set_sun"></div>
-                        <div class="widget-text" id="magnitude_sun"></div>
-                        <div class="widget-text" id="visibility_sun_2"></div>
-                        <div class="widget-text" id="from_sun" style="display: none"></div>
-                        <div class="widget-text" id="until_sun" style="display: none"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="cell graph">
-                <div id="sun_graph"></div>
-            </div>
-        </div>
+
+
 
     </div>
     <script src="main.js"></script>

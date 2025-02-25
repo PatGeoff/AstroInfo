@@ -443,7 +443,7 @@ function adjustTimeByMinutes(timeStr, minutes) {
 
 function todaysDate() {
     const date = planetsData["venus"].date[0].toString();
-    document.getElementById("title-date").innerHTML = `Montréal - ${formatDate(date)}`;
+    document.getElementById("title-date").innerHTML = `${formatDate(date)}`;
 }
 
 function formatDate(dateString) {
@@ -655,7 +655,7 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     });
 
     // Create SVG elements
-    let svg = `<svg viewBox="0 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" width="100%" height="100%">`;
+    let svg = `<svg viewBox="0 30 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" width="100%" height="100%">`;
 
     ///////
     // Generate a unique ID for each gradient

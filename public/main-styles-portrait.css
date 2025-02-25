@@ -2,7 +2,6 @@
 
 
 .title {
-    background-color: #080808;
     color: white;
     text-align: center;
     padding-top: 10px;
@@ -16,8 +15,8 @@
     grid-template-columns: repeat(4, 1fr); /* 4 columns */
     grid-template-rows: repeat(2, 1fr); /* 2 rows */
     gap: 20px; /* Space between grid items */
-    padding-top: 20px;
-    margin-bottom: 20px;
+    padding-top: 30px;
+    margin-bottom: 30px;
     width: 100%; /* Ensure it fits the entire width of the page */
     justify-content: center; /* Center the grid items */
 }
@@ -142,10 +141,11 @@ body {
 
 .flex-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columns */
-    grid-template-rows: repeat(3, 1fr); /* 3 rows */
+    grid-template-columns: repeat(2, 1fr); /* 3 columns */
+    grid-template-rows: repeat(2, 1fr); /* 3 rows */
     gap: 10px; /* Space between grid items */
     background-color: black;
+    
     
 }
 
@@ -207,6 +207,7 @@ body {
     text-indent: -9999px; /* Hide the text */
     width: 800px; /* Adjust the width to fit your image */
     height: 20px; /* Adjust the height to fit your image */
+
 }
 
 .action-button:hover {
@@ -225,7 +226,10 @@ body {
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
     background-color: #080808;
-    padding: 20px; /* Optional: Add padding around the container */
+    padding-left: 0px; /* Optional: Add padding around the container */
+    padding-right: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .infos {
