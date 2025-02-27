@@ -12,29 +12,31 @@
 <body>
 
     <div id="title-date" class="title"></div>
-    <div class="weather-container" id="weather"></div>
+    
     <div class="infos-wrapper">
-        <div id="info-icon">
+        <div class="weather-container" id="weather"></div>
+        <!-- <div id="info-icon">
             <img src="images/icons/sun.png" alt="Sun Icon" id="sun-info-icon">
         </div>
         <div class="infos">
-            <div class="info-nautique" id="nautical_sunrise">Début de l'aube Nautique</div>
-            <div class="info-nautique" id="sunrise">Lever du Soleil</div>
-           <div>L'aube nautique se produit lorsque le centre du Soleil se trouve entre 6° et 12° sous l'horizon avant
+            <!-- <div class="info-nautique" id="nautical_sunrise">Début de l'aube Nautique</div>
+            <div class="info-nautique" id="sunrise">Lever du Soleil</div> -->
+           <!-- <div>L'aube nautique se produit lorsque le centre du Soleil se trouve entre 6° et 12° sous l'horizon avant
                 le lever du soleil. Durant cette période,
                 le ciel commence à s'éclaircir. Il est encore suffisamment sombre pour que les étoiles les plus
                 brillantes soient visibles, puis elles disparaissent graduellement.</div>
+            <br> -->
             <br>
-            <div class="info-nautique" id="sunset">Coucher du Soleil</div>
-            <div class="info-nautique" id="nautical_sunset">Fin du crépuscule Nautique</div>
-            <div>Le crépuscule nautique est une période de la journée où le centre du Soleil se trouve entre 6° et 12°
+            <!-- <div class="info-nautique" id="sunset">Coucher du Soleil</div>
+            <div class="info-nautique" id="nautical_sunset">Fin du crépuscule Nautique</div> -->
+            <!-- <div>Le crépuscule nautique est une période de la journée où le centre du Soleil se trouve entre 6° et 12°
                 sous l'horizon,
                 après le coucher du soleil. Durant cette période, le ciel s'assombrit graduellement et la plupart des
                 étoiles deviennent visibles.
                 Celles dont la magnitude apparente est élevée, comme Neptune, apparaîtront bien après le crépuscule
-                nautique.</div>
+                nautique.</div> -->
            
-        </div>
+        </div> 
     </div>
     <div class="grid-container">
         <div class="grid-item">
@@ -137,9 +139,11 @@
                 </div>
                 <div class="column">
                     <div class="widgetColumn">
+                        <div class="widget-text" id="nautical_sunrise"></div>
                         <div class="widget-text" id="rise_sun"></div>
                         <div class="widget-text" id="culm_sun"></div>
                         <div class="widget-text" id="set_sun"></div>
+                        <div class="widget-text" id="nautical_sunset"></div>
                         <div class="widget-text" id="magnitude_sun"></div>
                         <div class="widget-text" id="visibility_sun_2"></div>
                         <div class="widget-text" id="from_sun" style="display: none"></div>

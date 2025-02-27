@@ -309,10 +309,7 @@ function displayData(planet) {
     todaysDate();
     drawConstellationGraph(planet, planetsData[planet].constellation[0]);
     drawGraph(planet);
-    magRiseSet(planet);
-    if (planet == "sun") {
-        nauticalInfo(planet);
-    }
+    magRiseSet(planet);    
 }
 
 // Update the grah and time every minute
@@ -381,7 +378,7 @@ function magRiseSet(planet) {
     document.getElementById(idNameVis).innerHTML = `
         <span style="color: white;">Distance: </span>
         <span style="color: white;">${distanceAU} AU</span>
-        <div style="color: grey; font-size: 8px; argin-left: 8px;">(${convertAUtoKM(planetsData[planet].distance)} km)</div>
+        <div>(${convertAUtoKM(planetsData[planet].distance)} km)</div>
         
     `;
 
@@ -400,27 +397,21 @@ function magRiseSet(planet) {
     }
     idNameVis = `until_${planet}`;
     document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Jusqu'à: </span><span style="color: white;">${text}</span>`;
+    if (planet == "sun"){
+        const rise = planetsData[planet].rise[0];
+        const set = planetsData[planet].set[0];
+        const nauticalSunrise = adjustTimeByMinutes(rise, -35);
+        const nauticalSunset = adjustTimeByMinutes(set, +35);
+    
+        let idNameVis = "nautical_sunrise";
+        document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Aube Nautique: </span><span style="color: white;">${formatTime(nauticalSunrise)}</span>`;
+    
+        idNameVis = "nautical_sunset";
+        document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Crépuscule Nautique: </span><span style="color: white;">${formatTime(nauticalSunset)}</span>`;
+    }
 }
 
-function nauticalInfo(planet) {
-    const rise = planetsData[planet].rise[0];
-    const set = planetsData[planet].set[0];
-    const nauticalSunrise = adjustTimeByMinutes(rise, -35);
-    const nauticalSunset = adjustTimeByMinutes(set, +35);
 
-    let idNameVis = "nautical_sunrise";
-    document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Début de l'aube Nautique: </span><span style="color: white;">${formatTime(nauticalSunrise)}</span>`;
-
-    idNameVis = "sunrise";
-    document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Lever du Soleil: </span><span style="color: white;">${formatTime(rise)}</span>`;
-
-    idNameVis = "nautical_sunset";
-    document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Fin du crépuscule Nautique: </span><span style="color: white;">${formatTime(nauticalSunset)}</span>`;
-
-    idNameVis = "sunset";
-    document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Coucher du Soleil: </span><span style="color: white;">${formatTime(set)}</span>`;
-
-}
 
 function adjustTimeByMinutes(timeStr, minutes) {
     // Split the time string into hours and minutes
@@ -566,22 +557,22 @@ function drawConstellationGraph(planet, constellation) {
     //console.log(`${planet} ra: ${planetsData[planet].ra[0]} dec: ${planetsData[planet].dec[0]}`);
     //console.log(`x: ${planetPos.x} y: ${planetPos.y}`);
     // Create SVG elements
-    let width = 100;
-    let height = 100;
-    let xPos = 0;
+    let width = 200;
+    let height = 200;
+    let xPos = 120;
     if (constellation == "Ari") {
         if (planetPos.x < -200) {
-            xPos = -310;
-            width = 70;
-            height = 70;
+            xPos = -150;
+            width = 140;
+            height = 140;
         }
         else if (planetPos.x > 200) {
-            width = 70;
-            height = 70;
-            xPos = -310;
+            width = 140;
+            height = 140;
+            xPos = 150;
         }
     }
-    let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${xPos} 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" width="${width}%" height="${height}%" style="overflow: visible; position: absolute;">`;;
+    let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${xPos} -30 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" width="${width}%" height="${height}%" style="overflow: visible; position: absolute;">`;;
     // Add the constellation image
     svg += `<image xlink:href="${imgPath}" width="${svgWidth}" height="${svgHeight}" onerror="this.style.display='none'" />`;
     // Add the circle and the planet point
