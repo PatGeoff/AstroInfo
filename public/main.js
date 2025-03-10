@@ -307,7 +307,9 @@ const fetchData = async (planet) => {
 function displayData(planet) {
     visibility(planet);
     todaysDate();
+    if (planet !== "sun") {
     drawConstellationGraph(planet, planetsData[planet].constellation[0]);
+    }
     drawGraph(planet);
     magRiseSet(planet);    
 }
@@ -410,7 +412,6 @@ function magRiseSet(planet) {
         document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Crépuscule Nautique: </span><span style="color: white;">${formatTime(nauticalSunset)}</span>`;
     }
 }
-
 
 
 function adjustTimeByMinutes(timeStr, minutes) {
@@ -1096,11 +1097,12 @@ function displayMoonPhases() {
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
+        getWeatherData();
         // Fetch data for all planets using the keys
         await Promise.all(Object.keys(planets).map(planet => fetchData(planet)));
         console.log(planetsData);
         Object.keys(planets).forEach(planet => displayData(planet));
-        getWeatherData();
+        
         displayVenusPhases();
         displayMercuryPhases();
         displayMoonPhases();

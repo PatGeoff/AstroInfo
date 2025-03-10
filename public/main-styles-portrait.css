@@ -142,6 +142,37 @@ body {
     border-radius: 10px;
     max-width: 600;
 }
+.flex-grid-soleil {
+        display: grid;
+        padding-bottom: 20px;
+    background-color: black;  
+}
+
+.widget-soleil {
+    display: flex;
+    flex-direction: column;
+    background-color: #080808;
+    padding-top: 20px;
+   
+    border-radius: 10px;
+    max-width: 600;
+}
+.columns-container-soleil {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    
+    width: 100%;
+    font-size: 8px;
+}
+.columns-container-soleil .column:nth-child(2) {
+    /* Add your custom styles here */
+    width: 500px;
+}
+
+.sun-graph{
+    width: 500px;
+}
+
 
 .flex-grid {
     display: grid;
@@ -177,6 +208,13 @@ body {
     height: 60px;
     margin-bottom: 20px;
 }
+
+.sun-image-widget {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
 
 .constellation-image-widget {
     width: 100px;
