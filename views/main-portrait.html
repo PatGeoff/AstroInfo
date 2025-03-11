@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Montréal - AstroInfo - Portrait</title>
+    <link rel="stylesheet" href="css/libs/swiper-bundle.min.css">
+    <link rel="stylesheet" href="css/main-styles.css">
+    <link rel="stylesheet" href="css/main-styles-portrait.css">
+    <script src="js/libs/swiper-bundle.min.js"></script>
+</head>
+
+<body>
+
+    <div id="title-date" class="title"></div>
+
+    <div class="infos-wrapper">
+        <div class="weather-container" id="weather"></div>
+    </div>
+
+
+    <div class="grid-container">
+
+        {% set planets = [
+            {"name": "mercury", "label": "Mercure"},
+            {"name": "venus", "label": "Vénus"},
+            {"name": "mars", "label": "Mars"},
+            {"name": "jupiter", "label": "Jupiter"},
+            {"name": "saturn", "label": "Saturne"},
+            {"name": "uranus", "label": "Uranus"},
+            {"name": "neptune", "label": "Neptune"},
+            {"name": "moon", "label": "Lune"}
+        ] %}
+
+        {% for planet in planets %}
+            <div class="grid-item">
+                <div class="planet-info">
+                    <img src="images/icons/{{ planet.name }}.png" alt="{{ planet.label }}" class="planet-image">
+                    <div class="planet-name">{{ planet.label }}</div>
+                </div>
+                <div id="body_text_{{ planet }}" class="dynamic-text">
+                    <div class="visibility_class" id="visibility_{{ planet.name }}"></div>
+                    <div class="until_class" id="visibility_until_{{ planet.name }}"></div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+
+    <div class="flex-grid-soleil">
+        <div class="widget-soleil">
+            <div class="columns-container-soleil">
+                <div class="column">
+                    <div class="planet-name">Soleil</div>
+                    <img src="images/icons/sun.png" alt="sun" class="sun-image-widget">
+
+                </div>
+                <div class="column">
+                    <div class="bottomInfo">
+                    <div class="planet-bottominfo" id="phase_sun"><span class="label">Phase:</span></div>
+                    <div class="planet-bottominfo" id="magnitude_sun"><span class="label">Magnitude:</span></div>
+                    <div class="planet-bottominfo" id="diameter_sun"><span class="label">Diamètre angulaire:</span></div>
+                    <div class="planet-bottominfo" id="distance_sun"><span class="label">Distance:</span></div>
+                    </div>
+                </div>
+                <!-- <div class="column">
+                    <div class="constellation-name" id="constellation_sun"><span class="label">Constellation: </span></div>
+                    <div id="constellation_sun_img" class="constellation-image-widget"></div>
+                </div> -->
+                <div class="column">
+                    <div class="widgetColumn">
+                        <div class="widget-text" id="nautical_sunrise"><span class="label">Aube Nautique: </span></div>
+                        <div class="widget-text" id="rise_sun"><span class="label">Lever: </span></div>
+                        <div class="widget-text" id="culm_sun"><span class="label">Culmination: </span></div>
+                        <div class="widget-text" id="set_sun"><span class="label">Coucher: </span></div>
+                        <div class="widget-text" id="nautical_sunset"><span class="label">Crépuscule Nautique: </span></div>
+                        <div class="widget-text" id="visibility_sun_2"></div>
+                        <div class="widget-text" id="from_sun" style="display: none"><span class="label">Observable de: </span></div>
+                        <div class="widget-text" id="until_sun" style="display: none"><span class="label">Jusqu'à: </span></div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div id="sun_graph"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="flex-grid">
+
+        {% set groups = [
+            [
+                {"name": "moon", "label": "Lune"},
+                {"name": "mercury", "label": "Mercure"}
+            ], [
+                {"name": "venus", "label": "Vénus"},
+                {"name": "mars", "label": "Mars"}
+            ], [
+                {"name": "jupiter", "label": "Jupiter"},
+                {"name": "saturn", "label": "Saturne"}
+            ], [
+                {"name": "uranus", "label": "Uranus"},
+                {"name": "neptune", "label": "Neptune"}
+            ]
+        ] %}
+
+        {% for group in groups %}
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    {% for planet in group %}
+                        <div class="swiper-slide">
+                        <div class="widget">
+                            <div class="columns-container">
+                                <div class="column">
+                                    <div class="planet-name">{{ planet.label }}</div>
+                                    <img src="images/icons/{{ planet.name }}.png" alt="{{ planet.label }}" class="planet-image-widget" id="{{ planet.name }}_phase_image">
+                                    <div class="bottomInfo">
+                                        <div class="planet-bottominfo" id="phase_{{ planet.name }}"><span class="label">Phase:</span></div>
+                                        <div class="planet-bottominfo" id="magnitude_{{ planet.name }}"><span class="label">Magnitude:</span></div>
+                                        <div class="planet-bottominfo" id="diameter_{{ planet.name }}"><span class="label">Diamètre angulaire:</span></div>
+                                        <div class="planet-bottominfo" id="distance_{{ planet.name }}"><span class="label">Distance:</span></div>
+                                    </div>
+                                </div>
+                                <div class="column">
+                                    <div class="constellation-name" id="constellation_{{ planet.name }}"><span class="label">Constellation: </span></div>
+                                    <div id="constellation_{{ planet.name }}_img" class="constellation-image-widget"></div>
+                                </div>
+                                <div class="column">
+                                    <div class="widgetColumn">
+                                        <div class="widget-text" id="from_{{ planet.name }}"><span class="label">Observable de: </span></div>
+                                        <div class="widget-text" id="until_{{ planet.name }}"><span class="label">Jusqu'à: </span></div>
+                                        <div class="widget-text" id="rise_{{ planet.name }}"><span class="label">Lever: </span></div>
+                                        <div class="widget-text" id="culm_{{ planet.name }}"><span class="label">Culmination: </span></div>
+                                        <div class="widget-text" id="set_{{ planet.name }}"><span class="label">Coucher: </span></div>
+                                        <div class="widget-text" id="visibility_{{ planet.name }}_2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cell graph">
+                                <div id="{{ planet.name }}_graph"></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="autoplay-progress"></div>
+            </div>
+        {% endfor %}
+    </div>
+    <script src="js/main.js"></script>
+    <script src="js/main-portrait-sliders.js"></script>
+</body>
+
+</html>

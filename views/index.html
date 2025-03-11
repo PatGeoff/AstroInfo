@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>AstroInfo</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="stylesheet" href="css/main-styles.css">
+</head>
+
+<body>
+    <div class="weather-wrapper">
+        <div class="weather-container" id="weather"></div>
+    </div>
+
+    <div id="title-date" class="title"></div>
+    <div class="grid-container">
+
+        {% set planets = [
+            {"name": "mercury", "label": "Mercure"},
+            {"name": "venus", "label": "Vénus"},
+            {"name": "mars", "label": "Mars"},
+            {"name": "jupiter", "label": "Jupiter"},
+            {"name": "saturn", "label": "Saturne"},
+            {"name": "uranus", "label": "Uranus"},
+            {"name": "neptune", "label": "Neptune"},
+            {"name": "moon", "label": "Lune"}
+        ] %}
+
+        {% for planet in planets %}
+            <div class="grid-item">
+                <div class="planet-info">
+                    <img src="images/icons/{{ planet.name }}.png" alt="{{ planet.label }}" class="planet-image">
+                    <div class="planet-name">{{ planet.label }}</div>
+                </div>
+                <div id="body_text_{{ planet.name }}" class="dynamic-text">
+                    <div class="visibility_class" id="visibility_{{ planet.name }}"></div>
+                    <div class="until_class" id="visibility_until_{{ planet.name }}"></div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="infos-wrapper">
+        <div id="info-icon">
+            <img src="images/icons/sun.png" alt="Sun Icon" id="sun-info-icon">
+        </div>
+        <div class="infos">
+            <div>L'aube nautique se produit lorsque le centre du Soleil se trouve entre 6° et 12° sous l'horizon avant
+                le lever du soleil. Durant cette période,
+                le ciel commence à s'éclaircir. Il est encore suffisamment sombre pour que les étoiles les plus
+                brillantes soient visibles, puis elles disparaissent graduellement.</div>
+            <div class="info-nautique" id="nautical_sunrise"><span class="label">Aube Nautique: </span></div>
+            <div class="info-nautique" id="sunrise">Lever du Soleil</div>
+            <br>
+            <div>Le crépuscule nautique est une période de la journée où le centre du Soleil se trouve entre 6° et 12°
+                sous l'horizon,
+                après le coucher du soleil. Durant cette période, le ciel s'assombrit graduellement et la plupart des
+                étoiles deviennent visibles.
+                Celles dont la magnitude apparente est élevée, comme Neptune, apparaîtront bien après le crépuscule
+                nautique.</div>
+            <div class="info-nautique" id="sunset">Coucher du Soleil</div>
+            <div class="info-nautique" id="nautical_sunset"><span class="label">Crépuscule Nautique: </span></div>
+
+        </div>
+    </div>
+
+    <div class="flex-grid">
+
+        {% set planets = [
+            {"name": "mercury", "label": "Mercure"},
+            {"name": "venus", "label": "Vénus"},
+            {"name": "mars", "label": "Mars"},
+            {"name": "jupiter", "label": "Jupiter"},
+            {"name": "saturn", "label": "Saturne"},
+            {"name": "uranus", "label": "Uranus"},
+            {"name": "neptune", "label": "Neptune"},
+            {"name": "moon", "label": "Lune"},
+            {"name": "sun", "label": "Soleil"}
+        ] %}
+
+        {% for planet in planets %}
+            <div class="widget">
+                <div class="columns-container">
+                    <div class="column">
+                        <div class="planet-name">{{ planet.label }}</div>
+                        <img src="images/icons/{{ planet.name }}.png" alt="{{ planet.label }}" class="planet-image-widget"
+                            id="{{ planet.name }}_phase_image">
+                        <div class="bottomInfo">
+                            <div class="planet-bottominfo" id="phase_{{ planet.name }}"><span class="label">Phase:</span></div>
+                            <div class="planet-bottominfo" id="magnitude_{{ planet.name }}"><span class="label">Magnitude:</span></div>
+                            <div class="planet-bottominfo" id="diameter_{{ planet.name }}"><span class="label">Diamètre angulaire:</span></div>
+                            <div class="planet-bottominfo" id="distance_{{ planet.name }}"><span class="label">Distance:</span></div>
+
+                        </div>
+
+                    </div>
+                    <div class="column">
+                        <div class="constellation-name" id="constellation_{{ planet.name }}"><span class="label">Constellation: </span></div>
+                        <div id="constellation_{{ planet.name }}_img" class="constellation-image-widget"></div>
+                    </div>
+                    <div class="column">
+                        <div class="widgetColumn">
+
+                            <div class="widget-text" id="from_{{ planet.name }}"><span class="label">Observable de: </span></div>
+                            <div class="widget-text" id="until_{{ planet.name }}"><span class="label">Jusqu'à: </span></div>
+                            <div class="widget-text" id="rise_{{ planet.name }}"><span class="label">Lever: </span></div>
+                            <div class="widget-text" id="culm_{{ planet.name }}"><span class="label">Culmination: </span></div>
+                            <div class="widget-text" id="set_{{ planet.name }}"><span class="label">Coucher: </span></div>
+                            <div class="widget-text"></div>
+                            <div class="widget-text" id="visibility_{{ planet.name }}_2"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cell graph">
+                    <div id="{{ planet.name }}_graph"></div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
