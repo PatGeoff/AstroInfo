@@ -1,9 +1,8 @@
 /* General Styles */
-html::-webkit-scrollbar, body::-webkit-scrollbar {
-    display: none;  /* Safari and Chrome */
-}
+
 
 .title {
+    background-color: #080808;
     color: white;
     text-align: center;
     padding-top: 10px;
@@ -13,26 +12,25 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
 
 /* Grid Container */
 .grid-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 columns */
-    grid-template-rows: repeat(2, 1fr); /* 2 rows */
-    gap: 20px; /* Space between grid items */
-    padding-top: 30px;
-    margin-bottom: 30px;
+    display: flex;
+    overflow-x: auto; /* Add horizontal scroll bar */
+    padding-top: 20px;
+    margin-bottom: 20px;
     width: 100%; /* Ensure it fits the entire width of the page */
-    justify-content: center; /* Center the grid items */
-}
-
-.idNameVis {
-    font-size: bigger;
+    justify-content: flex-start; /* Align items to the start */
 }
 
 .grid-item {
+    flex: 0 0 auto; /* Prevent items from shrinking or growing */
     text-align: center;
     background-color: black;
     color: white; /* Ensure text is visible on black background */
     border-radius: 8px;
-    padding: 0px; /* Added padding for grid items */
+    margin-right: 10px; /* Add some space between items */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px; /* Added padding for grid items */
     font-size: 1.2em; /* Increased font size */
 }
 
@@ -42,6 +40,11 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
     align-items: center;
 }
 
+.label {
+    font-weight: bold;
+    color: white;
+}
+
 .planet-info {
     display: flex;
     align-items: center;
@@ -49,7 +52,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
     background-color: black;
     color: white;
     padding: 5px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 .planet-header {
@@ -60,8 +63,8 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
 
 .planet-image {
     margin-right: 10px;
-    width: 60px; /* Increase the width */
-    height: 60px; /* Increase the height */
+    width: 100px; /* Increase the width */
+    height: 100px; /* Increase the height */
 }
 
 .planet-name {
@@ -71,8 +74,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
 .planet-bottominfo{
     margin-bottom: 10px;
     text-align: left;
-    color: rgb(233, 233, 233);
-    font-size: 10;
+    color: white;
 }
 
 .until_class {
@@ -93,10 +95,12 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
     margin-bottom: 10px;
     text-align: left;
     color: white;
+    overflow: visible;
+    position: relative;
 }
 
-/* Flex Grid */
 
+/* Flex Grid */
 
 .flex-item {
     display: flex;
@@ -129,65 +133,41 @@ body {
     background-color: black;
     color: white;
     font-family: Arial, sans-serif;
-    max-height: 2160px;
-    max-width: 3840px;
+    overflow: visible; /* Allow elements to overflow */
+    position: relative; /* Ensure positioning is preserved */
 }
 
-/* Widget Styles */
+.flex-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    background-color: black;
+    padding: 5%;
+    overflow: visible; /* Allow elements to overflow */
+    position: relative; /* Ensure positioning is preserved */
+}
+
 .widget {
     display: flex;
     flex-direction: column;
     background-color: #080808;
-    padding-top: 20px;
+    padding: 20px;
     border-radius: 10px;
-    max-width: 600;
-}
-.flex-grid-soleil {
-        display: grid;
-        padding-bottom: 20px;
-    background-color: black;  
-}
-
-.widget-soleil {
-    display: flex;
-    flex-direction: column;
-    background-color: #080808;
-    padding-top: 20px;
-   
-    border-radius: 10px;
-    max-width: 600;
-}
-.columns-container-soleil {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    
-    width: 100%;
-    font-size: 8px;
-}
-.columns-container-soleil .column:nth-child(2) {
-    /* Add your custom styles here */
-    width: 500px;
-}
-
-.sun-graph{
-    width: 500px;
-}
-
-
-.flex-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 0.5fr); /* 3 columns */
-    grid-template-rows: repeat(2, 0.5fr); /* 3 rows */
-    gap: 10px; /* Space between grid items */
-    background-color: black;    
+    max-width: 600px;
+    margin: 20px auto;
+    overflow: visible; /* Allow elements to overflow */
+    position: relative; /* Ensure positioning is preserved */
 }
 
 .columns-container {
     display: grid;
-    grid-template-columns: repeat(3, 0.5fr);
-    
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
     width: 100%;
-    font-size: 8px;
+    font-size: 14px;
+    overflow: visible; /* Allow elements to overflow */
+    position: relative; /* Ensure positioning is preserved */
 }
 
 .column {
@@ -195,7 +175,21 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    font-size: 15px;
+    overflow: visible; /* Allow elements to overflow */
+    position: relative; /* Ensure positioning is preserved */
+}
+
+.constellation-image-widget {
+    width: 200px;
+    height: 200px;
+    overflow: visible; /* Allow elements to overflow */
+    position: relative; /* Ensure positioning is preserved */
+    z-index: 10; /* Ensure it is above other elements */
+}
+
+.constellation-image-widget svg {
+    width: 100%;
+    height: auto;
 }
 
 .widgetColumn {
@@ -204,29 +198,10 @@ body {
 }
 
 .planet-image-widget {
-    width: 60px;
-    height: 60px;
+    width: 120px;
+    height: 120px;
     margin-bottom: 20px;
 }
-
-.sun-image-widget {
-    width: 100px;
-    height: 100px;
-    margin-bottom: 20px;
-}
-
-
-.constellation-image-widget {
-    width: 100px;
-    height: 100px;
-    overflow: visible; /* Allow elements to overflow */
-    position: relative; /* Ensure positioning is preserved */
-}
-
-
-
-
-
 
 .button-container {
     display: flex;
@@ -248,7 +223,6 @@ body {
     text-indent: -9999px; /* Hide the text */
     width: 800px; /* Adjust the width to fit your image */
     height: 20px; /* Adjust the height to fit your image */
-
 }
 
 .action-button:hover {
@@ -267,10 +241,7 @@ body {
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
     background-color: #080808;
-    padding-left: 0px; /* Optional: Add padding around the container */
-    padding-right: 0px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding: 20px; /* Optional: Add padding around the container */
 }
 
 .infos {
@@ -280,7 +251,7 @@ body {
     font-size: 14px; /* Specify the font size */
 }
 .bottomInfo{
-    padding-left: 5px;
+    padding-left: 30px;
 }
 
 .action-button {
@@ -291,13 +262,23 @@ body {
     gap: 10px;
 }
 
+/* Centering Wrapper */
+.weather-wrapper {
+    display: flex;
+    justify-content: center; /* Center the container horizontally */
+    width: 100%;
+    margin: 0 auto; /* Center the wrapper itself */
+}
+
+/* Weather Container */
 .weather-container {
     display: flex;
     overflow-x: auto; /* Add horizontal scroll bar */
     padding-top: 20px;
     margin-bottom: 20px;
     width: 100%; /* Ensure it fits the entire width of the page */
-    justify-content: center; /* Center the forecast items */
+    justify-content: center; /* Center items inside the container */
+    gap: 10px;
 }
 
 .forecast-item {
@@ -306,7 +287,10 @@ body {
     background-color: black;
     color: white; /* Ensure text is visible on black background */
     border-radius: 8px;
-    margin-right: 10px; /* Add some space between items */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1em; /* Increased font size */
 }
 
 .forecast-time {
@@ -325,5 +309,67 @@ body {
     margin: 0; /* Remove default margin */
 }
 
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+    .planet-image {
+        width: 70px;
+        height: 70px;
+    }
+    .planet-name {
+        font-size: 1.4em;
+    }
+    .dynamic-text {
+        font-size: 1em;
+    }
+    .action-button {
+        width: 100%; /* Make the button full width */
+        height: 30px; /* Adjust height for larger screens */
+    }
+}
+
+@media (max-width: 992px) {
+    .planet-image {
+        width: 60px;
+        height: 60px;
+    }
+    .planet-name {
+        font-size: 1.3em;
+    }
+    .dynamic-text {
+        font-size: 0.9em;
+    }
+    .flex-item {
+        width: calc(50% - 40px);
+    }
+    .action-button {
+        width: 100%; /* Make the button full width */
+        height: 25px; /* Adjust height for medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .planet-image {
+        width: 50px;
+        height: 50px;
+    }
+    .planet-name {
+        font-size: 1em;
+    }
+    .dynamic-text {
+        font-size: 0.8em;
+    }
+    .planet-name, .constellation-name {
+        font-size: 1.2em;
+    }
+
+    .columns-container {
+        grid-template-columns: 1fr;
+    }
+    .action-button {
+        width: 100%; /* Make the button full width */
+        height: 20px; /* Adjust height for smaller screens */
+    }
+}
 
 

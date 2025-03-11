@@ -8,9 +8,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-   
-    <link rel="stylesheet" href="main-styles.css">
-    <link rel="stylesheet" href="widgets.css">
+    <link rel="stylesheet" href="css/main-styles.css">
 </head>
 
 <body>
@@ -110,7 +108,7 @@
                 le lever du soleil. Durant cette période,
                 le ciel commence à s'éclaircir. Il est encore suffisamment sombre pour que les étoiles les plus
                 brillantes soient visibles, puis elles disparaissent graduellement.</div>
-            <div class="info-nautique" id="nautical_sunrise">Début de l'aube Nautique</div>
+            <div class="info-nautique" id="nautical_sunrise"><span class="label">Aube Nautique: </span></div>
             <div class="info-nautique" id="sunrise">Lever du Soleil</div>
             <br>
             <div>Le crépuscule nautique est une période de la journée où le centre du Soleil se trouve entre 6° et 12°
@@ -120,7 +118,7 @@
                 Celles dont la magnitude apparente est élevée, comme Neptune, apparaîtront bien après le crépuscule
                 nautique.</div>
             <div class="info-nautique" id="sunset">Coucher du Soleil</div>
-            <div class="info-nautique" id="nautical_sunset">Fin du crépuscule Nautique</div>
+            <div class="info-nautique" id="nautical_sunset"><span class="label">Crépuscule Nautique: </span></div>
 
         </div>
     </div>
@@ -133,26 +131,26 @@
                     <img src="images/icons/mercury.png" alt="Mercury" class="planet-image-widget"
                         id="mercury_phase_image">
                     <div class="bottomInfo">
-                        <div class="planet-bottominfo" id="phase_mercury">Phase:</div>
-                        <div class="planet-bottominfo" id="magnitude_mercury">Magnitude:</div>
-                        <div class="planet-bottominfo" id="diameter_mercury">Diamètre angulaire:</div>
-                        <div class="planet-bottominfo" id="distance_mercury">Distance:</div>
+                        <div class="planet-bottominfo" id="phase_mercury"><span class="label">Phase:</span></div>
+                        <div class="planet-bottominfo" id="magnitude_mercury"><span class="label">Magnitude:</span></div>
+                        <div class="planet-bottominfo" id="diameter_mercury"><span class="label">Diamètre angulaire:</span></div>
+                        <div class="planet-bottominfo" id="distance_mercury"><span class="label">Distance:</span></div>
 
                     </div>
 
                 </div>
                 <div class="column">
-                    <div class="constellation-name" id="constellation_mercury"></div>
+                    <div class="constellation-name" id="constellation_mercury"><span class="label">Constellation: </span></div>
                     <div id="constellation_mercury_img" class="constellation-image-widget"></div>
                 </div>
                 <div class="column">
                     <div class="widgetColumn">
 
-                        <div class="widget-text" id="from_mercury"></div>
-                        <div class="widget-text" id="until_mercury"></div>
-                        <div class="widget-text" id="rise_mercury"></div>
-                        <div class="widget-text" id="culm_mercury"></div>
-                        <div class="widget-text" id="set_mercury"></div>
+                        <div class="widget-text" id="from_mercury"><span class="label">Observable de: </span></div>
+                        <div class="widget-text" id="until_mercury"><span class="label">Jusqu'à: </span></div>
+                        <div class="widget-text" id="rise_mercury"><span class="label">Lever: </span></div>
+                        <div class="widget-text" id="culm_mercury"><span class="label">Culmination: </span></div>
+                        <div class="widget-text" id="set_mercury"><span class="label">Coucher: </span></div>
                         <div class="widget-text"></div>
                         <div class="widget-text" id="visibility_mercury_2"></div>
                     </div>
@@ -169,23 +167,23 @@
                     <div class="planet-name">Vénus</div>
                     <img src="images/icons/venus.png" alt="Venus" class="planet-image-widget" id="venus_phase_image">
                     <div class="bottomInfo">
-                        <div class="planet-bottominfo" id="phase_venus">Phase:</div>
-                        <div class="planet-bottominfo" id="magnitude_venus">Magnitude:</div>
-                        <div class="planet-bottominfo" id="diameter_venus">Diamètre angulaire:</div>
-                        <div class="planet-bottominfo" id="distance_venus">Distance:</div>
+                        <div class="planet-bottominfo" id="phase_venus"><span class="label">Phase:</span></div>
+                        <div class="planet-bottominfo" id="magnitude_venus"><span class="label">Magnitude:</span></div>
+                        <div class="planet-bottominfo" id="diameter_venus"><span class="label">Diamètre angulaire:</span></div>
+                        <div class="planet-bottominfo" id="distance_venus"><span class="label">Distance:</span></div>
                     </div>
                 </div>
                 <div class="column">
-                    <div class="constellation-name" id="constellation_venus"></div>
+                    <div class="constellation-name" id="constellation_venus"><span class="label">Constellation: </span></div>
                     <div id="constellation_venus_img" class="constellation-image-widget"></div>
                 </div>
                 <div class="column">
                     <div class="widgetColumn">
-                        <div class="widget-text" id="from_venus"></div>
-                        <div class="widget-text" id="until_venus"></div>
-                        <div class="widget-text" id="rise_venus"></div>
-                        <div class="widget-text" id="culm_venus"></div>
-                        <div class="widget-text" id="set_venus"></div>
+                        <div class="widget-text" id="from_venus"><span class="label">Observable de: </span></div>
+                        <div class="widget-text" id="until_venus"><span class="label">Jusqu'à: </span></div>
+                        <div class="widget-text" id="rise_venus"><span class="label">Lever: </span></div>
+                        <div class="widget-text" id="culm_venus"><span class="label">Culmination: </span></div>
+                        <div class="widget-text" id="set_venus"><span class="label">Coucher: </span></div>
                         <div class="widget-text" id="magnitude_venus"></div>
                         <div class="widget-text" id="visibility_venus_2"></div>
                     </div>
@@ -201,23 +199,23 @@
                     <div class="planet-name">Mars</div>
                     <img src="images/icons/mars.png" alt="mars" class="planet-image-widget">
                     <div class="bottomInfo">
-                        <div class="planet-bottominfo" id="phase_mars">Phase:</div>
-                        <div class="planet-bottominfo" id="magnitude_mars">Magnitude:</div>
-                        <div class="planet-bottominfo" id="diameter_mars">Diamètre angulaire:</div>
-                        <div class="planet-bottominfo" id="distance_mars">Distance:</div>
+                        <div class="planet-bottominfo" id="phase_mars"><span class="label">Phase:</span></div>
+                        <div class="planet-bottominfo" id="magnitude_mars"><span class="label">Magnitude:</span></div>
+                        <div class="planet-bottominfo" id="diameter_mars"><span class="label">Diamètre angulaire:</span></div>
+                        <div class="planet-bottominfo" id="distance_mars"><span class="label">Distance:</span></div>
                     </div>
                 </div>
                 <div class="column">
-                    <div class="constellation-name" id="constellation_mars"></div>
+                    <div class="constellation-name" id="constellation_mars"><span class="label">Constellation: </span></div>
                     <div id="constellation_mars_img" class="constellation-image-widget"></div>
                 </div>
                 <div class="column">
                     <div class="widgetColumn">
-                        <div class="widget-text" id="from_mars"></div>
-                        <div class="widget-text" id="until_mars"></div>
-                        <div class="widget-text" id="rise_mars"></div>
-                        <div class="widget-text" id="culm_mars"></div>
-                        <div class="widget-text" id="set_mars"></div>
+                        <div class="widget-text" id="from_mars"><span class="label">Observable de: </span></div>
+                        <div class="widget-text" id="until_mars"><span class="label">Jusqu'à: </span></div>
+                        <div class="widget-text" id="rise_mars"><span class="label">Lever: </span></div>
+                        <div class="widget-text" id="culm_mars"><span class="label">Culmination: </span></div>
+                        <div class="widget-text" id="set_mars"><span class="label">Coucher: </span></div>
                         <div class="widget-text" id="magnitude_mars"></div>
                         <div class="widget-text" id="visibility_mars_2"></div>
                     </div>
@@ -233,23 +231,23 @@
                     <div class="planet-name">Jupiter</div>
                     <img src="images/icons/jupiter.png" alt="jupiter" class="planet-image-widget">
                     <div class="bottomInfo">
-                        <div class="planet-bottominfo" id="phase_jupiter">Phase:</div>
-                        <div class="planet-bottominfo" id="magnitude_jupiter">Magnitude:</div>
-                        <div class="planet-bottominfo" id="diameter_jupiter">Diamètre angulaire:</div>
-                        <div class="planet-bottominfo" id="distance_jupiter">Distance:</div>
+                        <div class="planet-bottominfo" id="phase_jupiter"><span class="label">Phase:</span></div>
+                        <div class="planet-bottominfo" id="magnitude_jupiter"><span class="label">Magnitude:</span></div>
+                        <div class="planet-bottominfo" id="diameter_jupiter"><span class="label">Diamètre angulaire:</span></div>
+                        <div class="planet-bottominfo" id="distance_jupiter"><span class="label">Distance:</span></div>
                     </div>
                 </div>
                 <div class="column">
-                    <div class="constellation-name" id="constellation_jupiter"></div>
+                    <div class="constellation-name" id="constellation_jupiter"><span class="label">Constellation: </span></div>
                     <div id="constellation_jupiter_img" class="constellation-image-widget"></div>
                 </div>
                 <div class="column">
                     <div class="widgetColumn">
-                        <div class="widget-text" id="from_jupiter"></div>
-                        <div class="widget-text" id="until_jupiter"></div>
-                        <div class="widget-text" id="rise_jupiter"></div>
-                        <div class="widget-text" id="culm_jupiter"></div>
-                        <div class="widget-text" id="set_jupiter"></div>
+                        <div class="widget-text" id="from_jupiter"><span class="label">Observable de: </span></div>
+                        <div class="widget-text" id="until_jupiter"><span class="label">Jusqu'à: </span></div>
+                        <div class="widget-text" id="rise_jupiter"><span class="label">Lever: </span></div>
+                        <div class="widget-text" id="culm_jupiter"><span class="label">Culmination: </span></div>
+                        <div class="widget-text" id="set_jupiter"><span class="label">Coucher: </span></div>
                         <div class="widget-text" id="magnitude_jupiter"></div>
                         <div class="widget-text" id="visibility_jupiter_2"></div>
                     </div>
@@ -265,23 +263,23 @@
                     <div class="planet-name">Saturne</div>
                     <img src="images/icons/saturn.png" alt="saturn" class="planet-image-widget">
                     <div class="bottomInfo">
-                        <div class="planet-bottominfo" id="phase_saturn">Phase:</div>
-                        <div class="planet-bottominfo" id="magnitude_saturn">Magnitude:</div>
-                        <div class="planet-bottominfo" id="diameter_saturn">Diamètre angulaire:</div>
-                        <div class="planet-bottominfo" id="distance_saturn">Distance:</div>
+                        <div class="planet-bottominfo" id="phase_saturn"><span class="label">Phase:</span></div>
+                        <div class="planet-bottominfo" id="magnitude_saturn"><span class="label">Magnitude:</span></div>
+                        <div class="planet-bottominfo" id="diameter_saturn"><span class="label">Diamètre angulaire:</span></div>
+                        <div class="planet-bottominfo" id="distance_saturn"><span class="label">Distance:</span></div>
                     </div>
                 </div>
                 <div class="column">
-                    <div class="constellation-name" id="constellation_saturn"></div>
+                    <div class="constellation-name" id="constellation_saturn"><span class="label">Constellation: </span></div>
                     <div id="constellation_saturn_img" class="constellation-image-widget"></div>
                 </div>
                 <div class="column">
                     <div class="widgetColumn">
-                        <div class="widget-text" id="from_saturn"></div>
-                        <div class="widget-text" id="until_saturn"></div>
-                        <div class="widget-text" id="rise_saturn"></div>
-                        <div class="widget-text" id="culm_saturn"></div>
-                        <div class="widget-text" id="set_saturn"></div>
+                        <div class="widget-text" id="from_saturn"><span class="label">Observable de: </span></div>
+                        <div class="widget-text" id="until_saturn"><span class="label">Jusqu'à: </span></div>
+                        <div class="widget-text" id="rise_saturn"><span class="label">Lever: </span></div>
+                        <div class="widget-text" id="culm_saturn"><span class="label">Culmination: </span></div>
+                        <div class="widget-text" id="set_saturn"><span class="label">Coucher: </span></div>
                         <div class="widget-text" id="magnitude_saturn"></div>
                         <div class="widget-text" id="visibility_saturn_2"></div>
                     </div>
@@ -297,23 +295,23 @@
                     <div class="planet-name">Uranus</div>
                     <img src="images/icons/uranus.png" alt="uranus" class="planet-image-widget">
                     <div class="bottomInfo">
-                        <div class="planet-bottominfo" id="phase_uranus">Phase:</div>
-                        <div class="planet-bottominfo" id="magnitude_uranus">Magnitude:</div>
-                        <div class="planet-bottominfo" id="diameter_uranus">Diamètre angulaire:</div>
-                        <div class="planet-bottominfo" id="distance_uranus">Distance:</div>
+                        <div class="planet-bottominfo" id="phase_uranus"><span class="label">Phase:</span></div>
+                        <div class="planet-bottominfo" id="magnitude_uranus"><span class="label">Magnitude:</span></div>
+                        <div class="planet-bottominfo" id="diameter_uranus"><span class="label">Diamètre angulaire:</span></div>
+                        <div class="planet-bottominfo" id="distance_uranus"><span class="label">Distance:</span></div>
                     </div>
                 </div>
                 <div class="column">
-                    <div class="constellation-name" id="constellation_uranus"></div>
+                    <div class="constellation-name" id="constellation_uranus"><span class="label">Constellation: </span></div>
                     <div id="constellation_uranus_img" class="constellation-image-widget"></div>
                 </div>
                 <div class="column">
                     <div class="widgetColumn">
-                        <div class="widget-text" id="from_uranus"></div>
-                        <div class="widget-text" id="until_uranus"></div>
-                        <div class="widget-text" id="rise_uranus"></div>
-                        <div class="widget-text" id="culm_uranus"></div>
-                        <div class="widget-text" id="set_uranus"></div>
+                        <div class="widget-text" id="from_uranus"><span class="label">Observable de: </span></div>
+                        <div class="widget-text" id="until_uranus"><span class="label">Jusqu'à: </span></div>
+                        <div class="widget-text" id="rise_uranus"><span class="label">Lever: </span></div>
+                        <div class="widget-text" id="culm_uranus"><span class="label">Culmination: </span></div>
+                        <div class="widget-text" id="set_uranus"><span class="label">Coucher: </span></div>
                         <div class="widget-text" id="magnitude_uranus"></div>
                         <div class="widget-text" id="visibility_uranus_2"></div>
                     </div>
@@ -329,23 +327,23 @@
                     <div class="planet-name">Neptune</div>
                     <img src="images/icons/neptune.png" alt="neptune" class="planet-image-widget">
                     <div class="bottomInfo">
-                        <div class="planet-bottominfo" id="phase_neptune">Phase:</div>
-                        <div class="planet-bottominfo" id="magnitude_neptune">Magnitude:</div>
-                        <div class="planet-bottominfo" id="diameter_neptune">Diamètre angulaire:</div>
-                        <div class="planet-bottominfo" id="distance_neptune">Distance:</div>
+                        <div class="planet-bottominfo" id="phase_neptune"><span class="label">Phase:</span></div>
+                        <div class="planet-bottominfo" id="magnitude_neptune"><span class="label">Magnitude:</span></div>
+                        <div class="planet-bottominfo" id="diameter_neptune"><span class="label">Diamètre angulaire:</span></div>
+                        <div class="planet-bottominfo" id="distance_neptune"><span class="label">Distance:</span></div>
                     </div>
                 </div>
                 <div class="column">
-                    <div class="constellation-name" id="constellation_neptune"></div>
+                    <div class="constellation-name" id="constellation_neptune"><span class="label">Constellation: </span></div>
                     <div id="constellation_neptune_img" class="constellation-image-widget"></div>
                 </div>
                 <div class="column">
                     <div class="widgetColumn">
-                        <div class="widget-text" id="from_neptune"></div>
-                        <div class="widget-text" id="until_neptune"></div>
-                        <div class="widget-text" id="rise_neptune"></div>
-                        <div class="widget-text" id="culm_neptune"></div>
-                        <div class="widget-text" id="set_neptune"></div>
+                        <div class="widget-text" id="from_neptune"><span class="label">Observable de: </span></div>
+                        <div class="widget-text" id="until_neptune"><span class="label">Jusqu'à: </span></div>
+                        <div class="widget-text" id="rise_neptune"><span class="label">Lever: </span></div>
+                        <div class="widget-text" id="culm_neptune"><span class="label">Culmination: </span></div>
+                        <div class="widget-text" id="set_neptune"><span class="label">Coucher: </span></div>
                         <div class="widget-text" id="magnitude_neptune"></div>
                         <div class="widget-text" id="visibility_neptune_2"></div>
                     </div>
@@ -361,23 +359,23 @@
                     <div class="planet-name">Lune</div>
                     <img src="images/icons/moon.png" alt="moon" class="planet-image-widget" id="moon_phase_image">
                     <div class="bottomInfo">
-                        <div class="planet-bottominfo" id="phase_moon">Phase:</div>
-                        <div class="planet-bottominfo" id="magnitude_moon">Magnitude:</div>
-                        <div class="planet-bottominfo" id="diameter_moon">Diamètre angulaire:</div>
-                        <div class="planet-bottominfo" id="distance_moon">Distance:</div>
+                        <div class="planet-bottominfo" id="phase_moon"><span class="label">Phase:</span></div>
+                        <div class="planet-bottominfo" id="magnitude_moon"><span class="label">Magnitude:</span></div>
+                        <div class="planet-bottominfo" id="diameter_moon"><span class="label">Diamètre angulaire:</span></div>
+                        <div class="planet-bottominfo" id="distance_moon"><span class="label">Distance:</span></div>
                     </div>
                 </div>
                 <div class="column">
-                    <div class="constellation-name" id="constellation_moon"></div>
+                    <div class="constellation-name" id="constellation_moon"><span class="label">Constellation: </span></div>
                     <div id="constellation_moon_img" class="constellation-image-widget"></div>
                 </div>
                 <div class="column">
                     <div class="widgetColumn">
-                        <div class="widget-text" id="from_moon"></div>
-                        <div class="widget-text" id="until_moon"></div>
-                        <div class="widget-text" id="rise_moon"></div>
-                        <div class="widget-text" id="culm_moon"></div>
-                        <div class="widget-text" id="set_moon"></div>
+                        <div class="widget-text" id="from_moon"><span class="label">Observable de: </span></div>
+                        <div class="widget-text" id="until_moon"><span class="label">Jusqu'à: </span></div>
+                        <div class="widget-text" id="rise_moon"><span class="label">Lever: </span></div>
+                        <div class="widget-text" id="culm_moon"><span class="label">Culmination: </span></div>
+                        <div class="widget-text" id="set_moon"><span class="label">Coucher: </span></div>
                         <div class="widget-text" id="magnitude_moon"></div>
                         <div class="widget-text" id="visibility_moon_2"></div>
                     </div>
@@ -393,25 +391,25 @@
                     <div class="planet-name">Soleil</div>
                     <img src="images/icons/sun.png" alt="sun" class="planet-image-widget">
                     <div class="bottomInfo">
-                        <div class="planet-bottominfo" id="phase_sun">Phase:</div>
-                        <div class="planet-bottominfo" id="magnitude_sun" ;>Magnitude:</div>
-                        <div class="planet-bottominfo" id="diameter_sun">Diamètre angulaire:</div>
-                        <div class="planet-bottominfo" id="distance_sun">Distance:</div>
+                        <div class="planet-bottominfo" id="phase_sun"><span class="label">Phase:</span></div>
+                        <div class="planet-bottominfo" id="magnitude_sun"><span class="label">Magnitude:</span></div>
+                    <div class="planet-bottominfo" id="diameter_sun"><span class="label">Diamètre angulaire:</span></div>
+                    <div class="planet-bottominfo" id="distance_sun"><span class="label">Distance:</span></div>
                     </div>
                 </div>
                 <div class="column">
-                    <div class="constellation-name" id="constellation_sun"></div>
+                    <div class="constellation-name" id="constellation_sun"><span class="label">Constellation: </span></div>
                     <div id="constellation_sun_img" class="constellation-image-widget"></div>
                 </div>
                 <div class="column">
                     <div class="widgetColumn">
-                        <div class="widget-text" id="rise_sun"></div>
-                        <div class="widget-text" id="culm_sun"></div>
-                        <div class="widget-text" id="set_sun"></div>
+                        <div class="widget-text" id="rise_sun"><span class="label">Lever: </span></div>
+                        <div class="widget-text" id="culm_sun"><span class="label">Culmination: </span></div>
+                        <div class="widget-text" id="set_sun"><span class="label">Coucher: </span></div>
                         <div class="widget-text" id="magnitude_sun"></div>
                         <div class="widget-text" id="visibility_sun_2"></div>
-                        <div class="widget-text" id="from_sun" style="display: none"></div>
-                        <div class="widget-text" id="until_sun" style="display: none"></div>
+                        <div class="widget-text" id="from_sun" style="display: none"><span class="label">Observable de: </span></div>
+                        <div class="widget-text" id="until_sun" style="display: none"><span class="label">Jusqu'à: </span></div>
                     </div>
                 </div>
             </div>
@@ -421,7 +419,7 @@
         </div>
 
     </div>
-    <script src="main.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>

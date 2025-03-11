@@ -288,7 +288,7 @@ const moonPhasesPaths = [
     { range: [184, 187], MediaSource: "images/moon/phases/MoonPhases_23.png" }
 ];
 
-// Create the json objects with the planets data 
+// Create the json objects with the planets data
 const fetchData = async (planet) => {
     try {
         const response = await fetch(`data/${planet}`);
@@ -298,7 +298,7 @@ const fetchData = async (planet) => {
         const data = await response.json();
         planetsData[planet] = data;
         //console.log(`planet rise: ${data.rise}`);
-        //console.log(`planet set: ${data.set}`);;        
+        //console.log(`planet set: ${data.set}`);
     } catch (error) {
         console.error(`Error fetching data for ${planet}:`, error);
     }
@@ -311,7 +311,7 @@ function displayData(planet) {
     drawConstellationGraph(planet, planetsData[planet].constellation[0]);
     }
     drawGraph(planet);
-    magRiseSet(planet);    
+    magRiseSet(planet);
 }
 
 // Update the grah and time every minute
@@ -353,63 +353,62 @@ function visibility(planet) {
 
 function magRiseSet(planet) {
     let idNameVis = `rise_${planet}`;
-    document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Lever: </span><span style="color: white;">${formatTime(planetsData[planet].rise)}</span>`;
+    document.getElementById(idNameVis).innerHTML += `<span style="color: white;">${formatTime(planetsData[planet].rise)}</span>`;
 
     // const elevation = planetsData[planet].elevation;
     // const maxElevation = Math.max(...elevation);
 
     idNameVis = `culm_${planet}`;
-    // document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Culmination: </span><span style="color: white;">${formatTime(planetsData[planet].culm)} (${maxElevation.toFixed(2)}°)</span>`;
-    document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Culmination: </span><span style="color: white;">${formatTime(planetsData[planet].culm)}</span>`;
+    // document.getElementById(idNameVis).innerHTML += `<span style="color: white;">${formatTime(planetsData[planet].culm)} (${maxElevation.toFixed(2)}°)</span>`;
+    document.getElementById(idNameVis).innerHTML += `<span style="color: white;">${formatTime(planetsData[planet].culm)}</span>`;
 
     idNameVis = `set_${planet}`;
-    document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Coucher: </span><span style="color: white;">${formatTime(planetsData[planet].set)}</span>`;
+    document.getElementById(idNameVis).innerHTML += `<span style="color: white;">${formatTime(planetsData[planet].set)}</span>`;
 
     idNameVis = `phase_${planet}`;
-    document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Phase: </span><span style="color: white;">${planetsData[planet].phase}°</span>`;
+    document.getElementById(idNameVis).innerHTML += `<span style="color: white;">${planetsData[planet].phase}°</span>`;
 
     idNameVis = `magnitude_${planet}`;
-    document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Magnitude: </span><span style="color: white;">${planetsData[planet].magnitude}</span>`;
+    document.getElementById(idNameVis).innerHTML += `<span style="color: white;">${planetsData[planet].magnitude}</span>`;
 
     idNameVis = `diameter_${planet}`;
-    document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Diamètre angulaire: </span><span style="color: white;">${planetsData[planet].diameter}"</span>`;
+    document.getElementById(idNameVis).innerHTML += `<span style="color: white;">${planetsData[planet].diameter}"</span>`;
 
 
     idNameVis = `distance_${planet}`;
     let distanceAU = parseFloat(planetsData[planet].distance).toFixed(3);
-    document.getElementById(idNameVis).innerHTML = `
-        <span style="color: white;">Distance: </span>
+    document.getElementById(idNameVis).innerHTML += `
         <span style="color: white;">${distanceAU} AU</span>
         <div>(${convertAUtoKM(planetsData[planet].distance)} km)</div>
-        
+
     `;
 
     idNameVis = `constellation_${planet}`;
-    document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Constellation: </span><span style="color: white;">${constellations[planetsData[planet].constellation[0]]}</span>`;
+    if(document.getElementById(idNameVis)) document.getElementById(idNameVis).innerHTML += `<span style="color: white;">${constellations[planetsData[planet].constellation[0]]}</span>`;
 
     idNameVis = `from_${planet}`;
     let text = "";
     if (planetsData[planet].visibility) {
         text = formatTime(planetsData[planet].from.toString());
     }
-    document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Observable de: </span><span style="color: white;">${text}</span>`;
+    document.getElementById(idNameVis).innerHTML += `<span style="color: white;">${text}</span>`;
 
     if (planetsData[planet].visibility) {
         text = formatTime(planetsData[planet].to.toString());
     }
     idNameVis = `until_${planet}`;
-    document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Jusqu'à: </span><span style="color: white;">${text}</span>`;
+    document.getElementById(idNameVis).innerHTML += `<span style="color: white;">${text}</span>`;
     if (planet == "sun"){
         const rise = planetsData[planet].rise[0];
         const set = planetsData[planet].set[0];
         const nauticalSunrise = adjustTimeByMinutes(rise, -35);
         const nauticalSunset = adjustTimeByMinutes(set, +35);
-    
+
         let idNameVis = "nautical_sunrise";
-        document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Aube Nautique: </span><span style="color: white;">${formatTime(nauticalSunrise)}</span>`;
-    
+        document.getElementById(idNameVis).innerHTML += `<span style="color: white;">${formatTime(nauticalSunrise)}</span>`;
+
         idNameVis = "nautical_sunset";
-        document.getElementById(idNameVis).innerHTML = `<span style="color: white;">Crépuscule Nautique: </span><span style="color: white;">${formatTime(nauticalSunset)}</span>`;
+        document.getElementById(idNameVis).innerHTML += `<span style="color: white;">${formatTime(nauticalSunset)}</span>`;
     }
 }
 
@@ -609,8 +608,8 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     const rise = obj.rise; // time at which the planet rises from the horizon
     const set = obj.set;   // time at which the planet sets from the horizon
     const time = obj.time; // time array from rise to set
-    const from = obj.from; // time at wich the planet starts to be visible depending on the time of the day and it's elevation 
-    const until = obj.to;  // time at wich the planet starts to disappear if it was visible 
+    const from = obj.from; // time at wich the planet starts to be visible depending on the time of the day and it's elevation
+    const until = obj.to;  // time at wich the planet starts to disappear if it was visible
     const sunRiseIndex = obj.sunRiseAzimuthIndex !== undefined ? obj.sunRiseAzimuthIndex : 0; // time index for this particular planet corresponding to the closest time at which the sun rises
     const sunCulmIndex = obj.sunCulmAzimuthIndex !== undefined ? obj.sunCulmAzimuthIndex : 0; // time index for this particular planet corresponding to the closest time at which the sun culminates
     const sunSetIndex = obj.sunSetAzimuthIndex !== undefined ? obj.sunSetAzimuthIndex : 0;   // time index for this particular planet corresponding to the closest time at which the sun sets
@@ -1102,7 +1101,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         await Promise.all(Object.keys(planets).map(planet => fetchData(planet)));
         console.log(planetsData);
         Object.keys(planets).forEach(planet => displayData(planet));
-        
+
         displayVenusPhases();
         displayMercuryPhases();
         displayMoonPhases();

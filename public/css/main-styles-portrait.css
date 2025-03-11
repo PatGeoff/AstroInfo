@@ -1,0 +1,138 @@
+/* General Styles */
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+}
+
+.title {
+    padding-top: 10px;
+    font-size: 4em;
+}
+
+/* Grid Container */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns */
+    grid-template-rows: repeat(2, 1fr); /* 2 rows */
+    gap: 20px; /* Space between grid items */
+    padding-top: 30px;
+    margin-bottom: 30px;
+    width: 100%; /* Ensure it fits the entire width of the page */
+    justify-content: center; /* Center the grid items */
+    font-size: 2.5em;
+}
+
+/* Weather Container */
+.weather-container {
+    font-size: 2.2em;
+    gap: 30px;
+}
+
+.forecast-icon {
+    width: 100px;
+    height: auto;
+}
+
+.until_class {
+    margin-top: 10px;
+}
+
+.planet-image {
+    margin-right: 10px;
+    width: 80px;
+    height: 80px;
+}
+
+.widget-soleil {
+    display: flex;
+    flex-direction: column;
+    padding: 60px;
+    border-radius: 10px;
+    margin: 60px;
+    background-color: #1d1d25;
+}
+
+.widget-soleil .column {
+    font-size: 4em;
+}
+
+.widget-soleil #sun_graph {
+    width: 100%;
+}
+
+.sun-image-widget {
+    width: 180px;
+    height: 180px;
+}
+
+.columns-container-soleil {
+    gap: 20px;
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 1fr 1fr;
+    width: 100%;
+    font-size: 8px;
+}
+
+.columns-container-soleil .column:nth-child(4) {
+    min-width: 500px;
+}
+
+.flex-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 60px;
+    grid-row-gap: 60px;
+    margin: 60px;
+    padding: 0;
+    width: calc(100vw - 120px);
+}
+
+.flex-grid .swiper {
+    width: calc((100vw - 120px) / 2 - 30px);
+}
+
+.flex-grid .widget {
+    background-color: #1d1d25;
+    overflow: hidden;
+    margin: 0;
+    height: 100%;
+    box-sizing: border-box;
+    max-width: none;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 2.5em;
+}
+
+.planet-image-widget {
+    width: 180px;
+    height: 180px;
+}
+
+.constellation-image-widget {
+    flex-grow: 1;
+    width: 100%;
+}
+
+.infos-wrapper {
+    padding-top: 5px;
+}
+
+.label {
+    margin-right: 10px;
+}
+
+.autoplay-progress {
+    --progress: 0;
+    position: absolute;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.5);
+    height: 18px;
+    width: calc(100% * var(--progress));
+    z-index: 1;
+    border-radius: 0 0 8px 8px;
+}
