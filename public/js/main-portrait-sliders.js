@@ -3,7 +3,11 @@ const delay = 30000;
 
 swiperElements.forEach((el, i) => {
     const swiper = new Swiper(el, {
-        effect: "flip",
+        effect: "fade",
+        fadeEffect: {
+            crossFade: true
+          },
+        speed: 2000, // Adjust the timing here (in milliseconds)
         grabCursor: true,
         pagination: false,
         navigation: false,
