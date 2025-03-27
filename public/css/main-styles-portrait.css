@@ -48,7 +48,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
     padding: 60px;
     border-radius: 10px;
     margin: 60px;
-    background-color: #1d1d25;
+    background-color: #151518;
 }
 
 .widget-soleil .column {
@@ -92,7 +92,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
 }
 
 .flex-grid .widget {
-    background-color: #1d1d25;
+    background-color: #151518;
     overflow: hidden;
     margin: 0;
     height: 100%;
