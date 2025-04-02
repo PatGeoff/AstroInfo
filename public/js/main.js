@@ -335,10 +335,12 @@ function visibility(planet) {
             document.getElementById(idNameVis).innerHTML = `Visible`;
             //document.getElementById(idNameVis).style.backgroundColor = '#03334F';
             document.getElementById(idNameVis).style.backgroundColor = '#388E3C';
+            
 
         }
         else {
-            document.getElementById(idNameVis).innerHTML = `Non visible`;
+            document.getElementById(idNameVis).innerHTML = `Non visible à l'oeil nu`;
+            document.getElementById(idNameVis).fontSize = `0.2em`;
             document.getElementById(idNameVis).style.backgroundColor = '#600429';
         }
         const date = planetsData[planet].until.toString();
@@ -376,10 +378,10 @@ function magRiseSet(planet) {
 
 
     idNameVis = `distance_${planet}`;
-    let distanceAU = parseFloat(planetsData[planet].distance).toFixed(3);
+    let distanceAU = parseFloat(planetsData[planet].distance).toFixed(2);
     document.getElementById(idNameVis).innerHTML += `
         <span style="color: white;">${distanceAU} AU</span>
-        <div>(${convertAUtoKM(planetsData[planet].distance)} km)</div>
+        <div>ou ${convertAUtoKM(planetsData[planet].distance)} km</div>
 
     `;
 
@@ -559,7 +561,7 @@ function drawConstellationGraph(planet, constellation) {
     // Create SVG elements
     let width = 200;
     let height = 200;
-    let xPos = 120;
+    let xPos = 20;
     if (constellation == "Ari") {
         if (planetPos.x < -200) {
             xPos = -150;
@@ -572,7 +574,7 @@ function drawConstellationGraph(planet, constellation) {
             xPos = 150;
         }
     }
-    let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${xPos} -30 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" width="${width}%" height="${height}%" style="overflow: visible; position: absolute;">`;;
+    let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${xPos} -130 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" width="${width}%" height="${height}%" style="overflow: visible; position: absolute;">`;;
     // Add the constellation image
     svg += `<image xlink:href="${imgPath}" width="${svgWidth}" height="${svgHeight}" onerror="this.style.display='none'" />`;
     // Add the circle and the planet point
@@ -581,7 +583,7 @@ function drawConstellationGraph(planet, constellation) {
     svg += `<circle cx="${planetPos.x}" cy="${planetPos.y}" r="5" fill="orange" />`; // Point
     svg += `<circle cx="${planetPos.x}" cy="${planetPos.y}" r="60" fill="none" stroke="#03334F" stroke-width="8" />`; // Circle around the point
     // Add text
-    svg += `<text x="${svgWidth / 2}" y="50" font-size="30" text-anchor="middle" fill="grey">à 22h ce soir</text>`;
+    svg += `<text x="${(svgWidth / 2) -20}" y="-80" font-size="40" text-anchor="middle" fill="white">à 22h ce soir</text>`;
     //}
     // Terminate the svg string
     svg += `</svg>`;
@@ -778,7 +780,7 @@ function drawElevationGraph(obj, graphName, currentTime,) {
 
 
     } else {
-        const text = "Non visible cette nuit";
+        const text = "Non visible  à l'oeil nu";
         const fontSize = 16;
         svg += `<rect x="${svgWidth / 2 + (svgWidth / 3) - (text.length * fontSize / 4)}" y="${50 - fontSize}" width="${text.length * fontSize / 2}" height="${fontSize * 1.5}" fill="#600429" text-anchor="start"></rect>`;
         svg += `<text x="${svgWidth / 2 + (svgWidth / 3)}" y="${50}" text-anchor="middle" font-size="${fontSize}px" fill="white">${text}</text>`;
@@ -827,9 +829,9 @@ function drawElevationGraph(obj, graphName, currentTime,) {
     const maxElevationX = scaledAzimuth[maxElevationIndex];
     const maxElevationY = scaledElevation[maxElevationIndex]  // Position it above the max elevation point
     // Altitude Heading text above the max
-    svg += `<text x="${maxElevationX + 18}" y="${maxElevationY - 5}" text-anchor="end" font-size="10px" fill="grey">culm: ${Math.trunc(maxElevation)}°</text>`;
+    svg += `<text x="${maxElevationX + 18}" y="${maxElevationY - 5}" text-anchor="end" font-size="10px" fill="grey">culm : ${Math.trunc(maxElevation)}°</text>`;
     // Zero elevation
-    svg += `<text x="0" y="${zeroElevationY - 5}" text-anchor="right" font-size="10px" fill="grey">Horizon: 0°</text>`;
+    svg += `<text x="0" y="${zeroElevationY - 5}" text-anchor="right" font-size="10px" fill="grey">Horizon : 0°</text>`;
     // Add the vertical line at max elevation
     //svg += `<line x1="${maxElevationX}" y1="${zeroElevationY - 2}" x2="${maxElevationX}" y2="${maxElevationY}" style="stroke:grey;stroke-width:0,5;stroke-dasharray:5,5"/>`;
 

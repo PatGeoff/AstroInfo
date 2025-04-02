@@ -58,26 +58,27 @@
                 </div>
                 <div class="column">
                     <div class="bottomInfo">
-                    <div class="planet-bottominfo" id="phase_sun"><span class="label">Phase:</span></div>
-                    <div class="planet-bottominfo" id="magnitude_sun"><span class="label">Magnitude:</span></div>
-                    <div class="planet-bottominfo" id="diameter_sun"><span class="label">Diamètre angulaire:</span></div>
-                    <div class="planet-bottominfo" id="distance_sun"><span class="label">Distance:</span></div>
+                    <div class="widget-text" id="phase_sun"><span class="label">Phase :</span></div>
+                    <div class="widget-text" id="magnitude_sun"><span class="label">Magnitude :</span></div>
+                    <div class="widget-text" id="diameter_sun"><span class="label">Diamètre angulaire :</span></div>
+                    <div class="widget-text" id="distance_sun"><span class="label">Distance :</span></div>
                     </div>
                 </div>
                 <!-- <div class="column">
+                    
                     <div class="constellation-name" id="constellation_sun"><span class="label">Constellation: </span></div>
                     <div id="constellation_sun_img" class="constellation-image-widget"></div>
                 </div> -->
                 <div class="column">
                     <div class="widgetColumn">
-                        <div class="widget-text" id="nautical_sunrise"><span class="label">Aube Nautique: </span></div>
-                        <div class="widget-text" id="rise_sun"><span class="label">Lever: </span></div>
-                        <div class="widget-text" id="culm_sun"><span class="label">Culmination: </span></div>
-                        <div class="widget-text" id="set_sun"><span class="label">Coucher: </span></div>
-                        <div class="widget-text" id="nautical_sunset"><span class="label">Crépuscule Nautique: </span></div>
+                        <div class="widget-text" id="nautical_sunrise"><span class="label">Aube Nautique : </span></div>
+                        <div class="widget-text" id="rise_sun"><span class="label">Lever : </span></div>
+                        <div class="widget-text" id="culm_sun"><span class="label">Culmination : </span></div>
+                        <div class="widget-text" id="set_sun"><span class="label">Coucher : </span></div>
+                        <div class="widget-text" id="nautical_sunset"><span class="label">Crépuscule Nautique : </span></div>
                         <div class="widget-text" id="visibility_sun_2"></div>
-                        <div class="widget-text" id="from_sun" style="display: none"><span class="label">Observable de: </span></div>
-                        <div class="widget-text" id="until_sun" style="display: none"><span class="label">Jusqu'à: </span></div>
+                        <div class="widget-text" id="from_sun" style="display: none"><span class="label">Observable de : </span></div>
+                        <div class="widget-text" id="until_sun" style="display: none"><span class="label">Jusqu'à : </span></div>
                     </div>
                 </div>
                 <div class="column">
@@ -116,23 +117,24 @@
                                     <div class="planet-name">{{ planet.label }}</div>
                                     <img src="images/icons/{{ planet.name }}.png" alt="{{ planet.label }}" class="planet-image-widget" id="{{ planet.name }}_phase_image">
                                     <div class="bottomInfo">
-                                        <div class="planet-bottominfo" id="phase_{{ planet.name }}"><span class="label">Phase:</span></div>
-                                        <div class="planet-bottominfo" id="magnitude_{{ planet.name }}"><span class="label">Magnitude:</span></div>
-                                        <div class="planet-bottominfo" id="diameter_{{ planet.name }}"><span class="label">Diamètre angulaire:</span></div>
-                                        <div class="planet-bottominfo" id="distance_{{ planet.name }}"><span class="label">Distance:</span></div>
+                                        <div class="planet-bottominfo" id="phase_{{ planet.name }}"><span class="label">Phase :</span></div>
+                                        <div class="planet-bottominfo" id="magnitude_{{ planet.name }}"><span class="label">Magnitude :</span></div>
+                                        <div class="planet-bottominfo" id="diameter_{{ planet.name }}"><span class="label">Diamètre :</span></div>
+                                        <div class="planet-bottominfo" id="distance_{{ planet.name }}"><span class="label">Distance :</span></div>
                                     </div>
                                 </div>
                                 <div class="column">
-                                    <div class="constellation-name" id="constellation_{{ planet.name }}"><span class="label">Constellation: </span></div>
+                                    <br>
+                                    <div class="constellation-name" id="constellation_{{ planet.name }}"><span class="label">Constellation : </span></div>
                                     <div id="constellation_{{ planet.name }}_img" class="constellation-image-widget"></div>
                                 </div>
                                 <div class="column">
                                     <div class="widgetColumn">
-                                        <div class="widget-text" id="from_{{ planet.name }}"><span class="label">Observable de: </span></div>
-                                        <div class="widget-text" id="until_{{ planet.name }}"><span class="label">Jusqu'à: </span></div>
-                                        <div class="widget-text" id="rise_{{ planet.name }}"><span class="label">Lever: </span></div>
-                                        <div class="widget-text" id="culm_{{ planet.name }}"><span class="label">Culmination: </span></div>
-                                        <div class="widget-text" id="set_{{ planet.name }}"><span class="label">Coucher: </span></div>
+                                        <div class="widget-text" id="from_{{ planet.name }}"><span class="label">Observable de : </span></div>
+                                        <div class="widget-text" id="until_{{ planet.name }}"><span class="label">Jusqu'à : </span></div>
+                                        <div class="widget-text" id="rise_{{ planet.name }}"><span class="label">Lever : </span></div>
+                                        <div class="widget-text" id="culm_{{ planet.name }}"><span class="label">Culmination : </span></div>
+                                        <div class="widget-text" id="set_{{ planet.name }}"><span class="label">Coucher : </span></div>
                                         <div class="widget-text" id="visibility_{{ planet.name }}_2"></div>
                                     </div>
                                 </div>

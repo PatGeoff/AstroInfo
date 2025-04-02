@@ -31,7 +31,7 @@
     flex-direction: column;
     align-items: center;
     padding: 20px; /* Added padding for grid items */
-    font-size: 1.2em; /* Increased font size */
+    font-size: 1.1em; /* Increased font size */
 }
 
 .legend{
@@ -43,6 +43,11 @@
 .label {
     font-weight: bold;
     color: white;
+}
+
+.visibility_class{
+    width: 450px;
+    height: 55px;
 }
 
 .planet-info {
@@ -75,6 +80,7 @@
     margin-bottom: 10px;
     text-align: left;
     color: white;
+    font-size: 28px;
 }
 
 .until_class {
@@ -97,6 +103,8 @@
     color: white;
     overflow: visible;
     position: relative;
+    font-size: 28px;
+
 }
 
 
@@ -163,11 +171,12 @@ body {
 .columns-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 28px;
     width: 100%;
-    font-size: 14px;
+    font-size: 32px;
     overflow: visible; /* Allow elements to overflow */
     position: relative; /* Ensure positioning is preserved */
+    height: 640px;
 }
 
 .column {
@@ -188,7 +197,7 @@ body {
 }
 
 .constellation-image-widget svg {
-    width: 100%;
+    width: 130%;
     height: auto;
 }
 
@@ -309,6 +318,12 @@ body {
     margin: 0; /* Remove default margin */
 }
 
+.constellation-name{
+    font-size: 25px;
+}
+.planet-name  {
+    
+}
 
 /* Responsive Styles */
 @media (max-width: 1200px) {
@@ -360,7 +375,7 @@ body {
         font-size: 0.8em;
     }
     .planet-name, .constellation-name {
-        font-size: 1.2em;
+        font-size: 40px;
     }
 
     .columns-container {
