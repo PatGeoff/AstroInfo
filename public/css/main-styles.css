@@ -80,7 +80,7 @@
     margin-bottom: 10px;
     text-align: left;
     color: white;
-    font-size: 28px;
+    font-size: 27px;
 }
 
 .until_class {
@@ -177,6 +177,7 @@ body {
     overflow: visible; /* Allow elements to overflow */
     position: relative; /* Ensure positioning is preserved */
     height: 640px;
+    line-height: 1.6; 
 }
 
 .column {

@@ -380,7 +380,7 @@ function magRiseSet(planet) {
     idNameVis = `distance_${planet}`;
     let distanceAU = parseFloat(planetsData[planet].distance).toFixed(2);
     document.getElementById(idNameVis).innerHTML += `
-        <span style="color: white;">${distanceAU} AU</span>
+        <span style="color: white;">${distanceAU} UA</span>
         <div>ou ${convertAUtoKM(planetsData[planet].distance)} km</div>
 
     `;
