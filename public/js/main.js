@@ -232,8 +232,8 @@ const venusPhasesPaths = [
 
 const mercuryPhasesPaths = [
     { range: [[193, 360], [0, 6]], MediaSource: "images/mercury/phases/mercuryPhases_00.png" },
-    { range: [6, 13], MediaSource: "images/mercury/phases/mercuryPhases_01.png" },
-    { range: [13, 20], MediaSource: "images/mercury/phases/mercuryPhases_02.png" },
+    { range: [6, 10], MediaSource: "images/mercury/phases/mercuryPhases_01.png" },
+    { range: [10, 20], MediaSource: "images/mercury/phases/mercuryPhases_02.png" },
     { range: [20, 27], MediaSource: "images/mercury/phases/mercuryPhases_03.png" },
     { range: [27, 34], MediaSource: "images/mercury/phases/mercuryPhases_04.png" },
     { range: [34, 41], MediaSource: "images/mercury/phases/mercuryPhases_05.png" },
