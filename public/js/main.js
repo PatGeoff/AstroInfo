@@ -480,7 +480,8 @@ function formatTime(time) {
 
 function convertAUtoKM(dist) {
     const AU_TO_KM = 149597870.7;
-    return Math.round(dist * AU_TO_KM);
+    const km = Math.round(dist * AU_TO_KM);
+    return km.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
 function planetOnConstellation(constellation, _ra, _dec) {
