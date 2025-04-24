@@ -29,13 +29,15 @@ const constellations = {
     Cap: "Capricorne",
     Aqr: "Verseau",
     Psc: "Poissons",
-    Oph: "Ophiuchus" // The 13th zodiacal constellation
+    Oph: "Ophiuchus", // The 13th zodiacal constellation
+    Cet: "Baleine"
 };
 
 const constellationsPath = {
     Ari: "images/constellations/Aries.png",
     Aqr: "images/constellations/Aquarius.png",
     Cnc: "images/constellations/Cancer.png",
+    Cet: "images/constellations/Cetus.png",
     Cap: "images/constellations/Capricorn.png",
     Gem: "images/constellations/Gemini.png",
     Leo: "images/constellations/Leo.png",
@@ -191,7 +193,18 @@ const constellationsData = {
         ref_dec: -4.5773184,
         ref_x: 281,
         ref_y: 303
-    }
+    },
+    Cet: { //Cetus done on Apr 24 2025 with astrometry net zero tweak downsample 4
+        simplesoln: 0,
+        cdi_00: -11.598472, 
+        cdi_10: -0.097696112, 
+        cdi_01: 0.097696112, 
+        cdi_11: -11.598472, 
+        ref_ra: 37.628917, 
+        ref_dec: -2.8725051, 
+        ref_x: 156.71026, 
+        ref_y: 270.42703
+      }
 };
 
 const azimuthLabels = [
@@ -307,6 +320,7 @@ const fetchData = async (planet) => {
 function displayData(planet) {
     visibility(planet);
     todaysDate();
+    console.log(planet, planetsData[planet].constellation[0]);
     if (planet !== "sun") {
     drawConstellationGraph(planet, planetsData[planet].constellation[0]);
     }
@@ -549,7 +563,7 @@ function planetOnConstellation(constellation, _ra, _dec) {
 }
 
 function drawConstellationGraph(planet, constellation) {
-    //console.log(constellationsData[constellation]);
+    console.log(constellationsData[constellation]);
     let idNameConst = `constellation_${planet}_img`;
     const imgPath = constellationsPath[constellation].toString();
     //console.log(imgPath);
