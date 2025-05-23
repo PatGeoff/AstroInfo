@@ -1081,36 +1081,68 @@ function displayMercuryPhases() {
     }
 }
 
+// function displayMoonPhases() {
+//     const moonData = planetsData["moon"];
+//     const illumination = moonData.illumination[0]; // Current illumination value
+//     const nextIllumination = moonData.illumination[1]; // Next illumination value
+
+//     //console.log('Current Illumination:', illumination);
+//     //console.log('Next Illumination:', nextIllumination);
+
+//     let phaseValue = illumination;
+//     console.log("illumination: " + illumination + "   nextIllumination: " + nextIllumination);
+//     if (nextIllumination > illumination) {
+//         // If the next illumination value is greater than the current, the left right is illuminated
+//         phaseValue += 180;
+//     }
+    
+
+//     console.log('Phase Value:', phaseValue);
+
+//     const phaseindex = moonPhasesPaths.find(p => {
+//         //console.log(`Checking range: ${p.range} for phase value: ${phaseValue}`);
+//         return isInRange(phaseValue, p.range);
+//     });
+
+//     console.log(phaseindex.MediaSource);
+//     if (phaseindex) {
+//         //console.log('Phase found:', phaseindex);
+//         document.getElementById('moon_phase_image').src = phaseindex.MediaSource;
+//     } else {
+//         console.error('No matching phase found for phase value:', phaseValue);
+//     }
+// }
 function displayMoonPhases() {
-    const moonData = planetsData["moon"];
-    const illumination = moonData.illumination[0]; // Current illumination value
-    const nextIllumination = moonData.illumination[1]; // Next illumination value
+    // const moonData = planetsData["moon"];
+    // const phase = moonData.phase % 360;
+    // const illumination = moonData.illumination[0];
+    // const nextIllumination = moonData.illumination[1];
 
-    //console.log('Current Illumination:', illumination);
-    //console.log('Next Illumination:', nextIllumination);
+    // // Determine if the moon is waning (optional, for debugging or future use)
+    // const isWaning = nextIllumination < illumination;
 
-    let phaseValue = illumination;
-    console.log("illumination: " + illumination + "   nextIllumination: " + nextIllumination);
-    if (nextIllumination < illumination) {
-        // If the next illumination value is greater than the current, the left right is illuminated
-        phaseValue += 90;
-    }
+    // // Rotate phase so that 0° = MoonPhases_11.png (New Moon)
+    // let rotatedPhase = (phase + 195) % 360;
 
-    console.log('Phase Value:', phaseValue);
+    // // Map to 24 images (each 15° wide)
+    // let imageIndex = Math.floor(rotatedPhase / 15);
 
-    const phaseindex = moonPhasesPaths.find(p => {
-        //console.log(`Checking range: ${p.range} for phase value: ${phaseValue}`);
-        return isInRange(phaseValue, p.range);
-    });
+    // // Wrap around to 0–23
+    // imageIndex = imageIndex % 24;
 
-    console.log(phaseindex.MediaSource);
-    if (phaseindex) {
-        //console.log('Phase found:', phaseindex);
-        document.getElementById('moon_phase_image').src = phaseindex.MediaSource;
-    } else {
-        console.error('No matching phase found for phase value:', phaseValue);
-    }
+    // const imagePath = `images/moon/phases/MoonPhases_${String(imageIndex).padStart(2, '0')}.png`;
+
+    // console.log("Phase:", phase);
+    // console.log("Rotated Phase:", rotatedPhase);
+    // console.log("Image Index:", imageIndex);
+    // console.log("Image Path:", imagePath);
+    const imagePath = `images/moon/phases/MoonPhases_10.png`;
+
+    document.getElementById('moon_phase_image').src = imagePath;
 }
+
+
+
 
 
 document.addEventListener('DOMContentLoaded', async () => {
