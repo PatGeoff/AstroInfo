@@ -1090,17 +1090,19 @@ function displayMoonPhases() {
     //console.log('Next Illumination:', nextIllumination);
 
     let phaseValue = illumination;
-    if (nextIllumination > illumination) {
+    console.log("illumination: " + illumination + "   nextIllumination: " + nextIllumination);
+    if (nextIllumination < illumination) {
         // If the next illumination value is greater than the current, the left right is illuminated
         phaseValue += 90;
     }
 
-    //console.log('Phase Value:', phaseValue);
+    console.log('Phase Value:', phaseValue);
 
     const phaseindex = moonPhasesPaths.find(p => {
         //console.log(`Checking range: ${p.range} for phase value: ${phaseValue}`);
         return isInRange(phaseValue, p.range);
     });
+
     console.log(phaseindex.MediaSource);
     if (phaseindex) {
         //console.log('Phase found:', phaseindex);
