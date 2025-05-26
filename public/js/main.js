@@ -196,15 +196,15 @@ const constellationsData = {
     },
     Cet: { //Cetus done on Apr 24 2025 with astrometry net zero tweak downsample 4
         simplesoln: 0,
-        cdi_00: -11.598472, 
-        cdi_10: -0.097696112, 
-        cdi_01: 0.097696112, 
-        cdi_11: -11.598472, 
-        ref_ra: 37.628917, 
-        ref_dec: -2.8725051, 
-        ref_x: 156.71026, 
+        cdi_00: -11.598472,
+        cdi_10: -0.097696112,
+        cdi_01: 0.097696112,
+        cdi_11: -11.598472,
+        ref_ra: 37.628917,
+        ref_dec: -2.8725051,
+        ref_x: 156.71026,
         ref_y: 270.42703
-      }
+    }
 };
 
 const azimuthLabels = [
@@ -274,34 +274,68 @@ const mercuryPhasesPaths = [
     { range: [187, 196], MediaSource: "images/mercury/phases/mercuryPhases_27.png" }
 ];
 
-const moonPhasesPaths = [
-    { range: [[195, 360], [0, 8]], MediaSource: "images/moon/phases/MoonPhases_00.png" },
-    { range: [8, 16], MediaSource: "images/moon/phases/MoonPhases_01.png" },
-    { range: [16, 24], MediaSource: "images/moon/phases/MoonPhases_02.png" },
-    { range: [24, 32], MediaSource: "images/moon/phases/MoonPhases_03.png" },
-    { range: [32, 40], MediaSource: "images/moon/phases/MoonPhases_04.png" },
-    { range: [40, 48], MediaSource: "images/moon/phases/MoonPhases_05.png" },
-    { range: [48, 56], MediaSource: "images/moon/phases/MoonPhases_06.png" },
-    { range: [56, 64], MediaSource: "images/moon/phases/MoonPhases_07.png" },
-    { range: [64, 72], MediaSource: "images/moon/phases/MoonPhases_08.png" },
-    { range: [72, 80], MediaSource: "images/moon/phases/MoonPhases_09.png" },
-    { range: [80, 88], MediaSource: "images/moon/phases/MoonPhases_10.png" },
-    { range: [88, 96], MediaSource: "images/moon/phases/MoonPhases_11.png" },
-    { range: [96, 104], MediaSource: "images/moon/phases/MoonPhases_12.png" },
-    { range: [104, 112], MediaSource: "images/moon/phases/MoonPhases_13.png" },
-    { range: [112, 120], MediaSource: "images/moon/phases/MoonPhases_14.png" },
-    { range: [120, 128], MediaSource: "images/moon/phases/MoonPhases_15.png" },
-    { range: [128, 136], MediaSource: "images/moon/phases/MoonPhases_16.png" },
-    { range: [136, 144], MediaSource: "images/moon/phases/MoonPhases_17.png" },
-    { range: [144, 152], MediaSource: "images/moon/phases/MoonPhases_18.png" },
-    { range: [152, 160], MediaSource: "images/moon/phases/MoonPhases_19.png" },
-    { range: [160, 168], MediaSource: "images/moon/phases/MoonPhases_20.png" },
-    { range: [168, 176], MediaSource: "images/moon/phases/MoonPhases_21.png" },
-    { range: [176, 184], MediaSource: "images/moon/phases/MoonPhases_22.png" },
-    { range: [184, 187], MediaSource: "images/moon/phases/MoonPhases_23.png" }
-];
+// const moonPhasesPaths = [
+//     { range: [[195, 360], [0, 8]], MediaSource: "images/moon/phases/MoonPhases_00.png" },
+//     { range: [8, 16], MediaSource: "images/moon/phases/MoonPhases_01.png" },
+//     { range: [16, 24], MediaSource: "images/moon/phases/MoonPhases_02.png" },
+//     { range: [24, 32], MediaSource: "images/moon/phases/MoonPhases_03.png" },
+//     { range: [32, 40], MediaSource: "images/moon/phases/MoonPhases_04.png" },
+//     { range: [40, 48], MediaSource: "images/moon/phases/MoonPhases_05.png" },
+//     { range: [48, 56], MediaSource: "images/moon/phases/MoonPhases_06.png" },
+//     { range: [56, 64], MediaSource: "images/moon/phases/MoonPhases_07.png" },
+//     { range: [64, 72], MediaSource: "images/moon/phases/MoonPhases_08.png" },
+//     { range: [72, 80], MediaSource: "images/moon/phases/MoonPhases_09.png" },
+//     { range: [80, 88], MediaSource: "images/moon/phases/MoonPhases_10.png" },
+//     { range: [88, 96], MediaSource: "images/moon/phases/MoonPhases_11.png" },
+//     { range: [96, 104], MediaSource: "images/moon/phases/MoonPhases_12.png" },
+//     { range: [104, 112], MediaSource: "images/moon/phases/MoonPhases_13.png" },
+//     { range: [112, 120], MediaSource: "images/moon/phases/MoonPhases_14.png" },
+//     { range: [120, 128], MediaSource: "images/moon/phases/MoonPhases_15.png" },
+//     { range: [128, 136], MediaSource: "images/moon/phases/MoonPhases_16.png" },
+//     { range: [136, 144], MediaSource: "images/moon/phases/MoonPhases_17.png" },
+//     { range: [144, 152], MediaSource: "images/moon/phases/MoonPhases_18.png" },
+//     { range: [152, 160], MediaSource: "images/moon/phases/MoonPhases_19.png" },
+//     { range: [160, 168], MediaSource: "images/moon/phases/MoonPhases_20.png" },
+//     { range: [168, 176], MediaSource: "images/moon/phases/MoonPhases_21.png" },
+//     { range: [176, 184], MediaSource: "images/moon/phases/MoonPhases_22.png" },
+//     { range: [184, 187], MediaSource: "images/moon/phases/MoonPhases_23.png" }
+// ];
+
+
 
 // Create the json objects with the planets data
+
+const waxingMoonPhases = [
+    { range: [0, 5], MediaSource: "images/moon/phase/00_NewMoon_0.png" },
+    { range: [5, 14], MediaSource: "images/moon/phase/01_WaxingCrescent_10.png" },
+    { range: [14, 21], MediaSource: "images/moon/phase/02_WaxingCrescent_17.png" },
+    { range: [21, 31], MediaSource: "images/moon/phase/03_WaxingCrescent_26.png" },
+    { range: [31, 41], MediaSource: "images/moon/phase/04_WaxingCrescent_36.png" },
+    { range: [41, 51], MediaSource: "images/moon/phase/05_FirstQuarter_46.png" },
+    { range: [51, 61], MediaSource: "images/moon/phase/06_WaxingGibbous_56.png" },
+    { range: [61, 70], MediaSource: "images/moon/phase/07_WaxingGibbous_65.png" },
+    { range: [70, 78], MediaSource: "images/moon/phase/08_WaxingGibbous_74.png" },
+    { range: [78, 87], MediaSource: "images/moon/phase/09_WaxingGibbous_82.png" },
+    { range: [87, 96], MediaSource: "images/moon/phase/10_WaxingGibbous_93.png" },
+    { range: [96, 100.1], MediaSource: "images/moon/phase/11_FullMoon_99.png" }
+];
+
+const waningMoonPhases = [
+    { range: [96, 100.1], MediaSource: "images/moon/phase/11_FullMoon_99.png" },
+    { range: [90, 96], MediaSource: "images/moon/phase/12_WaningGibbous_93.png" },
+    { range: [75, 85], MediaSource: "images/moon/phase/13_WaningGibbous_80.png" },
+    { range: [65, 75], MediaSource: "images/moon/phase/14_WaningGibbous_71.png" },
+    { range: [55, 65], MediaSource: "images/moon/phase/15_WaningGibbous_60.png" },
+    { range: [45, 55], MediaSource: "images/moon/phase/16_ThirdQuarter_50.png" },
+    { range: [30, 45], MediaSource: "images/moon/phase/17_WaningCrescent_38.png" },
+    { range: [20, 30], MediaSource: "images/moon/phase/18_WaningCrescent_28.png" },
+    { range: [10, 20], MediaSource: "images/moon/phase/19_WaningCrescent_17.png" },
+    { range: [0, 10], MediaSource: "images/moon/phase/20_WaningCrescent_3.png" }
+];
+
+
+
+
 const fetchData = async (planet) => {
     try {
         const response = await fetch(`data/${planet}`);
@@ -322,7 +356,7 @@ function displayData(planet) {
     todaysDate();
     console.log(planet, planetsData[planet].constellation[0]);
     if (planet !== "sun") {
-    drawConstellationGraph(planet, planetsData[planet].constellation[0]);
+        drawConstellationGraph(planet, planetsData[planet].constellation[0]);
     }
     drawGraph(planet);
     magRiseSet(planet);
@@ -349,7 +383,7 @@ function visibility(planet) {
             document.getElementById(idNameVis).innerHTML = `Visible`;
             //document.getElementById(idNameVis).style.backgroundColor = '#03334F';
             document.getElementById(idNameVis).style.backgroundColor = '#388E3C';
-            
+
 
         }
         else {
@@ -400,7 +434,7 @@ function magRiseSet(planet) {
     `;
 
     idNameVis = `constellation_${planet}`;
-    if(document.getElementById(idNameVis)) document.getElementById(idNameVis).innerHTML += `<span style="color: white;">${constellations[planetsData[planet].constellation[0]]}</span>`;
+    if (document.getElementById(idNameVis)) document.getElementById(idNameVis).innerHTML += `<span style="color: white;">${constellations[planetsData[planet].constellation[0]]}</span>`;
 
     idNameVis = `from_${planet}`;
     let text = "";
@@ -414,7 +448,7 @@ function magRiseSet(planet) {
     }
     idNameVis = `until_${planet}`;
     document.getElementById(idNameVis).innerHTML += `<span style="color: white;">${text}</span>`;
-    if (planet == "sun"){
+    if (planet == "sun") {
         const rise = planetsData[planet].rise[0];
         const set = planetsData[planet].set[0];
         const nauticalSunrise = adjustTimeByMinutes(rise, -35);
@@ -571,34 +605,63 @@ function drawConstellationGraph(planet, constellation) {
     let svgWidth = 600;
     let svgHeight = 600;
     const planetPos = planetOnConstellation(constellationsData[constellation], raStringToDegrees(planetsData[planet].ra[0]), decStringToDegrees(planetsData[planet].dec[0]));
-    //console.log(`${planet} ra: ${planetsData[planet].ra[0]} dec: ${planetsData[planet].dec[0]}`);
-    //console.log(`x: ${planetPos.x} y: ${planetPos.y}`);
     // Create SVG elements
     let width = 200;
     let height = 200;
     let xPos = 20;
+    let yPos = -130;
+
+
     if (constellation == "Ari") {
-        if (planetPos.x < -200) {
-            xPos = -150;
-            width = 140;
-            height = 140;
+        console.log(`${planet} ra: ${planetsData[planet].ra[0]} dec: ${planetsData[planet].dec[0]}`);
+        console.log(`x: ${planetPos.x} y: ${planetPos.y}`);
+        let targetId = `constellation_${planet}_img`;
+        let element = document.getElementById(targetId);
+
+        if (element) {
+            element.style.width = "60%";
+        } else {
+            console.warn(`Element with ID '${targetId}' not found.`);
+        }
+        if (planetPos.x < -200) { 
+            xPos = -250;
+            yPos = -450;
         }
         else if (planetPos.x > 200) {
-            width = 140;
-            height = 140;
-            xPos = 150;
+            xPos = 250;
         }
+
     }
-    let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${xPos} -130 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" width="${width}%" height="${height}%" style="overflow: visible; position: absolute;">`;;
+
+
+
+   
+
+    //  CSS gère la grosseur du div des constellations main-styles.css  .constellateion-image-widget svg {..}
+
+
+    let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${xPos} ${yPos} ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet" width="${width}%" height="${height}%" style="overflow: visible; position: absolute;">`;;
     // Add the constellation image
     svg += `<image xlink:href="${imgPath}" width="${svgWidth}" height="${svgHeight}" onerror="this.style.display='none'" />`;
     // Add the circle and the planet point
     //console.log(planetPos);
     //if (planet != "sun" && planet != "moon") {
+
+    svgWidth = 600;
+    svgWidth = 600;
+
+
     svg += `<circle cx="${planetPos.x}" cy="${planetPos.y}" r="5" fill="orange" />`; // Point
     svg += `<circle cx="${planetPos.x}" cy="${planetPos.y}" r="60" fill="none" stroke="#03334F" stroke-width="8" />`; // Circle around the point
     // Add text
-    svg += `<text x="${(svgWidth / 2) -20}" y="-80" font-size="40" text-anchor="middle" fill="white">à 22h ce soir</text>`;
+
+    if (constellation == "Ari") {
+        svg += `<text x="${(svgWidth /4 -120) }" y="-360" font-size="60" text-anchor="middle" fill="white">à 22h ce soir</text>`;
+    }
+    else{
+        svg += `<text x="${(svgWidth / 2) - 20}" y="-80" font-size="40" text-anchor="middle" fill="white">à 22h ce soir</text>`;
+    }
+    
     //}
     // Terminate the svg string
     svg += `</svg>`;
@@ -1095,7 +1158,7 @@ function displayMercuryPhases() {
 //         // If the next illumination value is greater than the current, the left right is illuminated
 //         phaseValue += 180;
 //     }
-    
+
 
 //     console.log('Phase Value:', phaseValue);
 
@@ -1113,33 +1176,29 @@ function displayMercuryPhases() {
 //     }
 // }
 function displayMoonPhases() {
-    // const moonData = planetsData["moon"];
-    // const phase = moonData.phase % 360;
-    // const illumination = moonData.illumination[0];
-    // const nextIllumination = moonData.illumination[1];
+    const moonData = planetsData["moon"];
+    const phasePercent = moonData.phase; // 0 to 100
+    const illumination = moonData.illumination[0];
+    const nextIllumination = moonData.illumination[1];
 
-    // // Determine if the moon is waning (optional, for debugging or future use)
-    // const isWaning = nextIllumination < illumination;
+    const isWaning = nextIllumination < illumination;
 
-    // // Rotate phase so that 0° = MoonPhases_11.png (New Moon)
-    // let rotatedPhase = (phase + 195) % 360;
+    const phaseArray = isWaning ? waningMoonPhases : waxingMoonPhases;
 
-    // // Map to 24 images (each 15° wide)
-    // let imageIndex = Math.floor(rotatedPhase / 15);
+    const imageEntry = phaseArray.find(entry => {
+        const [min, max] = entry.range;
+        return phasePercent >= min && phasePercent < max;
+    });
 
-    // // Wrap around to 0–23
-    // imageIndex = imageIndex % 24;
+    const imagePath = imageEntry ? imageEntry.MediaSource : "images/moon/phase/00_NewMoon_0.jpg";
 
-    // const imagePath = `images/moon/phases/MoonPhases_${String(imageIndex).padStart(2, '0')}.png`;
-
-    // console.log("Phase:", phase);
-    // console.log("Rotated Phase:", rotatedPhase);
-    // console.log("Image Index:", imageIndex);
-    // console.log("Image Path:", imagePath);
-    const imagePath = `images/moon/phases/MoonPhases_10.png`;
+    console.log("Phase %:", phasePercent);
+    console.log("Waning:", isWaning);
+    console.log("Image Path:", imagePath);
 
     document.getElementById('moon_phase_image').src = imagePath;
 }
+
 
 
 
