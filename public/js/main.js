@@ -482,10 +482,27 @@ function adjustTimeByMinutes(timeStr, minutes) {
     return `${newHours}:${newMinutes}`;
 }
 
+// function todaysDate() {
+//     const date = planetsData["venus"].date[0].toString();
+//     document.getElementById("title-date").innerHTML = `${formatDate(date)}`;
+// }
+
 function todaysDate() {
-    const date = planetsData["venus"].date[0].toString();
-    document.getElementById("title-date").innerHTML = `${formatDate(date)}`;
+    const today = new Date();
+
+    // Extract year, short month name, and day
+    const year = today.getFullYear();
+    const month = today.toLocaleString('en-US', { month: 'short' }).toLowerCase(); // e.g., "jun"
+    const day = String(today.getDate()).padStart(2, '0'); // e.g., "01"
+
+    // Create the date string in the format expected by formatDate
+    const dateString = `${year} ${month} ${day}`;
+
+    // Format the date and update the HTML
+    document.getElementById("title-date").innerHTML = formatDate(dateString);
 }
+
+
 
 function formatDate(dateString) {
     // Define the months in French
